@@ -1,0 +1,817 @@
+<div id="noticeContainer" class="container-fluid">
+	<br>
+	<div style="background: white;">
+		<form novalidate id="searchNoticeForm" name="searchNoticeForm"
+			style="padding: 25px 15px;">
+			<div class="row">
+
+				<div class="form-group col-sm-3">
+					<label for="company">Company : </label> <select name="company"
+						id="company" ng-model="vm.form.company" multiple="multiple"
+						class="form-control mulSel">
+						<option ng-repeat="item in vm.companyInfo" value="{{item.id-0}}">{{item.name}}</option>
+					</select>
+
+
+				</div>
+
+
+				<div class="form-group col-sm-3">
+					<label for="business">Business : </label> <select name="business"
+						id="business" ng-model="vm.form.business"
+						class="form-control mulSel" multiple="multiple">
+					</select>
+
+				</div>
+
+
+				<div class="form-group col-sm-3">
+					<label for="vertical">Vertical : </label> <select name="vertical"
+						id="vertical" ng-model="vm.form.vertical"
+						class="form-control mulSel" multiple="multiple">
+					</select>
+
+				</div>
+
+				<div class="form-group col-sm-3">
+					<label for="caseType">Case Category : </label> <select
+						multiple-select name="caseType" id="caseType"
+						ng-model="vm.form.caseType" multiple="multiple"
+						class="form-control mulSel">
+						<option ng-repeat="item in vm.caseTypeInfo" value="{{item.id}}">{{item.name}}</option>
+
+					</select>
+
+				</div>
+
+			</div>
+			<div class="row">
+
+
+
+				<div class="form-group col-sm-3">
+					<label for="state">State/Location : </label> <select
+						multiple-select name="state" id="state" ng-model="vm.form.state"
+						multiple="multiple" class="form-control mulSel">
+						<option ng-repeat="item in vm.stateInfo" value="{{item.id}}">{{item.name}}</option>
+
+					</select>
+
+				</div>
+
+				<div class="form-group col-sm-3">
+					<label for="noticeStatus">Notice Status : </label> <select
+						multiple-select name="noticeStatus" id="noticeStatus"
+						ng-model="vm.form.noticeStatus" multiple="multiple"
+						class="form-control mulSel">
+						<option ng-repeat="item in vm.noticeStatusInfo"
+							value="{{item.id}}">{{item.name}}</option>
+					</select>
+
+				</div>
+
+				<div class="form-group col-sm-3">
+					<label for="nextHearingDate">Date on Notice : </label>
+					<div class="input-group">
+						<input id="form_startDate" name="startDate" class="form-control"
+							placeholder="Start Date" ng-model="vm.form.startDate"> <span
+							class="input-group-btn" style="width: 3px;"></span> <input
+							id="form_endDate" name="endDate" class="form-control"
+							placeholder="End Date" ng-model="vm.form.endDate">
+					</div>
+				</div>
+
+				<div class="form-group col-sm-3">
+					<label for="dateOnWhichNoticeRequiredToReply">Date on which
+						notice required to be replied : </label>
+					<div class="input-group">
+						<input id="form_dateOnWhichNoticeRequiredToReply"
+							name="dateOnWhichNoticeRequiredToReply" class="form-control"
+							placeholder="End Date"
+							ng-model="vm.form.dateOnWhichNoticeRequiredToReply">
+					</div>
+				</div>
+
+			</div>
+
+
+
+
+
+			<div class='text-center'>
+
+				<div class="form-group">
+					<button ng-click="vm.search(searchNoticeForm)" type="button"
+						class="btn btn-primary text-center">Search</button>
+
+					<button ng-click="vm.resetFilter()" type="button"
+						class="btn btn-primary text-center">Clear Filters</button>
+				</div>
+
+
+			</div>
+
+		</form>
+	</div>
+
+
+	<br>
+
+	<div id="searchTableContainer" class="tableContainer"
+		style="display: none;">
+		<hr>
+
+		<table datatable="ng" dt-column-defs="vm.dtColumnDefs"
+			dt-instance="vm.dtInstance" dt-options="vm.dtOptions"
+			id="searchNoticeTable" class="table table-bordered tableCls"
+			width="100%">
+
+			<thead>
+				<tr>
+					<th class="noVis" data-priority="1">Notice ID</th>
+					<th>Company</th>
+					<th>Business</th>
+					<th>Vertical</th>
+					<th>Case Category</th>
+					<th>State</th>
+					<th>Addressed To</th>
+					<th>Name of the Officer issued notice</th>
+					<th>Designation of the Officer</th>
+					<th>Organization of the Officer</th>
+					<th>Nature of the Party</th>
+					<th>Date on Notice</th>
+					<th>Date on which Notice Received</th>
+					<th>Date on which Notice is required to reply</th>
+					<th>Date of Reply</th>
+					<th>Brief Facts</th>
+					<th>Financial Impact</th>
+					<th>Notice Status</th>
+					<th>Remark</th>
+					<th>Type of Notice</th>
+					<th>PAN</th>
+					<th>Assessment Year</th>
+					<th>Notice Section</th>
+					<th>Section Description</th>
+					<th>Priority</th>
+					<th class="noVis text-center">*</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in vm.noticesInfo">
+					<td id="noticeID">{{item.noticeID}}
+						<p class="notShow" ng-if="item.docCount > 0">
+							<i class="fa fa-paperclip"></i>
+						</p>
+					</td>
+					<td>{{item.companyAlias}}</td>
+					<td>{{item.businessName}}</td>
+					<td>{{item.verticalName}}</td>
+					<td>{{item.caseTypeName}}</td>
+					<td>{{item.stateName}}</td>
+					<td>{{item.addressedTo}}</td>
+					<td>{{item.issuedByName}}</td>
+					<td>{{item.issuedByDesig}}</td>
+					<td>{{item.issuedByOrganization}}</td>
+					<td>{{item.natureOfParty}}</td>
+					<td>{{item.dateOnNotice | date:'dd/MM/yyyy'}}</td>
+					<td>{{item.dateOnWhichNoticeReceived | date:'dd/MM/yyyy'}}</td>
+					<td>{{item.dateOnWhichNoticeRequiredToReply |
+						date:'dd/MM/yyyy'}}</td>
+					<td>{{item.dateOfReply | date:'dd/MM/yyyy'}}</td>
+					<td>{{item.briefFacts}}</td>
+					<td>{{item.stakeInvolment}}</td>
+					<td>{{item.statusName}}</td>
+					<td>{{item.remarks}}</td>
+					<td>{{item.noticeType}}</td>
+					<td>{{item.panNo}}</td>
+					<td>{{item.assessYear}}</td>
+					<td>{{item.noticeSection}}</td>
+					<td>{{item.sectionDesc}}</td>
+					<td>{{item.priorityName}}</td>
+					<td class="noVis" style="width: 10%; text-align: center;">
+						<div class="btn-group">
+							<button type="button" ng-click="vm.viewNoticeItem(item)"
+								title="View Case">
+								<i class="fas fa-eye bn"></i>
+							</button>
+							<button ng-if="(vm.accessCtrl == 'Edit')" type="button"
+								ng-click="vm.updateNotice(item)" title="Edit Notice">
+								<i class="far fa-edit bn"></i>
+							</button>
+							<button ng-if="(vm.accessCtrl == 'Edit')" type="button"
+								ng-click="vm.addDocItem(item)" title="Add Attachment">
+								<i class="fa fa-paperclip bn"></i>
+							</button>
+						</div>
+					</td>
+
+				</tr>
+
+			</tbody>
+
+		</table>
+
+	</div>
+</div>
+
+
+
+
+<script type="text/ng-template" id="editNotice.html">
+    	<div class="modal-header text-center" >
+            <h5 class="modal-title  blueColor">Update Notice with ID {{vm.noticeID}}</h5>
+			<button style = "text-align:right;" class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Close</button>
+       
+        </div>
+		
+        <div class="modal-body">
+				<div class = "container">
+		
+	<form novalidate id ="addNewNoticeForm" name = "addNewNoticeForm">
+						<div class = "row"> 
+							<div class="form-group col-sm-4">
+						    	<label for="company" >Company : <span class = "error-message">*</span></label>
+						    	<select name="company" id = "company" ng-model="vm.form.company" required
+						    	ng-options = "item.id as item.name for item in vm.companyInfo" ng-change = "vm.fetchCompanyMaster(vm.form.company)" class="custom-select-sm form-control" >
+								</select>
+								<p ng-show="addNewNoticeForm.company.$invalid || (addNewNoticeForm.company.$touched && addNewNoticeForm.company.$pristine)" class="error-message">
+		                          Company must be selected
+		                        </p>
+						  	</div>
+							<div class="form-group col-sm-4">
+						    	<label for="business" >Business : <span class = "error-message">*</span></label>
+						    	<select name="business" id = "business" ng-model="vm.form.business" ng-change="vm.fetchVerticalMaster(vm.form.business)"
+						    	 ng-options = "item.id as item.name for item in vm.businessInfo" class="custom-select-sm form-control" required>
+									
+								</select>
+								<p ng-show="addNewNoticeForm.business.$invalid || (addNewNoticeForm.business.$touched && addNewNoticeForm.business.$pristine)" class="error-message">
+		                          Business must be selected
+		                        </p>
+						  	</div>
+						  	
+						  	<div class="form-group col-sm-4">
+						    	<label for="vertical" > Vertical : <span class = "error-message">*</span></label>
+						    	<select name="vertical" id = "vertical" ng-model="vm.form.vertical" ng-change="vm.fetchRefNo(vm.form.vertical)"
+						    	 ng-options = "item.id as item.name for item in vm.verticalInfo" class="custom-select-sm form-control" required>
+									 
+								</select>
+								<p ng-show="addNewNoticeForm.vertical.$invalid || (addNewNoticeForm.vertical.$touched && addNewNoticeForm.vertical.$pristine)" class="error-message">
+		                          Vertical must be selected
+		                        </p>
+						  	</div>
+					  	
+					  	</div>
+					  	<div class = "row">	
+					  		<div class="form-group col-sm-4">
+						    	<label for="state" > State/Location : </label>
+						    	<select name="state" id = "state" ng-model="vm.form.state" 
+								 class="custom-select-sm form-control">
+									 <option ng-repeat="item in vm.stateInfo" value="{{item.id-0}}">{{item.name}}</option>
+								</select>
+								
+						  	</div>				  		
+					  	
+					  		<div class="form-group col-sm-4">
+						    	<label for="caseType" > Case Category : <span class = "error-message">*</span></label>
+						    	<select name="caseType" id = "caseType" ng-model="vm.form.caseType" ng-change = "vm.checkYear()"
+								 class="custom-select-sm form-control" ng-required="true">
+									 <option ng-repeat="item in vm.caseTypeInfo" value="{{item.id-0}}">{{item.name}}</option>
+								</select>
+								<p ng-show="addNewNoticeForm.caseType.$invalid  || (addNewNoticeForm.caseType.$touched && addNewNoticeForm.caseType.$pristine)" class="error-message">
+		                          Case Category must be selected
+		                        </p>
+						  	</div>				  	
+					  		 			  		
+						  	 <div class="form-group col-md-4">							  
+								<label  for="addressedTo"> Addressed To: </label>					                            
+		  						<input speclchars type="text" class="form-control" ng-model="vm.form.addressedTo"  name = "addressedTo" id="addressedTo"  placeholder = "Name / Organization">										  
+							 	
+							 </div>
+					  	
+					  	</div>	
+					  	
+				
+					  	
+					  	<div class = "row"> 
+					  		
+							 <div class="form-group col-md-4">							  
+								<label  for="issuedByName"> Name of the Person issued Notice: </label>					                            
+		  						<input speclchars type="text" class="form-control" ng-model="vm.form.issuedByName"  name = "issuedByName" id="issuedByName" placeholder = "Name of the Person issued Notice">										  
+							 	 
+							 </div>
+					  		
+					  		<div class="form-group col-md-4">							  
+								<label  for="issuedByDesig"> Designation of the Person issued Notice : </label>					                            
+		  						<input speclchars type="text" class="form-control" ng-model="vm.form.issuedByDesig"  name = "issuedByDesig" id="issuedByDesig" placeholder = "Designation of the Person issued Notice ">										  
+								
+							 </div>
+							 
+							 
+							 <div class="form-group col-md-4">							  
+								<label  for="issuedByOrganization"> Organization of the Person issued Notice : </label>					                            
+		  						<input speclchars type="text" class="form-control" ng-model="vm.form.issuedByOrganization"  name = "issuedByOrganization" id="issuedByOrganization" placeholder = "Designation of the Person issued Notice ">										  
+								
+							 </div>
+							 
+							
+					  	
+					  	</div>
+					  	
+							 
+					  	
+					  	<div class = "row">
+					  	
+					  		 <div class="form-group col-md-4">							  
+								<label  for="natureOfParty"> Nature of the Party :</label>					                            
+		  						<input speclchars type="text" class="form-control" ng-model="vm.form.natureOfParty"  name = "natureOfParty" id="natureOfParty" placeholder = "Nature of the Party">										  
+								
+							 </div>
+					  	
+					  		 <div class="form-group col-md-4">
+						  		 <label  for="dateOnNotice">Date on Notice  </label>
+								 <input  id = "dateOnNotice" name = "dateOnNotice" class="form-control" 
+								           placeholder="Date on Notice"
+								           ng-model="vm.form.dateOnNotice">
+								 
+								
+								
+							</div>	
+					  	
+					  		 <div class="form-group col-md-4">
+						  		 <label  for="dateOnWhichNoticeReceived">Date on which Notice Received </label>
+								 <input  id = "dateOnWhichNoticeReceived" name = "dateOnWhichNoticeReceived" class="form-control" 
+								           placeholder="Date on Which Notice Received"
+								           ng-model="vm.form.dateOnWhichNoticeReceived">
+								 
+								
+							</div>
+							
+				
+		
+					  	</div>	 
+					  	
+										  	
+				  	
+					  	
+					  	<div class = "row">
+					  	
+					  		 <div class="form-group col-md-4">
+						  		 <label  for="dateOnWhichNoticeRequiredToReply">Date on which Notice required to be Replied </label>
+								 <input  id = "dateOnWhichNoticeRequiredToReply" name = "dateOnWhichNoticeRequiredToReply" class="form-control" 
+								           placeholder="Date on which Notice required to be Replied"
+								           ng-model="vm.form.dateOnWhichNoticeRequiredToReply">
+								
+							</div>
+					  	
+					  		  <div class="form-group col-md-4">
+						  		 <label  for="dateOfReply">Date of Reply </label>
+								 <input  id = "dateOfReply" name = "dateOfReply" class="form-control" 
+								           placeholder="Date of Reply"
+								           ng-model="vm.form.dateOfReply">
+								
+							</div>
+							
+							<div class="form-group col-md-4" >							  
+								<label  for="briefFacts"> Brief Facts: </label>					                            
+		  						<textarea  class="form-control" ng-model="vm.form.briefFacts"  rows = "5" name = "briefFacts" id="briefFacts" >	</textarea>									  
+							 	
+							 </div>	
+							 
+							</div>
+							
+						<div class = "row"> 
+							 <div class="form-group col-md-4" >							  
+								<label  for="stakeInvolment"> Financial Impact (in Rs): </label>					                            
+		  						<textarea  class="form-control" ng-model="vm.form.stakeInvolment"  name = "stakeInvolment" id="stakeInvolment" >	</textarea>									  
+							 	
+							 </div>	
+							 
+							  <div class="form-group col-md-4" >
+						    	<label for="status" >Status : </label>
+						    	<select name="status" id = "status" ng-model="vm.form.status" 
+						    	ng-options="item.id as item.name for item in vm.noticeStatusInfo" class="custom-select-sm form-control" >
+								</select>
+								
+								
+						  	 </div>	
+					  		 
+					  		 <div class="form-group col-md-4" >							  
+								<label  for="remarks"> Remark: </span> </label>					                            
+		  						<textarea  class="form-control" ng-model="vm.form.remarks"  rows = "5" name = "remarks" id="remarks" >	</textarea>									  
+							 	
+							 </div>	 
+							 
+					  	</div>
+						  	 
+						<div class = "row" >
+							 <div class="form-group col-md-4"  id ="typeContainer">							  
+								<label  for="noticeType"> Notice Type : </label>					                            
+		  						<input speclchars type="text" class="form-control" ng-model="vm.form.noticeType"  name = "noticeType" id="noticeType" placeholder = "Notice Type">										  
+							 </div>
+						  	<div class="form-group col-md-4">
+						    	<label for="priority" > Priority : </label>
+						    	<select name="priority" id = "priority" ng-model="vm.form.priority" 
+								 class="custom-select-sm form-control">
+									 <option ng-repeat="item in vm.priorityInfo" value="{{item.id-0}}">{{item.name}}</option>
+								</select>
+								
+						  	</div>		 
+						  	  <div class="form-group col-md-4" style = "display:none;" id ="hiddenContainer1">							  
+								<label  for="panNo"> PAN No : </label>					                            
+		  						<input speclchars type="text" class="form-control" ng-model="vm.form.panNo"  name = "panNo" id="panNo" placeholder = "PAN No">										  
+							 </div>
+					  		 				  	
+						  	<div class="form-group col-md-4" style = "display:none;" id ="hiddenContainer2">
+						    	<label for="assessYear" >Assessment Year :</label>
+						    	<select name="assessYear" id = "assessYear" ng-model="vm.form.assessYear" 
+						    	 class="custom-select-sm form-control" ng-options = "item as item for item in vm.years" >
+						    	 	
+								</select>
+								
+						  	 </div> 
+						  	 
+					  		
+					  	</div>
+					  	
+					  	<div class = "row">
+					  	 
+					  	 	<div class="form-group col-sm-4" style = "display:none;" id ="hiddenContainer3">
+						    	<label for="noticeType" > Notice Type : </label>
+						    	
+								<select name="noticeType" id = "noticeType" ng-model="vm.form.noticeType" ng-change="vm.fetchNoticeSection(vm.form.noticeType)"
+								 class="custom-select-sm form-control">
+									 <option ng-repeat="item in vm.noticeTypeInfo" value="{{item}}">{{item}}</option>
+								</select>
+								<p ng-show="addNewNoticeForm.noticeType.$invalid || (addNewNoticeForm.noticeType.$touched && addNewNoticeForm.noticeType.$pristine)" class="error-message">
+		                          Notice Type must be selected
+		                        </p>
+						  	</div>	
+					  	 	 
+							<div class="form-group col-sm-4" style = "display:none;" id ="hiddenContainer4">
+						    	<label for="section" > Section : </label>
+						    	<select name="section" id = "section" ng-model="vm.form.section" ng-change="vm.fetchSectionDesc(vm.form.section)"
+						    	 ng-options = "item.id as item.sectionId for item in vm.sectionInfo" class="custom-select-sm form-control" >
+									 
+								</select>
+								
+						  	</div>
+					  	 	
+					  	 	
+		  					<div class="form-group col-sm-4" style = "display:none;" id ="hiddenContainer5">
+						    	<label for="section" > Section Description: </label>
+						    	<select name="sectionDesc" id = "sectionDesc" ng-model="vm.form.sectionDesc" 
+						    	 class="custom-select-sm form-control" readonly>
+									 <option>{{vm.form.sectionDesc}}</option>
+								</select>
+								
+						  	</div>
+		  					
+		  							 	  				  	
+						  	 				  	 
+					  	
+					  	</div>
+					  	
+					  
+					  <div class = 'text-center'>
+			<button ng-click = "vm.submit(addNewNoticeForm)" type = "button" class="btn btn-primary text-center">Save</button>
+			<button type = "reset" class="btn btn-primary text-center">Cancel</button>
+							
+		</div>
+				  
+					</form>
+			</div>
+			
+        </div>
+		
+    
+        
+  	</script>
+
+
+
+<script type="text/ng-template" id="viewNotice.html">
+    	<div class="modal-header row text-center" style = "border-bottom :2px dashed #ddd;margin: 0 5px;"  >
+		<div class = "col-sm-3">
+			<img  style = "width: 200px;height: auto;" src = "app/img/logo.png" />
+            </div><div class = "col-sm-6 blueColor"><h5 class="blueColor modal-title" style = "font-weight:600;">Details of Notice with ID:  {{vm.noticeID}} </h5>
+			<span style = "display:none;" id = "textTitle">Details for Notice with ID:  {{vm.noticeID}} </span>			
+			</div>
+			
+			<div class = "col-sm-3" style = "text-align:right;"><button  class="btn btn-primary" type = "button" ng-click = "vm.printTable()">Print</button>
+			<button  class="btn btn-primary" ng-click="$dismiss('cancel')" type="button">Close</button>
+       		</div>
+        </div>
+		
+        <div class="modal-body" id = "viewAllMatter">
+			<div class="" style = "margin-left:5px;margin-right:5px;">
+				
+    			<div class = "row" >
+     				
+        				<div class = "col-sm-2 blueColor" style = "text-align: right;font-size:16px;"><strong>Company :</strong></div>
+						<div class = "col-sm-4" style = "font-size:16px;">{{vm.company}}</div> 		
+						<div class = "col-sm-3 blueColor" style = "text-align: right;font-size:16px;"><strong>Case Category :</strong></div>
+						<div class = "col-sm-3" style = "font-size:16px;">{{ vm.caseType }}</div>
+      				
+	  			</div>
+				<div class = "row" >     				
+        				<div class = "col-sm-2 blueColor" style = "text-align: right;font-size:16px;"><strong>Business :</strong></div>
+						<div class = "col-sm-4" style = "font-size:16px;">{{vm.business}}</div> 
+						<div ng-if="vm.assessYear != '' && vm.assessYear == undefined" class = "col-sm-3 blueColor" style = "text-align: right;font-size:16px;"><strong>Assessment Year :</strong></div>
+						<div ng-show="vm.assessYear != '' && vm.assessYear == undefined" class = "col-sm-3" style = "font-size:16px;">{{ vm.assessYear }}</div>
+      				
+				</div>
+							
+				<div class = "row" >     				
+        				<div class = "col-sm-2 blueColor" style = "text-align: right;font-size:16px;"><strong>Vertical :</strong></div>
+						<div class = "col-sm-4" style = "font-size:16px;">{{vm.vertical}}</div>
+						<div class = "col-sm-3 blueColor" style = "text-align: right;font-size:16px;"><strong>Report as on :</strong></div>
+						<div class = "col-sm-3" style = "font-size:16px;">{{ vm.today | date }}</div>  
+				</div>
+				
+			<br>			
+	
+	  <div class = "row">
+      <div class="col-sm-12">
+      	<table class="table" id = "viewPopupTable">
+      		<tbody>	
+      			<tr>
+      				
+      				<td class = "blueColor" style = "font-weight:600;"> State / Circle</td>
+      				<td>{{vm.state}} </td>
+					
+					<td class = "blueColor" style = "font-weight:600;">Addressed To </td>
+      				<td> {{vm.addressedTo}}</td>
+					  				
+      			</tr>		
+      			
+				
+				<tr>
+      				
+      				<td class = "blueColor" style = "font-weight:600;">Name of the Person issued Notice</td>
+      				<td> {{vm.issuedByName}}</td> 					
+					
+					<td class = "blueColor" style = "font-weight:600;">Designation of the Person issued Notice</td>
+      				<td> {{vm.issuedByDesig}}</td>       				
+      			</tr>
+				
+				<tr>
+      				
+      				<td class = "blueColor" style = "font-weight:600;">Organization of the Person issued Notice</td>
+      				<td> {{vm.issuedByOrganization}}</td> 					
+					
+					<td class = "blueColor" style = "font-weight:600;">Nature of the Party</td>
+      				<td> {{vm.natureOfParty}}</td>   				
+      			</tr>	
+
+				<tr>
+      				
+      				<td class = "blueColor" style = "font-weight:600;">Date on Notice</td>
+      				<td> {{vm.dateOnNotice}}</td> 					
+					
+					<td class = "blueColor" style = "font-weight:600;">Date on which Notice received</td>
+      				<td> {{vm.dateOnWhichNoticeReceived}}</td>   				
+      			</tr>
+
+				<tr>
+      				
+      				<td class = "blueColor" style = "font-weight:600;">Date on which notice required to be replied</td>
+      				<td> {{vm.dateOnWhichNoticeRequiredToReply}}</td> 					
+					
+					<td class = "blueColor" style = "font-weight:600;">Date of reply</td>
+      				<td> {{vm.dateOfReply}}</td>   				
+      			</tr>
+				
+				
+
+				
+				<tr>
+					
+      				<td class = "blueColor" style = "font-weight:600;">Brief Facts</td>
+      				<td colspan = "4"> {{vm.briefFacts}}</td>
+				</tr>
+
+				<tr>
+      				
+      				<td class = "blueColor" style = "font-weight:600;">Financial Impact</td>
+      				<td> {{vm.stakeInvolment}}</td> 					
+					
+					<td class = "blueColor" style = "font-weight:600;">Notice Priority</td>
+      				<td> {{vm.priority}}</td>   				
+      			</tr>
+
+				<tr>
+      				
+      				<td class = "blueColor" style = "font-weight:600;">Status</td>
+      				<td> {{vm.status}}</td> 					
+					
+					<td class = "blueColor" style = "font-weight:600;">Remark</td>
+      				<td> {{vm.remarks}}</td>   				
+      			</tr>
+				
+				<tr ng-if = "vm.caseTypeID != 1">
+      				
+      				<td class = "blueColor" style = "font-weight:600;">Notice Type</td>
+      				<td> {{vm.noticeType}}</td> 
+					
+      				<td class = "blueColor" style = "font-weight:600;">Updated By</td>
+      				<td> {{vm.enteredBy}}</td> 
+									
+					  				
+      			</tr>
+
+				<tr ng-if = "vm.caseTypeID == 1">
+      				
+      				<td class = "blueColor" style = "font-weight:600;">PAN No</td>
+      				<td> {{vm.panNo}}</td> 					
+					
+					<td class = "blueColor" style = "font-weight:600;">Notice Type</td>
+      				<td> {{vm.noticeType}}</td>   				
+      			</tr>
+
+				<tr ng-if = "vm.caseTypeID == 1">
+      				
+      				<td class = "blueColor" style = "font-weight:600;">Section</td>
+      				<td> {{vm.section}}</td> 					
+					
+					<td class = "blueColor" style = "font-weight:600;">Section Description</td>
+      				<td> {{vm.sectionDesc}}</td>   				
+      			</tr>
+
+				<tr ng-if = "vm.caseTypeID == 1">
+      				
+				
+      				<td class = "blueColor" style = "font-weight:600;">Updated By</td>
+      				<td> {{vm.enteredBy}}</td> 
+					<td colspan = "3"></td>					
+					  				
+      			</tr>
+	     			
+      		</tbody>
+      	</table>
+      </div>
+	  </div>
+    </div>
+		<div class="container-accord">
+			<div id="accordion">
+
+				<div class="card" style="border: none !important;">
+					<div class="card-header" style="background: lightSlateGrey;">
+						<a class="card-link" style="background: lightSlateGrey;"
+							data-toggle="collapse" data-target="#paperArrayColl"
+							aria-expanded="false" aria-controls="paperArrayColl">
+							Document Details <span class="collapsed"><p>
+									<b>+</b>
+								</p></span> <span class="expanded"><p>
+									<b>-</b>
+								</p></span>
+						</a>
+					</div>
+
+					<div id="paperArrayColl" class="collapse">
+						<div class="card-body">
+							<div class="tableContainer">
+								<div class="text-center noInfo" ng-if="vm.paperArray.length == 0"
+									>No
+									documents found</div>
+								<table class="table cardTable" width="100%"
+									ng-if="vm.paperArray.length > 0">
+									<thead>
+										<tr>
+									<thead>
+										<tr>
+											<th>S.No</th>
+											<th>Document Type</th>
+											<th>Document Desc.</th>
+											<th>File Name</th>
+											<th>Document Date</th>
+											<th>Uploaded By</th>
+											<th>Uploaded On</th>
+											<th style="text-align: center;">*</th>
+
+
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="val in vm.paperArray">
+
+											<td>{{$index+1}}</td>
+											<td>{{val.docTypeName}}</td>
+											<td>{{val.fileDesc}}</td>
+											<td>{{val.fileName}}</td>
+											<td>{{val.docDate}}</td>
+											<td>{{val.userName}}</td>
+											<td>{{val.timestamp}}</td>
+											<td style="text-align: center;"><form ng-if = "(vm.noticeDocView == 'Y') || (vm.userID == val.userID)" target="_blank"
+													action="./NoticeViewer" method="POST">
+													<input type="hidden" name="paperID" value="{{val.mongoID}}">
+													<button  type="submit" title="View Paper">
+														<i class="fa fa-download bn"></i>
+													</button>
+												</form></td>
+
+										</tr>
+
+									</tbody>
+
+								</table>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" ng-click="$dismiss('cancel')" type="button">Ok</button>
+        </div>
+        
+  	</script>
+
+<script id="print-header" type="text/x-jquery-tmpl">
+   <!DOCTYPE html>
+   <head>
+
+       <title>     Law Matters Management System</title>
+        <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <link rel="stylesheet" href="./app/lib/bootstrap/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="./app/lib/multiselect/bootstrap-select.css">
+    
+
+    <link rel="stylesheet" href="./app/lib/fontawesome/all.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/datatables/jquery.dataTables.min.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/angular-datatables-0.6.2/dist/plugins/bootstrap/datatables.bootstrap.min.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/moment/multi-date-picker.css"  type="text/css" crossorigin="anonymous">
+	<link rel="stylesheet" href="./app/lib/multiselect/bootstrap-multiselect.css">
+    
+    <link rel="stylesheet" href="./app/css/common.css" >
+    <link rel="stylesheet" href="./app/css/media.css" >
+ 	<link rel="stylesheet" href="./app/css/login.css" >
+ 	<link rel="stylesheet" href="./app/css/dashboard.css" >
+
+     <style>
+
+
+@media print {
+    body {
+    color: black;
+    background : white;
+ 	font-size: 14pt; 
+    }
+
+	#viewPopupTable tr, #viewPopupTable th, #viewPopupTable td {
+	
+    font-size: 17px !important;
+}
+.col-sm-3, .col-sm-2, .col-sm-4 {
+	font-size : 18px !important;
+}
+}
+ body {
+    color: black;
+    background : white;
+ 	font-size: 14pt; 
+    }
+
+	#viewPopupTable tr, #viewPopupTable th, #viewPopupTable td {
+	
+    font-size: 17px !important;
+}
+.col-sm-3, .col-sm-2, .col-sm-4 {
+	font-size : 18px !important;
+}
+      
+       </style>
+  
+	
+   </head>
+   <body onload="window.print()">
+  
+</script>
+<script id="print-footer" type="text/x-jquery-tmpl">
+    </body>
+    </html>
+</script>
+<script type="text/javascript">
+	$(document)
+			.ready(
+					function() {
+						$(
+								'#form_endDate, #form_startDate, #form_dateOnWhichNoticeRequiredToReply')
+								.datepicker({
+									format : 'dd/mm/yyyy'
+
+								});
+						$(
+								'#form_endDate, #form_startDate, #form_dateOnWhichNoticeRequiredToReply')
+								.on('changeDate', function(ev) {
+									$(this).datepicker('hide');
+								});
+
+					});
+</script>

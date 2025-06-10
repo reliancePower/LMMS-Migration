@@ -1,0 +1,55 @@
+@media  screen and  (max-width: 576px) {
+.col-sm-8 {
+	text-align : center;
+}
+.imageDiv {
+ padding-left : 0px;
+ }
+ h5.blueColor, .titleDiv {
+ text-align : center;
+ }
+.imgCt {
+	width: 65%;
+}
+}
+
+@media  screen and  (min-width: 576px) and  (max-width: 998px) {
+.col-sm-8 {
+	text-align : center;
+}
+.imageDiv {
+ padding-left : 0px;
+ }
+ h5.blueColor {
+ text-align : center;
+ }
+
+ .adj {
+ max-width : 100% !important;
+ }
+ .nav-item {
+	margin : 0 5px;
+}
+}
+
+@media screen and (min-width: 1200px) { 
+
+.imgCt {
+	width : 60% !important;
+	height : auto;
+}
+.nav-item {
+	margin : 0 15px;
+}
+.imgContainer img {
+	width : 45% !important;
+	height : auto;
+	text-align : left !important;
+}
+}
+
+@media print  { 
+.inventory_related thead {    
+    display:none;   
+}
+} 

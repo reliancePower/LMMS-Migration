@@ -1,0 +1,32 @@
+ .title {
+ background-color : #0171bb;
+ color : white;
+ text-align : center;
+ padding : 10px 5px;
+ border-bottom: 1px solid steelblue;
+ }
+ #loginFormContainer {
+ 	background : white;
+    border: 1px solid steelblue;
+    
+ }
+ #loginForm {
+ padding : 20px 20px 0px 20px;
+ }
+ .imageDiv {
+ padding-left : 25px;
+ }
+ .headerT {
+ text-align:center;
+ top :5px;
+ }
+ .topContainer {
+ margin-top:50px;
+ }
+ #bodyCt {
+ background : #eee;
+ }
+ /*.topContainer {
+ background-image: url("../img/bg.jpg");
+
+} */

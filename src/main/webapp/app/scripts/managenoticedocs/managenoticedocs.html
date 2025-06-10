@@ -1,0 +1,329 @@
+<div id="viewContainer" class="container-fluid">
+	<br>
+	<div class="row" style="text-align: center;">
+		<div class="col-sm-3">
+			<button type="button" class="btn btn-primary text-center"
+				ng-click="vm.goBack()">Back</button>
+		</div>
+		<div class="col-sm-6" style="text-align: left;">
+			<h4 class="blueColor">Manage Documents for Notice ID -
+				{{vm.noticeID}}</h4>
+		</div>
+		<div class="col-sm-3" style="text-align: center;">
+			<button type="button" class="btn btn-info" ng-click="vm.AddNewDoc()">
+				Add New <i style="color: white !important;" class="fas fa-plus"></i>
+			</button>
+			<button style="text-align: right;" class="btn btn-primary"
+				ng-click="vm.goBack()" type="button">Close</button>
+		</div>
+	</div>
+
+	<br>
+	<div id="caseInfoContainer"
+		style="background: white; padding: 0 0 10px 0;">
+		<h5 class="titleCont">Notice Info</h5>
+		<div class="row">
+
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Company :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{vm.company}}</div>
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Case Category :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{ vm.caseType
+				}}</div>
+
+		</div>
+		<div class="row">
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Business :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{vm.business}}</div>
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Notice Type :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{ vm.noticeType
+				}}</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Vertical :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{vm.vertical}}</div>
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong> Notice Section :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{
+				vm.noticeSection }}</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Section Description :</strong>
+			</div>
+			<div class="col-sm-9" style="font-size: 16px;">{{vm.sectionDesc}}</div>
+		</div>
+
+	</div>
+
+	<br>
+	<div id="docUploadContainerN" style="background: white;display:none;"
+		class="container collapse">
+
+		<h5 class="titleCont">
+			Upload documents <i>(only PDF, Word, Excel and Zip files are
+				allowed)</i>
+		</h5>
+		<form id="docUploadForm" name="docUploadForm" method="POST"
+			action="./NoticeUpload" enctype="multipart/form-data">
+			<div class="row">
+
+				<div class="form-group col-sm-3">
+					<label for="docType">Document Type :<span
+						class="error-message">*</span>
+					</label> <select name="docType" id="docType" ng-model="vm.form.docType"
+						class="form-control" required="required">
+						<option ng-repeat="item in vm.docTypeInfo" value="{{item.id-0}}">{{item.name}}</option>
+					</select>
+				</div>
+
+
+				<div class="form-group col-sm-4">
+					<label for="docDesc">Description :<span
+						class="error-message">*</span>
+					</label>
+					<textarea speclchars name="docDesc" id="docDesc" ng-model="vm.form.docDesc"
+						required class="form-control" rows="3" maxlength="100"></textarea>
+				</div>
+
+
+				<div class="form-group col-sm-3">
+					<label for="docDate">Document Date : <span
+						class="error-message">*</span></label>
+					<div class="input-group">
+						<span class="input-group-addon"> <i
+							class="fas fa-calendar-alt"></i>
+						</span> <input id="docDate" type="text" autocomplete="off"
+							ng-change="vm.onChangeDate()" required name="docDate"
+							class="form-control" autocomplate="off"
+							placeholder="Select document date" ng-model="vm.form.docDate">
+					</div>
+				</div>
+
+				<div class="form-group col-sm-2">
+					<div class="custom-control custom-checkbox mb-3">
+						<input type="checkbox" class="custom-control-input"
+							ng-model="vm.form.isConfidential" id="isConfidential1" value="F"
+							name="isConfidential"
+							ng-change="vm.getCheckBoxVal(vm.form.isConfidential)"> <label
+							class="custom-control-label" for="isConfidential1">Confidential</label>
+					</div>
+				</div>
+
+				<input id="docDateFormat" type="hidden" name="docDateFormat"
+					value="" /> <input id="isChecked" type="hidden" name="isChecked"
+					value="{{vm.form.isChecked}}" /> <input type="hidden"
+					name="noticeID" id="noticeID" value="{{vm.noticeID}}" /> <input
+					type="hidden" name="userID" id="userID" value="{{vm.userID}}" />
+
+			</div>
+
+			<div class="row">
+				<div class="form-group col-sm-2"></div>
+				<div class="form-group col-sm-8">
+					<label for="docFile">File :<span class="error-message">*</span>
+					</label> <input type="file" name="docFile" required id="docFile"
+						ng-model="vm.form.docFile"
+						accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/zip,application/rar"
+						class="form-control" />
+				</div>
+				<div class="form-group col-sm-2"></div>
+			</div>
+
+			<div class="row text-center">
+				<div class="col-sm-3"></div>
+				<div class="col-sm-6">
+					<button type="submit" class="btn btn-primary text-center"
+						id="uploadBtn" ng-click="vm.showLoader()">Upload</button>
+					<button ng-click="vm.resetForm()" type="button"
+						class="btn btn-danger text-center">Clear</button>
+				</div>
+				<div class="col-sm-3"></div>
+			</div>
+		</form>
+	</div>
+
+	<br>
+	<div id="docDetailsContainer" class="" style="background: white;">
+		<h5 class="titleCont">List of Documents</h5>
+		<table style="padding: 5px;" datatable="ng" dt-options="vm.dtOptions"
+			id="viewTable" class="table table-bordered tableCls container-fluid"
+			width="100%">
+			<thead>
+				<tr>
+					<th>S.No</th>
+					<th>Document Type</th>
+					<th>Document Desc.</th>
+					<th>File Name</th>
+					<th>Document Date</th>
+					<th>Uploaded On</th>
+					<th>Uploaded By</th>
+					<th style="text-align: center;">*</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="val in vm.docArray">
+
+					<td>{{$index+1}}</td>
+					<td>{{val.docTypeName}}</td>
+					<td>{{val.fileDesc}}</td>
+					<td>{{val.fileName}}</td>
+					<td>{{val.docDate}}</td>
+					<td>{{val.timestamp}}</td>
+					<td>{{val.userName == undefined ? "CIS" : val.userName}}</td>
+					<td style="text-align: center;"><div
+							ng-if="(vm.noticeDocView == 'Y') || (vm.userID == val.userID)"
+							class="button-group">
+							<form target="_blank" action="./NoticeViewer" method="POST"
+								style="display: inline;">
+								<input type="hidden" name="paperID" value="{{val.mongoID}}">
+								<button type="submit" title="View Document">
+									<i class="fas fa-eye bn"></i>
+								</button>
+							</form>
+
+							<button type="button" ng-click="vm.editDocItem($index)"
+								title="Edit Document Info">
+								<i class="far fa-edit bn"></i>
+							</button>
+
+							<button type="button" ng-click="vm.disableDocItem(val)"
+								title="Delete Document">
+								<i class="fa fa-trash bn"></i>
+							</button>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script type="text/ng-template" id="editDoc.html">
+    	<div class="modal-header row text-center" style = "border-bottom :2px dashed #ddd;margin: 0 5px;"  >
+			
+			<div class = "col-sm-9 blueColor">
+				<h5 class="blueColor modal-title" style = "font-weight:600;">Edit Document details </h5>
+			</div>			
+			<div class = "col-sm-3" style = "text-align:right;">
+				<button  class="btn btn-primary" ng-click="$dismiss('cancel')" type="button">Close</button>
+       		</div>
+        </div>
+		
+        <div class="modal-body" id = "viewAllMatter">
+			<div class="" style = "margin-left:5px;margin-right:25px;">
+				<form novalidate id="docUploadForm" name="docUploadForm" method="POST"
+			action="./DocumentUpload" style="padding: 25px 15px;"
+			enctype="multipart/form-data">
+			<div class="row">
+
+			
+					<label for="docType">Document Type :<span
+						class="error-message">*</span> </label> <select
+						name="docType" id="docType" ng-model="vm.editform.docType"
+						class="form-control" required="required">
+						<option ng-repeat="item in vm.docTypeInfo" value="{{item.id-0}}">{{item.name}}</option>
+					</select>
+
+
+				</div>
+<br>
+
+			<div class="row">
+					<label for="docDesc">Description : <span
+						class="error-message">*</span> </label>
+					<textarea speclchars name="docDesc" id="docDesc" ng-model="vm.editform.docDesc"
+						required class="form-control" ng-maxlength="40"
+						ng-class="{'has-error': docUploadForm.docDesc.$error.maxlength}"></textarea>
+
+				</div>
+
+<br>
+<div class = "row">
+<label for="docDate">Document Date : <span class = "error-message">*</span></label> 
+					<div class="input-group">
+						<span class="input-group-addon"> <i
+							class="fas fa-calendar-alt"></i>
+						</span> <input id="docDateEdit" type = "text" required name="docDateEdit" class="form-control"
+							autocomplate = "off" placeholder="Select document date" ng-model="vm.editform.docDate">
+					</div>
+
+				</div>
+<br>
+<div class = "row">
+	<div class="custom-control custom-checkbox mb-3">
+						<input type="checkbox" class="custom-control-input"
+							ng-model="vm.editform.isConfidential" id="isConfidential2" 
+							name="isConfidential2" > <label
+							class="custom-control-label" for="isConfidential2">Confidential</label>
+					</div>
+</div>
+			</form>
+<div class = "row text-center">
+<div class = "col-sm-2"></div>
+<div class = "col-sm-8">
+<button  type="button" class="btn btn-primary text-center" ng-click = "vm.editDoc()" id = "editBtn">Save</button>
+					<button ng-click="$dismiss('cancel')" type="button"
+						class="btn btn-danger text-center">Cancel</button>
+</div><div class = "col-sm-2"></div>
+</div>
+				
+			</div>
+		</div>
+</script>
+
+<script type="text/javascript">
+	window.onload = function() {
+		var txts = document.getElementsByTagName('TEXTAREA');
+
+		for (var i = 0, l = txts.length; i < l; i++) {
+			if (/^[0-9]+$/.test(txts[i].getAttribute("maxlength"))) {
+				var func = function() {
+					var len = parseInt(this.getAttribute("maxlength"), 10);
+
+					if (this.value.length > len) {
+						alert('Maximum length exceeded: ' + len);
+						this.value = this.value.substr(0, len);
+						return false;
+					}
+				}
+
+				txts[i].onkeyup = func;
+				txts[i].onblur = func;
+			}
+		}
+		;
+
+	}
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$('#docDate, #docDateEdit').datepicker({
+			format : 'dd/mm/yyyy',
+			todayHighlight : true
+
+		});
+
+	});
+</script>

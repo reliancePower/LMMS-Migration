@@ -1,0 +1,242 @@
+<div class="navBarContainer" data-genuitec-lp-enabled="false" data-genuitec-file-id="wc1-43" data-genuitec-path="/LMMS/src/main/webapp/app/view/navbar.html">
+
+	<nav class="navbar navbar-expand-md  bg-primary navbar-dark">
+		   <a class = "navbar-brand" href = "#"  style = "width:20%;"> 
+          <img  src = "app/img/logo.png" class = "imgCt" style = "width:100%;height:auto;">
+    
+     </a>
+	
+		<!-- Toggler/collapsibe Button -->
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#collapsibleNavbar">
+			<span class="navbar-toggler-icon"></span>
+
+
+		</button>
+
+
+		<!-- Navbar links -->
+		<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<ul class="navbar-nav navbar-right" role="tablist">
+				<li class="nav-item"
+					ng-class="{active: vm.$state.includes('dashboard')}"><a
+					class="nav-link" ui-sref="dashboard">Home</a></li>
+
+				<li class="nav-item dropdown"
+					ng-class="{active: vm.$state.includes('addcase') || vm.$state.includes('viewcase')}">
+					<a class="nav-link dropdown-toggle" id="navbardrop1"
+					data-toggle="dropdown" style="color: white;">  Cases </a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" ng-if="vm.accessCtrl != 'View'"
+							data-toggle="tab" ui-sref="addcase"
+							ng-click='navCollapsed = true'>Add Case</a> <a
+							class="dropdown-item" data-toggle="tab" ui-sref="searchcase"
+							ng-click='navCollapsed = true'>Search/View/Update Cases</a>
+					</div>
+				</li>
+
+				<li class="nav-item dropdown"
+					ng-class="{active: vm.$state.includes('addnotice') || vm.$state.includes('viewnotice')}">
+					<a class="nav-link dropdown-toggle" id="navbardrop3"
+					data-toggle="dropdown" style="color: white;">  Notices </a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" ng-if="vm.accessCtrl != 'View'"
+							data-toggle="tab" ui-sref="addnotice"
+							ng-click='navCollapsed = true'>Add Notice</a> <a
+							class="dropdown-item" data-toggle="tab" ui-sref="viewnotice"
+							ng-click='navCollapsed = true'>Search/View/Update Notice</a>
+					</div>
+				</li>
+
+
+				<li class="nav-item dropdown" ng-if="vm.userType == 'Admin'"
+					ng-class="{active: vm.$state.includes('adduser')}"><a
+					class="nav-link dropdown-toggle" id="navbardrop2"
+					data-toggle="dropdown" style="color: white;"> Administrator </a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" data-toggle="tab" ui-sref="adduser"
+							ng-click='navCollapsed = true'>Add User</a> <a
+							class="dropdown-item" data-toggle="tab" ui-sref="viewuser"
+							ng-click='navCollapsed = true'>View/Update User</a> <a
+							class="dropdown-item" data-toggle="tab" ui-sref="approvedevice"
+							ng-click='navCollapsed = true'>Device Registration</a>
+							<a class="dropdown-item" data-toggle="tab"
+							ui-sref="pvforumupdatelog" ng-click='navCollapsed = true'>PV
+							Forum Log</a>
+							<a class="dropdown-item" data-toggle="tab"
+							ui-sref="approveforum" ng-click='navCollapsed = true'>Forum Approval
+							</a>
+							
+					</div></li>
+
+		 	<li class="nav-item dropdown" 
+					ng-class="{active: vm.$state.includes('pvforumupdatelog')}"><a
+					class="nav-link dropdown-toggle" id="navbardrop2"
+					data-toggle="dropdown" style="color: white;">  Master </a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" data-toggle="tab"
+							ui-sref="manageforum" ng-click='navCollapsed = true'>Manage Forum</a>
+
+					</div></li>
+					
+					<!-- Changes added -->
+					<li class="nav-item dropdown" 
+					ng-class="{active: vm.$state.includes('gst')}"><a
+					class="nav-link dropdown-toggle" id="navbardrop2"
+					data-toggle="dropdown" style="color: white;">Taxation</a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" data-toggle="tab"
+							ui-sref="gst" ng-click='navCollapsed = true'>GST</a>
+							<a class="dropdown-item" data-toggle="tab"
+							ui-sref="manageforum" ng-click='navCollapsed = true'>PAN</a>
+
+					</div></li>
+					<!-- ended -->
+					 
+
+				<li class="nav-item"><a class="nav-link"
+					ng-click="vm.openUserModal();" style="color: white;"> My
+						Profile </a></li>
+
+				<li class="nav-item"><a class="nav-link" ui-sref="appstore"
+					style="color: white;"> App Store </a></li>
+
+				<li class="nav-item"><a class="nav-link"
+					href="./app/pdfs/LMMS – User Manual Ver 2.1.pdf" target="_blank"
+					style="color: white;"> Help </a></li>
+
+
+
+
+
+				<li class="nav-item"><a class="nav-link"
+					ng-click="vm.logout()" id="logout" style="color: white;">
+						Logout </a></li>
+
+				
+
+			</ul>
+		</div>
+	</nav>
+</div>
+
+<script type="text/ng-template" id="userModalTemp.html">
+  <!-- The Modal -->
+		
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title blueColor">My Profile</h4>
+          <button type="button" class="btn btn-primary" ng-click="$dismiss('cancel')">Close</button> </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <table id="classTable" class="table table-bordered" ng-init = "vm.disabled=0">
+          <thead>
+          </thead>
+          <tbody>
+          	 <tr>
+              <td class = "blueColor" style = "font-weight:600;">Payroll No</td>
+              <td>{{vm.payroll}}</td>
+            
+            </tr>
+            <tr>
+              <td class = "blueColor" style = "font-weight:600;">Name</td>
+              <td>{{vm.userName}}</td>
+            
+            </tr>
+            
+            <tr>
+              <td class = "blueColor" style = "font-weight:600;">Company</td>
+              <td>{{vm.company}}</td>
+            
+            </tr>
+            
+            <tr>
+              <td class = "blueColor" style = "font-weight:600;">Case Category</td>
+              <td>{{vm.caseCategory}}</td>
+            
+            </tr>
+            
+            <tr>
+              <td class = "blueColor" style = "font-weight:600;">Mobile No</td>
+              <td>{{vm.mobileNo}}</td>
+            
+            </tr>
+             <tr>
+              <td class = "blueColor" style = "font-weight:600;">Email ID</td>
+              <td>{{vm.emailID}}</td>
+            
+            </tr>
+            
+            <tr>
+              <td class = "blueColor" style = "font-weight:600;">DOB (dd/MM/yyyy)</td>
+              
+
+				<td>
+					<input ng-disabled = "vm.disabled == 0" ng-model = "vm.dobA"  type="text" onKeyPress="if(this.value.length<1) return false;" id = "dobN" name="dob" value="{{vm.dob}}" placeholder="dd/mm/yyyy"  required > 
+  					<button ng-disabled = "vm.disabled == 1"  class="btn btn-primary" ng-click = "vm.disabled = 1;"  >Edit</button></td>         
+           
+            
+            </tr>
+            <tr>
+              <td class = "blueColor" style = "font-weight:600;">Device - 1</td>
+              <td>{{vm.imeiNo1}}</td>
+            
+            </tr>
+			<tr>
+              <td class = "blueColor" style = "font-weight:600;">Device - 2</td>
+              <td>{{vm.imeiNo2}}</td>
+            
+            </tr>
+		<tr>
+              <td class = "blueColor" style = "font-weight:600;">Device - 3</td>
+              <td>{{vm.imeiNo3}}</td>
+            
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+			<button ng-disabled = "vm.disabled == 0 && vm.dobA.length == 10" type="button" class="btn btn-primary" ng-click = "vm.updateDOB()"> Save </button></td>
+           <button type="button" class="btn btn-primary" ng-click="$dismiss('cancel')">Cancel</button>
+        </div>
+        
+     
+  </script>
+<script type="text/ng-template" id="warning-dialog.html">
+  <div class="modal-header" style = "top:20%">
+   <h3>You're Session has Expired</h3>
+  </div>
+  <div idle-countdown="countdown" ng-init="countdown=5" class="modal-body">
+   <uib-progressbar max="30" value="30" animate="false" class="progress-striped active">You'll be logged out in {{countdown}} second(s).</uib-progressbar>
+  </div>
+
+</script>
+<script type="text/ng-template" id="timedout-dialog.html">
+  <div class="modal-header" style = "top:20%">
+   <h3>You've Timed Out!</h3>
+  </div>
+  <div class="modal-body">
+   <p>
+      You were idle too long. You will be redirected to Login Page..
+   </p>
+ </div>
+</script>
+<script type="text/javascript">
+   $(document).ready(function(){
+					
+					$('#dobN').datepicker({
+						format : 'dd/mm/yyyy',
+						endDate : new Date(),
+					    //todayHighlight: true,
+						autoclose: true,
+						orientation: "top"
+					});
+					
+					
+				});
+</script>
+

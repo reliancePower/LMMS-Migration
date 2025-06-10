@@ -1,0 +1,1204 @@
+<div id="addCaseContainer">
+	<br>
+	<div class="row container-fluid">
+		<div class="col-sm-3 text-center">
+			<a class="btn btn-primary" style="color: white;" ui-sref="dashboard">Back</a>
+		</div>
+		<div class="col-sm-9">
+			<h4 class="blueColor">Add New Case</h4>
+		</div>
+
+	</div>
+
+	<hr>
+	<div class="container-fluid" style="margin-bottom: 10px;">
+		<div class="row">
+
+			<div class="col-sm-12">
+				<form novalidate id="addNewCaseForm" name="addNewCaseForm">
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Company Details</legend>
+						<div class="row">
+							<div class="form-group col-sm-2">
+								<label for="company">Company : <span
+									class="error-message">*</span></label> <select name="company"
+									id="company" ng-model="vm.form.company" required
+									ng-options="item.id as item.name for item in vm.companyInfo"
+									ng-change="vm.fetchCompanyMaster(vm.form.company)"
+									class="custom-select-sm form-control">
+								</select>
+								<p
+									ng-show="addNewCaseForm.company.$invalid || (addNewCaseForm.company.$touched && addNewCaseForm.company.$pristine)"
+									class="error-message">Company must be selected</p>
+							</div>
+							<div class="form-group col-sm-3">
+								<label for="business">Business : <span
+									class="error-message">*</span></label> <select name="business"
+									id="business" ng-model="vm.form.business"
+									ng-change="vm.fetchVerticalMaster(vm.form.business)"
+									ng-options="item.id as item.name for item in vm.businessInfo"
+									class="custom-select-sm form-control" required>
+
+								</select>
+								<p
+									ng-show="addNewCaseForm.business.$invalid || (addNewCaseForm.business.$touched && addNewCaseForm.business.$pristine)"
+									class="error-message">Business must be selected</p>
+							</div>
+
+							<div class="form-group col-sm-4">
+								<label for="vertical"> Vertical : <span
+									class="error-message">*</span></label> <select name="vertical"
+									id="vertical" ng-model="vm.form.vertical"
+									ng-change="vm.fetchRefNo(vm.form.vertical)"
+									ng-options="item.id as item.name for item in vm.verticalInfo"
+									class="custom-select-sm form-control" required>
+
+								</select>
+								<p
+									ng-show="addNewCaseForm.vertical.$invalid || (addNewCaseForm.vertical.$touched && addNewCaseForm.vertical.$pristine)"
+									class="error-message">Vertical must be selected</p>
+							</div>
+
+							<div class="form-group col-sm-3">
+								<label for="state"> State/Location : </label> <select
+									name="state" id="state" ng-model="vm.form.state"
+									class="custom-select-sm form-control"
+										ng-options="item.id as item.name for item in vm.stateInfo">
+								
+								</select>
+
+							</div>
+
+						</div>
+					</fieldset>
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Court Case Info</legend>
+						<div class="row">
+						
+							<div class="form-group col-sm-4">
+								<label for="caseType"> Case Category : <span
+									class="error-message">*</span></label> <select name="caseType"
+									id="caseType" ng-model="vm.form.caseType"
+									ng-change="vm.checkYear()"
+									class="custom-select-sm form-control" ng-required="true">
+									<option ng-repeat="item in vm.caseTypeInfo"
+										value="{{item.id-0}}">{{item.name}}</option>
+								</select>
+								<p
+									ng-show="addNewCaseForm.caseType.$invalid  || (addNewCaseForm.caseType.$touched && addNewCaseForm.caseType.$pristine)"
+									class="error-message">Case Category must be selected</p>
+							</div>
+							
+						
+							<div class="form-group col-sm-3">
+								<label for="forumCategory"> Forum Category : <span
+									class="error-message">*</span></label> 
+									<select name="forumCategory"
+									id="forumCategory" ng-model="vm.form.forumCategory"
+									ng-change="vm.fetchForumInfo(vm.form.forumCategory)"
+									class="custom-select-sm form-control" ng-required="true">
+									<option ng-repeat="item in vm.forumCategoryInfo"
+										value="{{item.name}}">{{item.name | titleCase}}</option>
+								</select>
+								
+								<p
+									ng-show="addNewCaseForm.forumCategory.$invalid  || (addNewCaseForm.forumCategory.$touched && addNewCaseForm.forumCategory.$pristine)"
+									class="error-message">Forum Category must be selected</p>
+
+							</div>
+							
+							<div class="form-group col-sm-5 typeClass">
+								<label for="forum"> Forum : <span class="error-message">*</span>
+								</label> 
+							<!--	  <select name="forum" id="forum" ng-model="vm.form.forum"
+									ng-change="vm.fetchCaseTypeInfo(vm.form.forum)"
+									ng-options="item.id as item.name for item in vm.forumInfo"
+									class="custom-select-sm form-control" ng-required="true">
+
+								</select>
+								
+								
+								
+							<ui-select ng-model="vm.form.forum" theme="selectize" title="Choose a Forum" name="forum" id="forum" ng-change="vm.fetchCaseTypeInfo(vm.form.forum)"
+                                required>
+                                <ui-select-match placeholder="Select or search a forum in the list...">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in vm.forumInfo track by $index">
+                                    <span ng-bind-html="item.name | highlight: $select.search" ></span>
+
+                                </ui-select-choices>
+                            </ui-select>
+								-->
+								
+								<input ng-required="true" autocomplete = "off" name="forum"  id="forum" ng-model="vm.form.forum" typeahead-on-select='vm.fetchCaseTypeInfo($model.id)' uib-typeahead="item as item.name for item in vm.forumInfo | filter:$viewValue |  limitTo:1000"  typeahead-min-length="0" class="form-control" placeholder = "Search forum or Select from the list(only 1000 records displayed in list)..." typeahead-input-formatter="vm.inputFormatter($model, $item)">
+								<p
+									ng-show="addNewCaseForm.forum.$invalid || (addNewCaseForm.forum.$touched && addNewCaseForm.forum.$pristine)"
+									class="error-message">Forum must be selected</p>
+							
+							<button style = "margin-top:4px;" class = "btn btn-primary" ng-click = "vm.sendReqNewForum()">Send Request to add new forum</button>
+
+							</div>
+							
+							
+							
+
+
+							
+
+							
+
+						</div>
+
+						<div class="row">
+						
+							
+							
+							
+
+							<div class="form-group col-sm-4">
+								<label for="courtCaseType"> Case Type : <span
+									class="error-message">*</span>
+								</label> <select name="courtCaseType" id="courtCaseType"
+									ng-model="vm.form.courtCaseType"
+									class="custom-select-sm form-control" ng-required="true"
+									ng-options="item.id as item.name for item in vm.fetchCaseTypeArray">
+
+								</select>
+								<p
+									ng-show="addNewCaseForm.courtCaseType.$invalid || (addNewCaseForm.courtCaseType.$touched && addNewCaseForm.courtCaseType.$pristine)"
+									class="error-message">Case Type must be selected</p>
+
+
+							</div>
+							
+							<div class="form-group col-md-4">
+								<label for="caseNo"> Court Case No : </label> <input 
+									type="text" class="form-control" ng-model="vm.form.caseNo"
+									name="caseNo" id="caseNo" ng-change = "vm.caseNoOnChange()" placeholder="Case No" >
+
+								<!--  	<p
+									ng-show="addNewCaseForm.caseNo.$invalid && addNewCaseForm.caseNo.$dirty"
+									class="error-message">Case No must be entered</p> -->
+							</div>
+
+							<div class="form-group col-md-4">
+								<label for="caseYear"> Case Year : </label> <select
+									name="caseYear" id="caseYear" ng-model="vm.form.caseYear"
+									class="custom-select-sm form-control"
+									ng-options="item as item for item in vm.caseYearInfo">
+
+								</select>
+								<!--  	<p
+									ng-show="addNewCaseForm.caseYear.$invalid || (addNewCaseForm.caseYear.$touched && addNewCaseForm.caseYear.$pristine)"
+									class="error-message">Case Year be selected</p> -->
+
+							</div>
+
+						</div>
+
+						<div class="row">
+						
+							<div class="form-group col-md-4">
+								<label for="bench"> Bench :</label>
+								<div class="input-group" ng-keyup="vm.openBenchModal()"
+									ng-click="vm.openBenchModal()">
+									<input type="text" class="form-control"
+										ng-model="vm.form.bench" name="bench" id="bench"
+										placeholder="Bench"> <span class="input-group-addon">
+										<i class="far fa-edit"></i>
+									</span>
+
+								</div>
+							</div>
+						
+							<div class="form-group col-md-4">
+								<label for="petitioner"> Petitioner : <span
+									class="error-message">*</span></label>
+								<div class="input-group" ng-keyup="vm.openPetitionerModal()"
+									ng-click="vm.openPetitionerModal()">
+
+									<div ng-bind-html="vm.petitionerHTML" contenteditable
+										class="divTxtArea form-control " ng-model="vm.form.petitioner"
+										style="height: 35px;" id="petitioner" name="petitioner"
+										placeholder="Add Petitioner" required></div>
+									<span class="input-group-addon"> <i class="fas fa-plus"></i>
+									</span>
+								</div>
+								<p
+									ng-show="addNewCaseForm.petitioner.$invalid && addNewCaseForm.petitioner.$dirty"
+									class="error-message">Petitioner must be selected</p>
+							</div>
+							
+
+							<div class="form-group col-md-4">
+								<label for="respondent"> Respondent : <span
+									class="error-message">*</span></label>
+								<div class="input-group" ng-keyup="vm.openRespondentModal()"
+									ng-click="vm.openRespondentModal()">
+
+									<div ng-bind-html="vm.respondentHTML" contenteditable
+										class="divTxtArea form-control" ng-model="vm.form.respondent"
+										style="height: 35px;" id="respondent" name="respondent"
+										placeholder="Add Respondent" required></div>
+									<span class="input-group-addon"> <i class="fas fa-plus"></i>
+									</span>
+								</div>
+								<p
+									ng-show="addNewCaseForm.respondent.$invalid && addNewCaseForm.respondent.$dirty"
+									class="error-message">Respondent must be selected</p>
+							</div>
+
+
+
+
+						</div>
+
+
+					</fieldset>
+
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Advocate & Counsel
+							Details</legend>
+
+						<div class="row">
+
+							<div class="form-group col-md-4">
+								<label for="aorOfCompany"> AOR for the Petitioner : </label>
+								<div class="input-group" ng-keyup="vm.openAorCompModal()"
+									ng-click="vm.openAorCompModal()">
+									<input type="text" class="form-control"
+										ng-model="vm.form.aorOfCompany" name="aorOfCompany"
+										id="aorOfCompany" placeholder="AOR Name"> <span
+										class="input-group-addon"> <i class="far fa-edit"></i>
+									</span>
+
+								</div>
+							</div>
+
+							<div class="form-group col-md-4">
+								<label for="aorOfRespondent"> AOR for the Respondent : </label>
+								<div class="input-group" ng-keyup="vm.openAorRespModal()"
+									ng-click="vm.openAorRespModal()">
+									<input type="text" class="form-control"
+										ng-model="vm.form.aorOfRespondent" name="aorOfRespondent"
+										id="aorOfRespondent" placeholder="Respondent AOR Name">
+									<span class="input-group-addon"> <i class="far fa-edit"></i>
+									</span>
+
+								</div>
+							</div>
+							
+							<div class="form-group col-sm-4">
+								<label for="legalRep"> Legal Representatives : </label>
+								<div class="input-group" ng-keyup="vm.openLegalRepModal()"
+									ng-click="vm.openLegalRepModal()">
+									<input type="text" class="form-control"
+										ng-model="vm.form.legalRep" name="legalRep" id="legalRep"
+										placeholder="Legal Representative"> <span
+										class="input-group-addon"> <i class="far fa-edit"></i>
+									</span>
+								</div>
+							</div>
+
+
+
+						</div>
+
+						<div class="row">
+						
+							<div class="form-group col-md-4">
+								<label for="counselOfCompany"> Counsel for the
+									Petitioner : </label>
+								<div class="input-group" ng-keyup="vm.openCounselCompModal()"
+									ng-click="vm.openCounselCompModal()">
+									<input type="text" class="form-control"
+										ng-model="vm.form.counselOfCompany" name="counselOfCompany"
+										id="counselOfCompany" placeholder="Counsel Name"> <span
+										class="input-group-addon"> <i class="far fa-edit"></i>
+									</span>
+
+								</div>
+							</div>
+						
+							
+							
+							
+							<div class="form-group col-md-4">
+								<label for="counselOfRespondent"> Counsel for the
+									Respondent : </label>
+								<div class="input-group" ng-keyup="vm.openCounselRespModal()"
+									ng-click="vm.openCounselRespModal()">
+									<input type="text" class="form-control"
+										ng-model="vm.form.counselOfRespondent"
+										name="counselOfRespondent" id="counselOfRespondent"
+										placeholder="Counsel Name"> <span
+										class="input-group-addon"> <i class="far fa-edit"></i>
+									</span>
+
+								</div>
+							</div>
+
+							<div class="form-group col-sm-4">
+								<label for="businessRep"> Business Representatives :</label>
+								<div class="input-group" ng-keyup="vm.openBusinessRepModal()"
+									ng-click="vm.openBusinessRepModal()">
+									<input type="text" class="form-control"
+										ng-model="vm.form.businessRep" name="businessRep"
+										id="businessRep" placeholder="Business Representative">
+									<span class="input-group-addon"> <i class="far fa-edit"></i>
+									</span>
+
+								</div>
+							</div>
+
+							
+
+
+						</div>
+					</fieldset>
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Hearing Details</legend>
+						<div class="row">
+							<div class="form-group col-md-4">
+								<label for="lastDateOfHearing">Last date of Hearing : </label>
+								<div class="input-group">
+									<span class="input-group-addon"> <i
+										class="fas fa-calendar-alt"></i>
+									</span> <input id="lastDateOfHearing" name="lastDateOfHearing"
+										class="form-control" placeholder="Select last hearing date"
+										ng-model="vm.form.lastDateOfHearing">
+								</div>
+
+							</div>
+
+							<div class="form-group col-md-4">
+								<div class="input-group">
+									<label for="outcomeLast"> Outcome of Last Hearing : </label> <span
+										style="display: contents;" ng-click="vm.outcomeLastModal()"
+										class="input-group-addon"> <i class="fas fa-plus"></i>
+									</span>
+								</div>
+								<div ng-bind-html="vm.outcomeLastHTML" contenteditable="true"
+									safe-paste class="divTxtArea form-control"
+									ng-model="vm.form.outcomeLast" id="outcomeLast"
+									name="outcomeLast" placeholder="Remarks"></div>
+							</div>
+
+							<div class="form-group col-md-4">
+								<label for="nextDateOfHearing">Next date of Hearing : </label>
+								<div class="input-group">
+									<span class="input-group-addon"> <i
+										class="fas fa-calendar-alt"></i>
+									</span> <input id="nextDateOfHearing" name="nextDateOfHearing"
+										class="form-control" placeholder="Select next hearing date"
+										ng-model="vm.form.nextDateOfHearing">
+								</div>
+							</div>
+
+
+
+						</div>
+
+						<div class="row">
+
+							<div class="form-group col-md-4">
+								<div class="input-group">
+									<label for="outcomeNext"> Likely outcome of next
+										hearing :</label> <span style="display: contents;"
+										ng-click="vm.outcomeNextModal()" class="input-group-addon">
+										<i class="fas fa-plus"></i>
+									</span>
+								</div>
+								<div ng-bind-html="vm.outcomeNextHTML" contenteditable="true"
+									safe-paste class="divTxtArea form-control"
+									ng-model="vm.form.outcomeNext" id="outcomeNext"
+									name="outcomeNext" placeholder="Remarks"></div>
+							</div>
+
+
+							<div class="form-group col-md-4">
+								<label for="furtherDates">Further Dates : </label>
+								<div class="input-group">
+									<span class="input-group-addon"> <i
+										class="fas fa-calendar-alt"></i>
+									</span> <input id="furtherDates" name="furtherDates"
+										class="form-control" placeholder="Select Multiple Dates"
+										ng-model="vm.form.furtherDates">
+
+								</div>
+							</div>
+
+
+
+							<div class="form-group col-sm-4">
+
+								<label for="caseStatus"> Case Status :</label> <select
+									name="caseStatus" id="caseStatus" ng-model="vm.form.caseStatus"
+									ng-options="item.id as item.name for item in vm.caseStatusInfo"
+									class="custom-select-sm form-control">
+								</select>
+							</div>
+
+						</div>
+					</fieldset>
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Subject Matter</legend>
+						<div class="row">
+
+
+							<div class="form-group col-md-4">
+								<div class="input-group">
+									<label for="subMatter"> Subject Matter of Dispute : <span
+										class="error-message">*</span></label> <span
+										style="display: contents;" ng-click="vm.openSubjectModal()"
+										class="input-group-addon"> <i class="fas fa-plus"></i>
+									</span>
+								</div>
+								<div ng-bind-html="vm.subMatterHTML" contenteditable="true"
+									safe-paste ng-model="vm.form.subMatter"
+									class="divTxtArea form-control" id="subMatter" name="subMatter"
+									placeholder="Subject Matter" required></div>
+
+								<p
+									ng-show="addNewCaseForm.subMatter.$invalid && addNewCaseForm.subMatter.$dirty"
+									class="error-message">Subject Matter is required</p>
+							</div>
+
+							<div class="form-group col-md-4">
+								<div class="input-group">
+									<label for="briefFacts"> Brief Facts / Issues : </label> <span
+										style="display: contents;" ng-click="vm.openFactsModal()"
+										class="input-group-addon"> <i class="fas fa-plus"></i>
+									</span>
+								</div>
+								<div ng-bind-html="vm.factsHTML" contenteditable="true"
+									safe-paste class="divTxtArea form-control"
+									ng-model="vm.form.briefFacts" strip-br="true" id="briefFacts"
+									name="briefFacts" placeholder="Brief Facts"></div>
+
+
+							</div>
+
+							<div class="form-group col-md-4">
+								<div class="input-group">
+									<label for="interimPrayer"> Interim Prayer : </label> <span
+										style="display: contents;" ng-click="vm.interimPModal()"
+										class="input-group-addon"> <i class="fas fa-plus"></i>
+									</span>
+								</div>
+								<div ng-bind-html="vm.intrimPHTML" contenteditable="true"
+									safe-paste class="divTxtArea form-control"
+									ng-model="vm.form.interimPrayer" id="interimPrayer"
+									name="interimPrayer" placeholder="Interim Prayer"></div>
+
+
+							</div>
+
+						</div>
+
+						<div class="row">
+
+							<div class="form-group col-md-4">
+								<div class="input-group">
+									<label for="finalPrayer">Final Prayer : </label> <span
+										style="display: contents;" ng-click="vm.finalPModal()"
+										class="input-group-addon"> <i class="fas fa-plus"></i>
+									</span>
+								</div>
+								<div ng-bind-html="vm.finalPHTML" safe-paste
+									contenteditable="true" class="divTxtArea form-control"
+									ng-model="vm.form.finalPrayer" id="finalPrayer"
+									name="finalPrayer" placeholder="Final Prayer"></div>
+							</div>					
+
+
+							<div class="form-group col-sm-4">
+								<label for="caseCategory">Case Priority :</label> <select
+									name="caseCategory" id="caseCategory"
+									ng-model="vm.form.caseCategory"
+									ng-options="item.id as item.name for item in vm.caseCategoryInfo"
+									class="custom-select-sm form-control">
+								</select>
+							</div>
+
+						</div>
+					</fieldset>
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Financial Impact</legend>					
+
+						<div class="row">
+
+							
+
+							<div class="form-group col-md-4">
+								<label for="finImpact"> Amount (Total/One Time) :</label>
+
+								<textarea class="form-control" rows="3" id="finImpact"
+									ng-model="vm.form.finImpact" name="finImpact"
+									placeholder=""></textarea>
+							</div>
+							
+							<div class="form-group col-md-4">
+								<label for="finImpactRecurring"> Recurring Amount :</label>
+
+								<textarea class="form-control" rows="3" id="finImpactRecurring"
+									ng-model="vm.form.finImpactRecurring" name="finImpactRecurring"
+									placeholder=""></textarea>
+							</div>
+							
+							<div class="form-group col-md-4">
+								<label for="finImpactRecurringDuration"> Duration if recurring (in years) :</label>
+
+								<textarea class="form-control" rows="3" id="finImpactRecurringDuration"
+									ng-model="vm.form.finImpactRecurringDuration" name="finImpactRecurringDuration"
+									placeholder=""></textarea>
+							</div>
+						</div>
+						<div class = "row">
+
+							<div class="form-group col-sm-4">
+								<label for="finImpactDetailed"> Detailed Financial Impact : </label>
+								<div class="input-group" ng-click="vm.financialImpactModal()"
+									ng-keyup="vm.financialImpactModal()">
+									<input safe-paste type="text" class="form-control"
+										ng-model="vm.form.finImpactDetailed" name="finImpactDetailed"
+										id="finImpactDetailed" placeholder="Financial Impact Detailed">
+									<span class="input-group-addon"> <i class="far fa-edit"></i>
+									</span>
+								</div>
+
+							</div>						
+
+						</div>
+					</fieldset>
+					<fieldset class="scheduler-border" id="fieldSetId"
+						style="display: none;">
+						<legend class="scheduler-border">Additional Info</legend>
+						<div class="row" id = "caseTypeCont" style="display: none;">
+
+
+
+							<div class="form-group col-sm-4">
+								<label for="finYear">Financial Year :<span
+									class="error-message">*</span></label> 
+									<select name="finYear"
+									id="finYear" ng-model="vm.form.finYear"
+									ng-change="vm.fetchAssessYear()"
+									class="custom-select-sm form-control"
+									ng-options="item as item for item in vm.years">
+								</select>
+
+								<p
+									ng-show="addNewCaseForm.finYear.$invalid || (addNewCaseForm.finYear.$touched && addNewCaseForm.finYear.$pristine)"
+									class="error-message">Financial Year must be selected</p>
+
+
+							</div>
+
+							<div class="form-group col-sm-4">
+								<label for="assessYear">Assessment Year :<span
+									class="error-message">*</span></label> <select name="assessYear"
+									id="assessYear" ng-model="vm.form.assessYear"
+									class="custom-select-sm form-control"
+									ng-options="item as item for item in vm.years" readonly>
+
+								</select>
+
+							</div>
+							<div class="form-group col-md-4">
+								<label for="amtOfDisallow"> Amount of Disallowance (in
+									INR): </label> <input type="text" num-only class="form-control"
+									ng-model="vm.form.amtOfDisallow" name="amtOfDisallow"
+									id="amtOfDisallow">
+							</div>
+
+						</div>
+						
+							<div class="row" ng-if = "vm.form.company == 3 && vm.form.business == 18 && vm.form.vertical == 99">
+
+
+
+							<div class="form-group col-sm-4">
+								<label for="assetSegment">Asset Segment :</label> <select name="assetSegment"
+									id="assetSegment" ng-model="vm.form.assetSegment"
+									ng-change="vm.fetchTrustName(vm.form.assetSegment)"
+									class="custom-select-sm form-control"
+									ng-options="item as item for item in vm.assetSegmantInfo" >
+								</select>
+
+		
+
+
+							</div>
+
+							<div class="form-group col-sm-4">
+								<label for="trustName">Trust Name :</label> <select name="trustName"
+									id="trustName" ng-model="vm.form.trustName"
+									ng-change="vm.fetchAccountName(vm.form.trustName)"
+									class="custom-select-sm form-control"
+									ng-options="item as item for item in vm.trustNameInfo" >
+
+								</select>
+
+							</div>
+							<div class="form-group col-sm-4">
+								<label for="accountName">Account Name :</label> <select name="accountName"
+									id="accountName" ng-model="vm.form.accountName"
+									class="custom-select-sm form-control"
+									ng-options="item.id as item.name for item in vm.accountNameInfo" >
+
+								</select>
+
+							</div>
+							
+
+						</div>
+									<div class="row" ng-if = "vm.form.company == 3 && vm.form.business == 18 && vm.form.vertical == 99">
+
+
+
+							<div class="form-group col-sm-3">
+								<label for="substitutionFiled">Substitution Filed :</label> <select name="substitutionFiled"
+									id="substitutionFiled" ng-model="vm.form.substitutionFiled"									
+									class="custom-select-sm form-control"
+									ng-options="item as item for item in vm.resultArray" >
+								</select>
+
+
+
+							</div>
+
+							<div class="form-group col-sm-3" ng-if = "vm.form.substitutionFiled == 'Yes'">
+								<label for="substitutionAllowed">Substitution Allowed : </label><select name="substitutionAllowed"
+									id="substitutionAllowed" ng-model="vm.form.substitutionAllowed"
+									class="custom-select-sm form-control"
+									ng-options="item as item for item in vm.resultArray" >
+
+								</select>
+
+							</div>
+							<div class="form-group col-sm-2">
+								<label for="interimStay">Interim Stay : </label><select name="interimStay"
+									id="interimStay" ng-model="vm.form.interimStay"
+									class="custom-select-sm form-control"
+									ng-options="item as item for item in vm.resultArrayInterim" >
+
+								</select>
+
+							</div>
+							
+							<div class="form-group col-sm-4" ng-if = "vm.form.interimStay == 'Yes'">
+								<label for="stayOrder">Brief on Stay Order :</label> <textarea name="stayOrder"
+									id="stayOrder" ng-model="vm.form.stayOrder"
+									class="form-control"
+									>
+
+								</textarea>
+
+							</div>
+
+						</div>
+					</fieldset>
+
+				</form>
+				<br>
+				<div class='text-center'>
+					<button ng-click="vm.submit(addNewCaseForm)" type="button"
+						class="btn btn-primary text-center">Save</button>
+					<button type="reset" class="btn btn-primary text-center">Cancel</button>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+
+</div>
+<script type="text/ng-template" id="summary.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Subject Matter</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete">
+				<div text-angular="text-angular" safe-paste ng-model = "vm.subMatterHTML" ta-disabled='disabled'></div>			 	
+							 	
+			</div>          
+			<br>			
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Okay</button>
+        </div>
+	  </div>
+        
+  	</script>
+<script type="text/ng-template" id="facts.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Brief/Facts</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete">
+				<div text-angular="text-angular" safe-paste ng-model = "vm.factsHTML" ta-disabled='disabled'></div>			 	
+							 	
+			</div>          
+			<br>			
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Okay</button>
+        </div>
+	  </div>
+        
+  	</script>
+<script type="text/ng-template" id="interim.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Interim Prayer Details</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete">
+				<div text-angular="text-angular" safe-paste ng-model = "vm.intrimPHTML" ta-disabled='disabled'></div>			 	
+							 	
+			</div>          
+			<br>			
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Okay</button>
+        </div>
+	  </div>
+        
+  	</script>
+<script type="text/ng-template" id="final.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Final Prayer Details</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete">
+				<div text-angular="text-angular" safe-paste ng-model = "vm.finalPHTML" ta-disabled='disabled'></div>			 	
+						 	
+			</div>          
+			<br>			
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Okay</button>
+        </div>
+	  </div>
+        
+  	</script>
+<script type="text/ng-template" id="outcomeLast.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Outcome of Last Yearing</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete">
+
+				<div text-angular="text-angular" safe-paste ng-model = "vm.outcomeLastHTML" ta-disabled='disabled'></div>			 	
+			</div>          
+			<br>			
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Okay</button>
+        </div>
+	  </div>
+        
+  	</script>
+<script type="text/ng-template" id="outcomeNext.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Likelyhood Outcome of Next Yearing</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete">
+ 
+				<div text-angular="text-angular" safe-paste ng-model = "vm.outcomeNextHTML" ta-disabled='disabled'></div>			 				 	
+			</div>          
+			<br>			
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Okay</button>
+        </div>
+	  </div>
+        
+  	</script>
+
+
+
+<script type="text/ng-template" id="petitioner.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Petitioner</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete">
+				<input speclchars style = "margin-right: 5px;" ng-model="vm.selPetitioner" class="form-control" placeholder = "Type member name">
+        		<button class="btn btn-primary" type="button" ng-click="vm.AddMember('petitioner')">Add</button>
+            </div>          
+			<br>
+			<div class = "container-fluid" id = "petitionerList">
+           		<ol  id = "myUL">
+					<li ng-repeat="a in vm.petitionerSelected">P{{$index + 1}}. {{a}}  <span class = "close" ng-click="vm.removeMember($index, 'petitioner')">X</span></li>
+				</ol>
+			</div>
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="vm.diplayMember('petitioner')">Done</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Cancel</button>
+        </div>
+        
+  	</script>
+
+<script type="text/ng-template" id="respondent.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Respondent</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete">
+				<input speclchars style = "margin-right: 5px;" ng-model="vm.selRespondent" class="form-control" placeholder = "Type member name">
+        		<button class="btn btn-primary" type="button" ng-click="vm.AddMember('respondent')">Add</button>
+            </div>          
+			<br>
+			<div class = "container-fluid" id = "respondentList">
+           		<ol id = "myUL">
+					<li ng-repeat="a in vm.respondentSelected">R{{$index + 1}}. {{a}} <span class = "close" ng-click="vm.removeMember($index, 'respondent')">X</span></li>
+				</ol>
+			</div>
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="vm.diplayMember('respondent')">Done</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Cancel</button>
+        </div>
+        
+  	</script>
+
+<script type="text/ng-template" id="bench.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Bench Member</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete typeClass">
+				<input speclchars style = "margin-right: 5px;" ng-model="vm.selBench" typeahead-on-select='onSelect($item, $model, $label)' typeahead-min-length="0" uib-typeahead="item.name for item in vm.benchInfo | filter:$viewValue | limitTo:100" class="form-control" placeholder = "Search or Add member name">
+        		<button class="btn btn-primary" type="button" ng-click="vm.AddMember('bench')">Add</button>
+            </div>          
+			<br>
+			<div class = "container-fluid">
+           		<ul id="myUL">
+					<li ng-repeat="a in vm.benchSelected">{{a}} <span class = "close" ng-click="vm.removeMember($index, 'bench')">X</span></li>
+				</ul>
+			</div>
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="vm.diplayMember('bench')">Done</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Cancel</button>
+        </div>
+        
+  	</script>
+
+<script type="text/ng-template" id="aorCompany.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add member for AOR</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete typeClass">
+				<input speclchars style = "margin-right: 5px;" ng-model="vm.selAorCompany" typeahead-on-select='onSelect($item, $model, $label)' typeahead-min-length="0" uib-typeahead="item.name for item in vm.aorCompanyInfo | filter:$viewValue | limitTo:100" class="form-control" placeholder = "Search or Add member name">
+        		<button class="btn btn-primary" type="button" ng-click="vm.AddMember('aorCompany')">Add</button>
+            </div>          
+			<br>
+			<div class = "container-fluid">
+           		<ul id="myUL">
+					<li ng-repeat="a in vm.aorCompanySelected">{{a}} <span class = "close" ng-click="vm.removeMember($index, 'aorCompany')">X</span></li>
+				</ul>
+			</div>
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="vm.diplayMember('aorCompany')">Done</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Cancel</button>
+        </div>
+        
+  	</script>
+
+<script type="text/ng-template" id="aorResp.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add member for AOR</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete typeClass">
+				<input speclchars style = "margin-right: 5px;" ng-model="vm.selAorResp" typeahead-on-select='onSelect($item, $model, $label)' typeahead-min-length="0" uib-typeahead="item.name for item in vm.aorCompanyInfo | filter:$viewValue | limitTo:100" class="form-control" placeholder = "Search or Add member name">
+        		<button class="btn btn-primary" type="button" ng-click="vm.AddMember('aorResp')">Add</button>
+            </div>          
+			<br>
+			<div class = "container-fluid">
+           		<ul id="myUL">
+					<li ng-repeat="a in vm.aorRespSelected">{{a}} <span class = "close" ng-click="vm.removeMember($index, 'aorResp')">X</span></li>
+				</ul>
+			</div>
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="vm.diplayMember('aorResp')">Done</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Cancel</button>
+        </div>
+        
+  	</script>
+
+<script type="text/ng-template" id="counselOfCompany.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add member for Counsel </h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete typeClass">
+				<input speclchars style = "margin-right: 5px;" ng-model="vm.selCounselCompany" typeahead-on-select='onSelect($item, $model, $label)' typeahead-min-length="0" uib-typeahead="item.name for item in vm.counselCompanyInfo | filter:$viewValue | limitTo:100" class="form-control" placeholder = "Search or Add member name">
+        		<button class="btn btn-primary" type="button" ng-click="vm.AddMember('councelCompany')">Add</button>
+            </div>          
+			<br>
+			<div class = "container-fluid">
+           		<ul id="myUL">
+					<li ng-repeat="a in vm.counselCompanySelected">{{a}} <span class = "close" ng-click="vm.removeMember($index, 'councelCompany')">X</span></li>
+				</ul>
+			</div>
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="vm.diplayMember('councelCompany')">Done</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Cancel</button>
+        </div>
+        
+  	</script>
+
+
+<script type="text/ng-template" id="counselOfResp.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add member for Counsel </h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete typeClass">
+				<input speclchars style = "margin-right: 5px;" ng-model="vm.selCounselResp" typeahead-on-select='onSelect($item, $model, $label)' typeahead-min-length="0" uib-typeahead="item.name for item in vm.counselCompanyInfo | filter:$viewValue | limitTo:100" class="form-control" placeholder = "Search or Add member name">
+        		<button class="btn btn-primary" type="button" ng-click="vm.AddMember('councelResp')">Add</button>
+            </div>          
+			<br>
+			<div class = "container-fluid">
+           		<ul id="myUL">
+					<li ng-repeat="a in vm.counselRespSelected">{{a}} <span class = "close" ng-click="vm.removeMember($index, 'councelResp')">X</span></li>
+				</ul>
+			</div>
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="vm.diplayMember('councelResp')">Done</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Cancel</button>
+        </div>
+        
+  	</script>
+
+<script type="text/ng-template" id="businessRep.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Business Representative </h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete typeClass">
+				<input speclchars style = "margin-right: 5px;" ng-model="vm.businessRep" typeahead-on-select='onSelect($item, $model, $label)' typeahead-min-length="0" uib-typeahead="item.name for item in vm.businessRepInfo | filter:$viewValue | limitTo:100" class="form-control" placeholder = "Search or Add member name">
+        		<button class="btn btn-primary" type="button" ng-click="vm.AddMember('businessRep')">Add</button>
+            </div>          
+			<br>
+			<div class = "container-fluid">
+           		<ul id="myUL">
+					<li ng-repeat="a in vm.businessRepSelected">{{a}} <span class = "close" ng-click="vm.removeMember($index, 'businessRep')">X</span></li>
+				</ul>
+			</div>
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="vm.diplayMember('businessRep')">Done</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Cancel</button>
+        </div>
+        
+  	</script>
+
+<script type="text/ng-template" id="legalRep.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Legal Representative</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete typeClass">
+				<input speclchars style = "margin-right: 5px;" ng-model="vm.legalRep" typeahead-on-select='onSelect($item, $model, $label)' typeahead-min-length="0" uib-typeahead="item.name for item in vm.legalRepInfo | filter:$viewValue | limitTo:100" class="form-control" placeholder = "Search or Add member name">
+        		<button class="btn btn-primary" type="button" ng-click="vm.AddMember('legalRep')">Add</button>
+            </div>          
+			<br>
+			<div class = "container-fluid">
+           		<ul id="myUL">
+					<li ng-repeat="a in vm.legalRepSelected">{{a}} <span class = "close" ng-click="vm.removeMember($index, 'legalRep')">X</span></li>
+				</ul>
+			</div>
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="vm.diplayMember('legalRep')">Done</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Cancel</button>
+        </div>
+        
+  	</script>
+
+<script type="text/ng-template" id="finImpact.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Financial Impact Details</h5>
+        </div>
+		
+        <div class="modal-body">
+	<div class="box">
+          		
+        
+       		<div class="row form-group">
+	<div class="col-md-3">
+        		<button ng-click="vm.newFinDetail();" class="btn btn-primary" type="button"><i style = "color:white !important;" class="fas fa-plus"></i> Add </button>
+			</div>	         
+        <div class="col-md-3" ng-show="vm.expenseedit">
+          <label for="">Currency 
+            <select class="form-control" id = "curPg" ng-model="vm.curPg" ng-options="curr for curr in vm.currency" ></select>
+          </label>
+        </div>
+		     		
+	</div>
+          
+      <div class="clearfix"></div>
+      <form class="form-horizontal" ng-show="vm.expenseedit" ng-submit="vm.addExpense();">
+
+		<div class = "row">
+		 <div class="form-group col-xs-3 col-md-3">
+        	<label for="particular" class="control-label">Particular</label>
+        	        	<textarea required class="form-control" ng-model="vm.newexpense.particular" placeholder="Particular"></textarea>
+       	</div>
+		<div class="form-group col-xs-3 col-md-3">
+        	<label for="principal" class="control-label">Principal</label>
+        	 <input type="text" num-only required class="form-control" ng-model="vm.newexpense.principal" placeholder="Principal">
+         </div>
+        <div class="form-group col-xs-3 col-md-3">
+        	<label for="penalty" class="control-label">Penalty</label>
+        	 <input type="text" num-only required class="form-control" ng-model="vm.newexpense.penalty" placeholder="Penalty">
+         </div>
+          
+          <div class="form-group col-xs-3 col-md-3">
+        	<label for="interest" class="control-label">Interest</label>
+        	 <input type="text" num-only required class="form-control" ng-model="vm.newexpense.interest" placeholder="Interest">
+          </div>
+</div>
+        <div class="form-group row">
+          <div class="col-sm-12 text-right">
+            <button type="button" class="btn btn-default" ng-click="vm.cancelExpense();">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+       
+      </form>
+		  
+       
+      </div>
+		
+      <div class="row" ng-if = "vm.finImp.length > 0">
+        <div class="col-md-6" style = "padding-left:10px;">
+          <label for="">Show 
+            <select class="form-control pagiantion" id = "numPerPage" ng-model="vm.numPerPage" ng-options="numPage for numPage in vm.numsForPage" ng-change="vm.changeNum(vm.numPerPage);"></select>
+            entries
+          </label>
+        </div>
+        <div class="col-md-6 text-right">
+          <div class="form-inline form-group">
+            <label for="filter-list">Search </label>
+            <input type="text" class="form-control" id="filter-list" placeholder="Search" ng-model="filterlist">
+          </div>
+        </div>
+      </div>
+		</div>
+<div class = "row" ng-if = "vm.finImp.length > 0">
+<div class = "col-md-12 text-center" style = "padding-left:15%;">
+      <table class="table table-hover table-responsive" id = "finImpTable">
+        <thead>
+          <tr>
+            <th>Particular</th>
+            <th>Principal</th>
+            <th>Penalty</th>
+			<th>Interest</th>
+            <th>Total</th>
+			<th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="expense in vm.filteredlist = (vm.finImp | filter:filterlist) | pagination: vm.currentPage : vm.numPerPage">
+            <td>{{expense.particular}}</td>
+            <td>{{expense.principal}}</td>
+			<td>{{expense.penalty}}</td>
+			<td>{{expense.interest}}</td>
+			<td>{{expense.total}}</td>
+			
+            <td>
+              <div class="btn-group btn-group-xs" role="group" ng-init="vm.editmode=false">
+                <button type="button" class="btn btn-default" ng-click="vm.editExpense(expense);">
+                  <i class="far fa-edit bn"></i>
+                </button>
+                <button type="button" class="btn btn-default" ng-click="vm.deleteExpense(expense); vm.editmode = !vm.editmode">
+                  <i class="fa fa-trash bn"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+		  <tr>
+			<td colspan = "4">Grand Total</td>
+			<td id = "grandTotal">{{vm.filteredlist | totalSum:'principal':'penalty':'interest'}}</td>
+		  </tr>
+        </tbody>
+      </table>
+      <div class="clearfix">
+        <pagination 
+          ng-model="vm.currentPage" 
+          total-items="vm.filteredlist.length" 
+          max-size="vm.maxSize" 
+          items-per-page="vm.numPerPage"
+          boundary-links="true" 
+          class="pagination-sm pull-right" 
+          previous-text="&lsaquo;" 
+          next-text="&rsaquo;" 
+          first-text="&laquo;" 
+          last-text="&raquo;"
+        ></pagination>
+      </div>
+          
+         </div> 
+        </div>
+        </div>
+</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" type="button" ng-click="vm.setTotal()">Ok</button> 
+			<button class="btn btn-primary" type="button" ng-click="vm.closeFinImp()">Cancel</button>
+           
+        </div>
+        
+  	</script>
+
+<script type="text/javascript">
+	$(document).ready(
+			function() {
+
+				$('#lastDateOfHearing').datepicker({
+					format : 'dd/mm/yyyy',
+					endDate : new Date()
+				});
+
+				$('#nextDateOfHearing').datepicker({
+					format : 'dd/mm/yyyy',
+					startDate : new Date()
+				});
+				$('#furtherDates').datepicker({
+					multidate : true,
+					format : 'dd/mm/yyyy'
+				});
+
+				$('#lastDateOfHearing, #nextDateOfHearing').on('changeDate',
+						function(ev) {
+							$(this).datepicker('hide');
+						});
+			});
+</script>

@@ -1,0 +1,233 @@
+<div id="viewContainer" class="container-fluid">
+	<!-- <br>
+	<div class="row" style="text-align: center;">
+		<div class="col-sm-8" style="text-align: left;">
+			<h4 class="blueColor">Manage Forums</h4>
+		</div>
+		<div class="col-sm-3" style="text-align: center;">
+			<button type="button" class="btn btn-info"
+				ng-click="vm.AddNewForum()">
+				Add New <i style="color: white !important;" class="fas fa-plus"></i>
+			</button>
+
+		</div>
+	</div> -->
+
+
+
+	<br>
+	<div id="accordion" class="accordion" data-default="1">
+		<div class="card">
+			<div class="card-header">
+				<a class="card-link" data-toggle="collapse"
+					data-target="#docDetailsContainer" aria-expanded="true"
+					aria-controls="docDetailsContainer">List of Available Forums<span
+					class="collapsed"><p>
+							<b>+</b>
+						</p></span> <span class="expanded"><p>
+							<b>-</b>
+						</p></span></a>
+			</div>
+			<div id="docDetailsContainer" class="collapse show"
+				style="background: white;">
+				<div class="card-body">
+
+
+
+					<div class="row" style="padding-bottom: 30px;">
+						<div class="col-md-3"></div>
+
+						<div class="col-md-3">
+							<LABEL for="forumCategory1">Forum Category</LABEL> <select
+								name="forumCategory1" id="forumCategory1"
+								ng-model="vm.forumCategory" required
+								class="custom-select-sm form-control">
+								<option ng-repeat="item in vm.forumCategoryArray"
+									value="{{item}}">{{item | titleCase}}</option>
+							</select>
+
+						</div>
+						<div class='col-md-3 text-center' style="margin-top: 30px;">
+							<button ng-click="vm.fetchForums()" type="button"
+								class="btn btn-primary text-center">Search</button>
+
+						</div>
+
+						<div class="col-md-3"></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<p style="font-size: 14px; color: #005199; text-align: left;">
+								Note : Send request to add new forum only if it is not found in
+								the list of available forums.</p>
+						</div>
+					</div>
+					<hr>
+					<div id="tableContainer" style="display: none; padding: 0 30px;">
+						<table style="padding: 15px;" datatable="ng"
+							dt-options="vm.dtOptions" id="viewTable"
+							class="table table-bordered tableCls container-fluid"
+							width="100%">
+							<thead>
+								<tr>
+									<th>S.No</th>
+									<th>Forum Category</th>
+									<th>Name</th>
+									<th>Source</th>
+									<!--  	<th ng-if="vm.userType == 'Admin'" style="text-align: center;">*</th> -->
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="val in vm.forumArray">
+
+									<td>{{$index+1}}</td>
+									<td>{{val.category | titleCase}}</td>
+									<td>{{val.name}}</td>
+									<td>{{val.source}}</td>
+									<!--  	<td style="text-align: center;"><div
+											ng-if="val.source != 'CIS' && val.caseExists == 'F' &&
+						val.userID == vm.userID && val.category != 'supreme court' && val.category != 'highcourt'"
+											class="btn-group">
+
+											<button type="button" ng-click="vm.editForumItem($index)"
+												title="Edit Document Info">
+												<i class="far fa-edit bn"></i>
+											</button>
+
+											<button type="button" ng-click="vm.deleteForum(val)"
+												title="Delete Document">
+												<i class="fa fa-trash bn"></i>
+											</button>
+										</div></td>
+-->
+								</tr>
+
+							</tbody>
+
+						</table>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<br>
+
+		<div class="card">
+			<div class="card-header">
+				<a class="card-link" data-toggle="collapse"
+					data-target="#addForumFormContainer" aria-expanded="true"
+					aria-controls="addForumFormContainer">Send Request for New
+					Forum Addition<span class="collapsed"><p>
+							<b>+</b>
+						</p></span> <span class="expanded"><p>
+							<b>-</b>
+						</p></span>
+				</a>
+			</div>
+			<div id="addForumFormContainer" class="collapse show"
+				>
+				<div class="card-body" style = "padding-bottom:0px !important;">
+
+
+
+					<div style="background: white;">
+						<form novalidate id="addNewForum" name="addNewForum"
+							style="padding: 0px 15px;">
+							<div class="row">
+
+								<div class="col-md-2">
+									<LABEL for="forumCategory">Forum Category</LABEL> <select
+										name="forumCategory" id="forumCategory"
+										ng-model="vm.form.forumCategory" required
+										class="custom-select-sm form-control">
+										<option ng-repeat="item in vm.forumCategoryArray1"
+											value="{{item}}">{{item | titleCase}}</option>
+									</select>
+									<p
+										ng-show="addNewForum.forumCategory.$invalid || (addNewForum.forumCategory.$touched && addNewForum.forumCategory.$pristine)"
+										class="error-message">Forum Category must be selected</p>
+								</div>
+
+								<div class="col-md-3">
+									<label for="state">State</label> <select name="state"
+										id="state" ng-model="vm.form.state"
+										class="custom-select-sm form-control" required>
+										<option ng-repeat="item in vm.stateInfo" value="{{item.name}}">{{item.name}}</option>
+									</select>
+									<p
+										ng-show="addNewForum.state.$invalid || (addNewForum.state.$touched && addNewForum.state.$pristine)"
+										class="error-message">State must be selected</p>
+								</div>
+								<div class="form-group col-md-5">
+									<label for="forumName"> Forum : </label> <input type="text"
+										class="form-control" ng-model="vm.form.forumName"
+										speclchars name="forumName" id="forumName" placeholder="Forum Name"
+										required>
+									<p
+										ng-show="addNewForum.forumName.$invalid && addNewForum.forumName.$dirty"
+										class="error-message">Forum must be selected</p>
+								</div>
+								<div class="col-md-2">
+									<label for="caseType">Case Type</label> <select name="caseType"
+										id="caseType" ng-model="vm.form.caseType"
+										class="custom-select-sm form-control">
+										<option ng-repeat="item in vm.caseTypeInfo" value="{{item}}">{{item}}</option>
+									</select>
+								</div>
+							</div>
+
+						</form>
+						<div class='text-center'>
+							<button ng-click="vm.submit(addNewForum)" type="button"
+								class="btn btn-primary text-center">Send Request</button>
+							<button ng-click="vm.resetFilter()" type="reset"
+								class="btn btn-primary text-center">Clear</button>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-sm-12">
+								<p style="font-size: 14px; color: #005199; text-align: left;">
+									Note : Please edit the case and update the forum as and when
+									you receive the Forum addition request - approved message.</p>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+
+
+<script type="text/ng-template" id="viewForum.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title" style = "color:red;">Warning!!!</h5>
+        </div>
+		
+        <div class="modal-body">
+			
+				<p style = "color:steelblue;font-weight:bold;"> The following forums are matched with the forum you have entered </p>
+			          
+			
+			<div class = "container-fluid">
+           		<ul id="forumList">
+					<li ng-repeat="a in vm.forumArrayAvailable">{{a.name}} 
+					</li>
+				</ul>
+			</div>
+			
+				<p style = "color:steelblue;font-weight:bold;"> Do you want to still continue? </p>
+			         
+			
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-default" ng-click="vm.addForum()" type="button">Yes</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">No</button>
+        </div>
+        
+  	</script>

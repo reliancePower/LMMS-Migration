@@ -1,0 +1,182 @@
+<div id = "loginContainer" class = "" ng-init = "vm.createCaptcha()">
+	<div class =  "row" style = "border-bottom: 1px solid #eee;background:white;">
+		<div class = "col-sm-4 imageDiv">
+			<div class = "imgContainer text-center" >
+          		<img  src = "app/img/logo.png" style = "width:65%;height:100%" class ="imgLogo">
+        	</div>
+		</div>
+		<div class = "col-sm-8 headerT" >
+			<h5 class = "blueColor" >Law Matters Management System</h5>
+			
+		</div>
+	</div>
+	
+	<div class = "topContainer" >
+		<div class = "row">
+			<div class = "col-sm-4 adj">
+			</div>
+			<div class = "col-sm-4 adj">
+				<div id = "loginFormContainer">
+					<div class = "title">
+							Login
+					</div>	
+					<form novalidate name="loginForm" id= "loginForm">
+				
+				  		<div class="form-group">
+				  			<label  for="userName" >Webmail ID</label>
+				   			<input speclchars type="text" class="form-control " name="userName" ng-model="vm.form.userName" placeholder="Web Mail ID" required>
+				  		</div>
+				  
+				   		<p ng-show="loginForm.userName.$error.required && loginForm.userName.$dirty" class="error-message">
+                          Web Mail  is required
+                        </p> 
+                        
+                        <div class="form-group">
+                        	<label  for="password" >Password</label>
+                        	
+                        	<input  class="form-control" type="password" name="password" ng-minlength="6" ng-model="vm.form.password"  placeholder="Password" required>
+				  		
+				  			<a style = "float:right;text-align: right;font-size: 13px;color: red;" href = "http://icpm.relianceada.com/Projects/Admin/Password//Password.nsf/xpIndex.xsp" target = "blank">Forgot Password</a>
+				  		</div>
+
+				   		<p ng-show="loginForm.password.$error.required && loginForm.password.$dirty" class="error-message">
+                         Password is required
+                        </p>
+                        <p class="error-message" ng-show="loginForm.password.$error.minlength && loginForm.password.$dirty">
+                          Password should be at least 3 characters
+                        </p>  
+                     
+    					
+    					<div class="form-group">
+    						<label  for="dob">Date Of Birth</label>
+				   			<input num-only type="password"  min = "0" class="form-control" onKeyPress="if(this.value.length==8) return false;" name="dob" ng-model="vm.form.dob" placeholder="ddmmyyyy" required>
+				  		</div>
+				  
+				   		<p ng-show="loginForm.dob.$error.required && loginForm.dob.$dirty" class="error-message">
+                         Date of Birth is required
+                        </p>           
+                                               
+                         					   
+       		
+                      	<div class="form-group">
+				   			<input   type="text"  id="captchaCode"  name="captchaCode" class = "form-control"
+  							ng-model="vm.captchaCode" style = "text-align:center;padding:1px 0px 4px 0px;width:50%;display:inline-block;"
+  					 		disabled >
+  					 		
+  					 		<i ng-click = "vm.createCaptcha()" class="fas fa-sync-alt" style = "display:inline;"></i>
+        				</div>	
+        				
+        				<div class="form-group">
+				    		<input  class="form-control"  type="text"  id="captchaActualCode"  name="captchaActualCode"
+  							ng-model="vm.captchaActualCode" ng-blur = "vm.validateCaptcha()"
+  					 		required autocomplete="off" placeholder = "Enter the above Captcha" >
+				  		</div>
+				  		
+				  		<p ng-show="loginForm.captchaActualCode.$error.required && loginForm.captchaActualCode.$dirty" class="error-message">
+                         Captcha is required
+                        </p>
+                        
+				  		<p class="error-message" ng-if="vm.showCaptaError">
+                          Captcha is not valid
+                   		</p>
+				     
+				     	
+   						
+				   
+				   		<div class="form-group text-center"> 
+				  			<button ng-click = "vm.submit(loginForm)" class="btn btn-primary text-center">Submit</button>
+						</div>
+						
+						<div class="form-group blueColor" style = "text-align:center;font-size:12px;"> 
+				  			LMMS is best experienced in Google Chrome browser.
+						</div>
+						
+					</form>
+				</div>
+			</div>
+			<div class = "col-sm-4 adj"></div>
+		</div> 	
+		
+	</div>
+	
+</div>
+
+
+<script type="text/ng-template" id="msgBoard.html">
+    <!--	<div class="modal-header" >
+            <h5 class="modal-title blueColor">New Message !!! </h5>
+        </div>
+		-->
+        <div class="modal-body">
+		<div class="blink">
+			<span>New Release  </span>
+		</div>
+		
+<hr>
+			<ol>
+<li>
+			<h6>	Generate Report - New Report </h6>
+<ul>
+<li>Enhanced the report format as an eBook with Summary & Details of the cases</li>
+<li>	Clicking on the Page No in Summary section will take the user to the detailed section of a case. </li>
+<li>	The report can be printed with the same format either to a printer or to PDF file by right clicking in the report on screen.</li>
+<p> (Note: Currently, new format is available only through Chrome browser) </p>
+</ul>
+</li>
+
+<li>
+<h6>	Show / Hide Columns </h6>
+<ul>
+<li>	New feature introduced to show or hide the report columns as per the user demand. </li>
+<li>	The same format shall be exported to Excel or PDF and shall be printed.</li>
+</ul>
+</li>
+<li>
+			<h6>	Excel Master Data </h6>
+
+	Export the case master data to an excel file for preparing customized reports.
+</li>
+<li>
+			<h6>
+	Data management enhancement </h6>
+Introduced separate columns for Court Case No, Case Type and Case Year as it is maintained in Court systems/ websites. This is to fetch case update from court websites as per the availability.
+</li>
+<li>
+			<h6>
+		Case related documents </h6>
+<ul>
+<li>	<h6> Add Documents related to cases </h6> 
+User can upload the case related documents against each case in PDF, 
+MS Word & MS Excel formats. Documents are categorised as Application, 
+Petition, Affidavit, Notices, Order, Office Report, Prayer, Reply, Rejoinder, 
+Judgement etc. For using this option, search the cases using the Manage Case->View/Update and click on the button ( <i class = "fa fa-paperclip"></i> ) next to each case.
+</li>
+<li><h6> 	Documents from Court Information System </h6> 	Documents from court websites are being captured through Court Information System and are being added against the case as per the availability. </li>
+<li>	<h6> Documents View </h6> 
+	Additional Tab has been added in the "View Case" screen for viewing the attached documents. This contains the documents uploaded by the user as well as the documents received from the Court Information system/ Court websites as applicable
+</li>
+</ul>
+</li>
+<li>
+			<h6>
+		Notice related documents </h6>
+<ul>
+<li>	<h6> 	Add Documents related to notices  </h6> 
+User can upload the Notice related documents against each notice. Documents are categorised as Notice, Reply and Order. For adding documents, click on Notices-> View Notices and click on the button ( <i class = "fa fa-paperclip"></i> ) next to each notice.
+</li>
+<li><h6> 	Documents View </h6> 	From Notices-> View Notice output bottom section, the attached documents shall be viewed.  </li>
+
+</ul>
+</li>
+</ol>
+		</div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="$dismiss('cancel');">Okay</button>
+           
+        </div>
+        
+  	</script>
+
+
+
+       

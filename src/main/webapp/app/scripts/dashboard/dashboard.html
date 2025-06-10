@@ -1,0 +1,733 @@
+<div id="homeContainer">
+	<br>
+	<div class="container-accord">
+		<div id="accordion" class="accordion" data-default="1">
+			<div class="card">
+				<div class="card-header">
+					<a class="card-link" data-toggle="collapse"
+						data-target="#todaysHearingColl" aria-expanded="true"
+						aria-controls="todaysHearingColl">Today's Hearing<span
+						class="collapsed"><p>
+								<b>+</b>
+							</p></span> <span class="expanded"><p>
+								<b>-</b>
+							</p></span></a>
+				</div>
+				<div id="todaysHearingColl" class="collapse show">
+					<div class="card-body">
+						<div class="tableContainer">
+							<table datatable="ng" dt-options="vm.dtOptions1" dt-column-defs="vm.dtColumnDefs"
+								class="table table-bordered tableCls" width="100%"
+								id="todaysHearing">
+									<thead>
+				<tr>
+					<th class="noVis" data-priority="1">Case ID</th>					
+					<th data-priority="3">Company</th>
+					<th>Business</th>
+					<th>Vertical</th>
+					<th>Forum</th>
+					<th>Bench</th>
+					<th>Case Category</th>
+					<th>Case Type</th>	
+					<th>Case No</th>	
+					<th>Case Year</th>				
+					<th>Petitioner</th>
+					<th>AOR of Petitioner</th>
+					<th>Counsel of Petitioner</th>
+					<th>Respondent</th>					
+					<th>AOR of Respondent</th>
+					<th>Counsel of Respondent</th>
+					<th>Last Hearing</th>
+					<th>Next Hearing</th>	
+					<th>Status</th>	
+					<th>Further Dates</th>
+					<th>Business Rep</th>		
+					<th>Legal Rep</th>						
+					<th>Subject Matter</th>					
+					<th>Brief Facts</th>		
+					<th>Interim Prayer</th>		
+					<th>Final Prayer</th>		
+					<th>Outcome of Last Hearing</th>		
+					<th>Likely outcome of Next Hearing</th>		
+					<th>Financial Impact</th>
+					<th>Case Priority</th>		
+					<th>Assessment Year</th>
+					<th>Financial Year</th>		
+					<th>Amount of Disallowance</th>	
+					<th>State</th>
+					<th>Ref No</th>							
+					<th>Asset Segment</th>
+					<th>Trust Name</th>
+					<th>Account Name</th>
+					<th>Substitution Filed</th>
+					<th>Substitution Allowed</th>
+					<th>Interim Stay</th>
+					<th>Stay Order</th>
+									
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in vm.todayHearingArray track by item.caseID">
+					<td id = "caseID">{{item.caseID}} <p class = "notShow" ng-if = "item.docCount > 0"> <i class="fa fa-paperclip"></i>  </p> </td>				
+					<td>{{item.company}}</td>
+					<td>{{item.business}}</td>
+					<td>{{item.vertical}}</td>
+					<td>{{item.forum}}</td>	
+					<td >{{item.bench}}</td>
+					<td>{{item.caseType}}</td>
+					<td>{{item.caseTypeName}}</td>
+					<td>{{item.caseNo}}</td>	
+					<td>{{item.caseYear != 0 ? item.caseYear : ''  }}</td>
+					<td id = "petitioners" style = "text-align: left;word-break:break-word;" hm-read-more
+    hm-text="{{item.petitioners}}" 
+    hm-limit="150" 
+    hm-more-text=" more" 
+    hm-less-text=" less"
+    hm-dots-class="dots"></td>
+    <td >{{item.aorOfCompany}}</td>
+	<td >{{item.counselOfCompany}}</td>	
+	<td id = "respondents" style = "text-align: left;word-break:break-word;word-break:break-word;" hm-read-more
+    hm-text="{{item.respondents}}" 
+    hm-limit="150" 
+    hm-more-text=" more" 
+    hm-less-text=" less"
+    hm-dots-class="dots" ></td>
+					
+					
+					<td >{{item.aorOfRespondent}}</td>
+					
+					<td >{{item.counselOfRespondent}}</td>	
+					<td>{{item.lastHearingDate | date:'dd/MM/yyyy'}}</td>
+					<td>{{item.nextHearingDate | date:'dd/MM/yyyy'}}</td>
+					<td >{{item.statusName}}</td>
+					<td >{{item.furtherDates}}</td>	
+					<td  >{{item.businessRep}}</td>
+					<td  >{{item.legalRep}}</td>						
+					<td id = "subMatter" style = "text-align: left;word-break:break-word;" hm-read-more
+    hm-text="{{item.subMatter}}" 
+    hm-limit="150" 
+    hm-more-text=" more" 
+    hm-less-text=" less"
+    hm-dots-class="dots"></td>     
+    		
+					
+					
+					<td  >{{item.briefFacts}}</td>
+					<td  >{{item.interimPrayer}}</td>
+					<td  >{{item.finalPrayer}}</td>
+					<td  >{{item.outcomeLast}}</td>
+					<td  >{{item.outcomeNext}}</td>
+					<td >{{item.finImpact}}</td>
+					<td >{{item.categoryName}}</td>
+					<td >{{item.assessYear}}</td>
+					<td >{{item.finYear}}</td>
+					<td >{{item.amtOfDisallow}}</td>
+					<td>{{item.state}}</td>
+					<td >{{item.refNo}}</td>
+					<td>{{item.assetSegment}}</td>
+					<td>{{item.trustName}}</td>
+					<td>{{item.accountName}}</td>
+					<td>{{item.substitutionFiled}}</td>
+					<td>{{item.substitutionAllowed}}</td>
+					<td>{{item.interimStay}}</td>
+					<td>{{item.stayOrder}}</td>
+
+									</tr>
+								</tbody>
+
+							</table>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<br>
+
+
+
+			<div class="card">
+				<div class="card-header">
+					<a class="card-link" data-toggle="collapse"
+						data-target="#upcomingHearingColl" aria-expanded="false"
+						aria-controls="upcomingHearingColl">Upcoming Hearing<span
+						class="collapsed"><p>
+								<b>+</b>
+							</p></span> <span class="expanded"><p>
+								<b>-</b>
+							</p></span></a>
+				</div>
+				<div id="upcomingHearingColl" class="collapse">
+					<div class="card-body">
+						<div class="row">
+
+							<div class="col-md-3">
+								<LABEL>Start Date</LABEL> <input id="startDate" name="startDate"
+									class="form-control" placeholder="Select Start Date"
+									ng-model="vm.startDate">
+							</div>
+
+							<div class="col-md-3">
+								<label>End Date</label> <input id="endDate" name="endDate"
+									class="form-control" placeholder="Select End Date"
+									ng-model="vm.endDate">
+							</div>
+							<div class="col-md-4">
+								<label>State/Location</label> <select name="state" id="state"
+									ng-model="vm.state"
+									ng-options="item.id as item.name for item in vm.stateInfo | orderBy:'id'"
+									class="custom-select-sm form-control">
+								</select>
+							</div>
+							<div class="col-md-2" style="padding-top: 30px;">
+								<button class="btn btn-primary" ng-click="vm.fetchUpcoming()"
+									type="button">Submit</button>
+							</div>
+						</div>
+						<br>
+						<hr>
+						<br>
+
+						<div class="tableContainer" id="upcomingTable"
+							style="display: none;">
+							<table datatable="ng" dt-options="vm.dtOptions2" dt-column-defs="vm.dtColumnDefs"
+								class="table table-bordered tableCls" width="100%"
+								id="upcomingHearing">
+									<thead>
+				<tr>
+					<th class="noVis" data-priority="1">Case ID</th>					
+					<th data-priority="3">Company</th>
+					<th>Business</th>
+					<th>Vertical</th>
+					<th>Forum</th>
+					<th>Bench</th>
+					<th>Case Category</th>
+					<th>Case Type</th>	
+					<th>Case No</th>	
+					<th>Case Year</th>				
+					<th>Petitioner</th>
+					<th>AOR of Petitioner</th>
+					<th>Counsel of Petitioner</th>
+					<th>Respondent</th>					
+					<th>AOR of Respondent</th>
+					<th>Counsel of Respondent</th>
+					<th>Last Hearing</th>
+					<th>Next Hearing</th>	
+					<th>Status</th>	
+					<th>Further Dates</th>
+					<th>Business Rep</th>		
+					<th>Legal Rep</th>							
+					<th>Subject Matter</th>
+					<th>Brief Facts</th>		
+					<th>Interim Prayer</th>		
+					<th>Final Prayer</th>		
+					<th>Outcome of Last Hearing</th>		
+					<th>Likely outcome of Next Hearing</th>		
+					<th>Financial Impact</th>
+					<th>Case Priority</th>		
+					<th>Assessment Year</th>
+					<th>Financial Year</th>		
+					<th>Amount of Disallowance</th>	
+					<th>State</th>
+					<th>Ref No</th>							
+					<th>Asset Segment</th>
+					<th>Trust Name</th>
+					<th>Account Name</th>
+					<th>Substitution Filed</th>
+					<th>Substitution Allowed</th>
+					<th>Interim Stay</th>
+					<th>Stay Order</th>
+									
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in vm.upComingHearingArray track by item.caseID">
+					<td id = "caseID">{{item.caseID}} <p class = "notShow" ng-if = "item.docCount > 0"> <i class="fa fa-paperclip"></i>  </p> </td>				
+					<td>{{item.company}}</td>
+					<td>{{item.business}}</td>
+					<td>{{item.vertical}}</td>
+					<td>{{item.forum}}</td>	
+					<td >{{item.bench}}</td>
+					<td>{{item.caseType}}</td>
+					<td>{{item.caseTypeName}}</td>
+					<td>{{item.caseNo}}</td>	
+					<td>{{item.caseYear != 0 ? item.caseYear : ''  }}</td>
+					<td id = "petitioners" style = "text-align: left;" hm-read-more
+    hm-text="{{item.petitioners}}" 
+    hm-limit="150" 
+    hm-more-text=" more" 
+    hm-less-text=" less"
+    hm-dots-class="dots"></td>
+    <td >{{item.aorOfCompany}}</td>
+	<td >{{item.counselOfCompany}}</td>	
+	<td id = "respondents" style = "text-align: left;" hm-read-more
+    hm-text="{{item.respondents}}" 
+    hm-limit="150" 
+    hm-more-text=" more" 
+    hm-less-text=" less"
+    hm-dots-class="dots" ></td>
+					
+					
+					<td >{{item.aorOfRespondent}}</td>
+					
+					<td >{{item.counselOfRespondent}}</td>	
+					<td>{{item.lastHearingDate | date:'dd/MM/yyyy'}}</td>
+					<td>{{item.nextHearingDate | date:'dd/MM/yyyy'}}</td>
+					<td >{{item.statusName}}</td>
+					<td >{{item.furtherDates}}</td>	
+					<td  >{{item.businessRep}}</td>
+					<td  >{{item.legalRep}}</td>						
+					<td id = "subMatter" style = "text-align: left;" hm-read-more
+    hm-text="{{item.subMatter}}" 
+    hm-limit="150" 
+    hm-more-text=" more" 
+    hm-less-text=" less"
+    hm-dots-class="dots"></td>     
+    		
+					
+					
+					<td  >{{item.briefFacts}}</td>
+					<td  >{{item.interimPrayer}}</td>
+					<td  >{{item.finalPrayer}}</td>
+					<td  >{{item.outcomeLast}}</td>
+					<td  >{{item.outcomeNext}}</td>
+					<td >{{item.finImpact}}</td>
+					<td >{{item.categoryName}}</td>
+					<td >{{item.assessYear}}</td>
+					<td >{{item.finYear}}</td>
+					<td >{{item.amtOfDisallow}}</td>
+					<td>{{item.state}}</td>
+					<td >{{item.refNo}}</td>
+					<td>{{item.assetSegment}}</td>
+					<td>{{item.trustName}}</td>
+					<td>{{item.accountName}}</td>
+					<td>{{item.substitutionFiled}}</td>
+					<td>{{item.substitutionAllowed}}</td>
+					<td>{{item.interimStay}}</td>
+					<td>{{item.stayOrder}}</td>
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+
+			<br>
+
+
+			<div class="card"
+				>
+				<div class="card-header">
+					<a class="card-link" data-toggle="collapse" data-toggle="collapse"
+						data-target="#newAlertsColl" aria-expanded="false"
+						aria-controls="newAlertsColl">New Alerts<span
+						class="collapsed"><p>
+								<b>+</b>
+							</p></span> <span class="expanded"><p>
+								<b>-</b>
+							</p></span></a>
+				</div>
+				<div id="newAlertsColl" class="collapse">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-3">
+								<label>Company</label> <select name="company" id="company"
+									ng-model="vm.form.company" required
+									ng-options="item.id as item.name for item in vm.compArrayInfo"
+									class="custom-select-sm form-control">
+								</select>
+							</div>
+							<div class="col-md-3">
+								<label>Notification Type</label> <select name="notificationType"
+									id="notificationType" ng-model="vm.form.notificationType"
+									required
+									ng-options="item.id as item.desc for item in vm.notificationTypeInfo"
+									class="custom-select-sm form-control">
+								</select>
+							</div>
+
+							<div class="col-md-2">
+								<LABEL>Start Date</LABEL> <input id="startDateAlert"
+									name="startDateAlert" class="form-control"
+									placeholder="Select Start Date" ng-model="vm.form.startDate">
+							</div>
+
+							<div class="col-md-2">
+								<label>End Date</label> <input id="endDateAlert"
+									name="endDateAlert" class="form-control"
+									placeholder="Select End Date" ng-model="vm.form.endDate">
+							</div>
+
+							<div class="col-md-2" style="padding-top: 30px;">
+								<button class="btn btn-primary" ng-click="vm.searchAlert()"
+									type="button">Submit</button>
+							</div>
+						</div>
+						<br>
+						<hr>
+
+
+
+						<br>
+
+						<div class="tableContainer" id="alertsTable"
+							style="display: none;">
+							<table datatable="ng" dt-options="vm.dtOptions3"
+								class="table table-bordered tableCls" width="100%"
+								id="newAlerts">
+								<thead>
+									<tr>
+
+										<th data-priority="1">Alert ID</th>
+										<th data-priority="2">Company</th>
+										<th data-priority="3">Forum</th>
+										<th data-priority="4">Case Type</th>
+										<th>Court Case No</th>
+										<th>Petitioner</th>
+										<th>Respondent</th>
+										<th>Subject Matter</th>
+										<th>Next Hearing</th>
+										<th>Notification Type</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in vm.newAlertsArray">
+
+										<td>{{item.id}}</td>
+										<td>{{item.companyName}}</td>
+										<td>{{item.forumName}}</td>
+										<td>{{item.caseType}}</td>
+										<td>{{item.caseNo}}</td>
+										<td>{{item.petitioner}}</td>
+										<td>{{item.respondent}}</td>
+										<td>{{item.subMatter}}</td>
+										<td>{{item.nextHearingDate}}</td>
+										<td>{{item.notificationType | titleCase}}</td>
+										<td>{{item.updateType}}</td>
+									</tr>
+								</tbody>
+
+							</table>
+
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
+	<br>
+
+</div>
+
+<script type="text/ng-template" id="viewAlert.html">
+	<div class ="container">
+    	<div class="modal-header row text-center" style = "border-bottom :2px dashed #ddd;margin:0 5px;"  >
+			<div class = "col-sm-3">
+			<img  style = "width: 200px;height: auto;" src = "app/img/logo.png" />
+            </div>
+			<div class = "col-sm-7 blueColor"><h5 class="blueColor modal-title" style = "font-weight:600;">Alert Details for  ID {{vm.alertID}} as of {{ vm.today | date }}</h5>
+			
+			</div>
+			<div class = "col-sm-2" style = "text-align:right;">
+			<button  class="btn btn-primary" ng-click="$dismiss('cancel')" type="button">Close</button>
+       		</div>
+        </div>
+		
+        <div class="modal-body" id = "viewAllMatter">
+			<div >
+				
+    			<div class = "row" >
+     				
+        				<div class = "col-sm-2 blueColor" style = "text-align: right;font-size:15px;"><strong>Company :</strong></div>
+						<div class = "col-sm-4" style = "font-size:14px;"> {{vm.companyName}}
+							<!-- <select ng-disabled = "vm.showContainer" name="company" id = "company" ng-model="vm.company" 
+						    	required ng-options = "item.id as item.name for item in vm.companyInfo" ng-change = "vm.fetchCompanyMaster(vm.company)" class="custom-select-sm form-control" >
+								</select> -->
+							
+						</div> 		
+						<div class = "col-sm-2 blueColor" style = "text-align: right;font-size:15px;"><strong>Case Category :</strong></div>
+						<div class = "col-sm-4" style = "font-size:14px;">{{}}
+							<!--	<select name="caseTypeLMMS" id = "caseTypeLMMS" ng-model="vm.caseTypeLMMS" 
+								ng-disabled = "vm.showContainer"  class="custom-select-sm form-control" ng-required="true">
+									 <option ng-repeat="item in vm.caseTypeInfo" value="{{item.id-0}}">{{item.name}}</option>
+								</select> -->
+						</div>
+      				
+	  			</div>
+
+				<div class = "row" >     				
+        				<div class = "col-sm-2 blueColor" style = "text-align: right;font-size:15px;"><strong>Business :</strong></div>
+						<div class = "col-sm-4" style = "font-size:14px;"> {{vm.businessName}}
+					<!-- <select name="business" id = "business" ng-model="vm.business" ng-change="vm.fetchVerticalMaster(vm.business)"
+						    	ng-disabled = "vm.showContainer"  ng-options = "item.id as item.name for item in vm.businessInfo" class="custom-select-sm form-control" required>
+								</select> -->
+</div> 
+						<div class = "col-sm-2 blueColor" style = "text-align: right;font-size:15px;"><strong>Forum :</strong></div>
+						<div class = "col-sm-4" style = "font-size:14px;">{{ vm.forumName }}</div>
+				</div>
+						
+				<div class = "row" >     				
+        				<div class = "col-sm-2 blueColor" style = "text-align: right;font-size:15px;"><strong>Vertical :</strong></div>
+						<div class = "col-sm-4" style = "font-size:14px;">{{vm.verticalName}}
+						<!-- <select name="vertical" id = "vertical" ng-model="vm.vertical" 
+						    ng-disabled = "vm.showContainer"	 ng-options = "item.id as item.name for item in vm.verticalInfo" class="custom-select-sm form-control" required>
+									 
+								</select> -->
+
+						</div>
+						<div class = "col-sm-2 blueColor" style = "text-align: right;font-size:15px;"><strong>Case Type :</strong></div>
+						<div class = "col-sm-4" style = "font-size:14px;">{{vm.caseType}}</div>  
+				</div>
+				
+				
+	<br>
+	  <div class = "row">
+      <div class="col-sm-12">
+      	<table class="table" id = "viewPopupTable">
+      		<tbody>	
+      			<tr>
+      				
+      				<td class = "blueColor" style = "font-weight:600;"> Court Case No</td>
+      				<td>{{vm.caseNo}} </td>
+				
+      				<td class = "blueColor" style = "font-weight:600;">Bench</td>
+      				<td colspan = "4"> {{vm.bench}}</td>
+					  				
+      			</tr>
+				
+      			<tr>
+      			
+      				<td class = "blueColor" style = "font-weight:600;">Petitioner</td>
+      				<td ng-bind-html = "vm.petitioner" class = "bindHTML"> </td>
+				
+      				<td class = "blueColor" style = "font-weight:600;">Respondent</td>
+      				<td ng-bind-html = "vm.respondent" class = "bindHTML"> </td>
+      				
+      				
+      			</tr>
+				
+			
+				
+				<tr>
+      				
+      				<td class = "blueColor" style = "font-weight:600;">Counsel for Petitioner</td>
+      				<td> {{vm.counselOfCompany}}</td> 					
+					
+					<td class = "blueColor" style = "font-weight:600;">Counsel for Respondent</td>
+      				<td> {{vm.counselOfRespondent}}</td>   				
+      			</tr>	
+				
+				
+				
+				<tr>
+					
+      				<td class = "blueColor" style = "font-weight:600;">Subject Matter</td>
+      				<td colspan = "4"> {{vm.subMatter}}</td>    
+				</tr>
+				
+				
+			
+				
+				<tr>
+      				
+					<td class = "blueColor" style = "font-weight:600;">Next Hearing</td>
+      				<td> {{vm.nextHearingDate}}</td>
+					
+					<td class = "blueColor" style = "font-weight:600;"> Case Status</td>
+      				<td>{{vm.caseStatus}} </td> 
+					
+      			</tr>
+
+				<tr>
+      			
+					<td class = "blueColor" style = "font-weight:600;">Dairy No</td>
+      				<td> {{vm.dairyNo}}</td>
+					
+					<td class = "blueColor" style = "font-weight:600;"> Notification Type</td>
+      				<td>{{vm.notificationType | titleCase}} </td> 
+					
+      			</tr>
+
+				
+      		</tbody>
+      	</table>
+	<div id = "actionContainer"  style = "display:none;">
+		<div class = "row" ng-if = "vm.notificationType == 'proactive_alert'">
+			<div class = "col-sm-2"></div>
+			<div class = "col-sm-3 blueColor"><strong>Action <span class = "error-message">*</span></strong></div>
+			<div class = "col-sm-4">
+				<select name="action" id = "action" ng-model="vm.action" required
+				 ng-options = "item.id as item.name for item in vm.alertActionInfo" ng-change = "vm.changeAction(vm.action)" class="custom-select-sm form-control" >
+					
+			</select>
+			</div>
+			<div class = "col-sm-2"></div>
+		</div>
+		<br>
+		<div ng-if = "vm.action == 1">
+			<div class = "row">
+				<div class = "col-sm-5"></div>				
+				<div class = "col-sm-7" style = "font-size : 12px;">
+					You will be redirected to New Case Add page to create a case.
+				</div>
+				
+			
+			</div>
+		</div>
+		
+		<div ng-if = "vm.action == 2 || vm.notificationType != 'proactive_alert'">
+			<div class = "row">
+				<div class = "col-sm-2"></div>
+				<div class = "col-sm-3 blueColor"><strong>Please provide existing case ID <span class = "error-message">*</span></strong></div>
+				<div class = "col-sm-4">
+					<input  required type="text" num-only class="form-control" ng-model="vm.existingCaseID"  name = "existingCaseID" id="existingCaseID" >										  
+				</div>
+			<div class = "col-sm-2"></div>
+		</div>
+		
+		<br>
+		<div class = "row">
+			<div class = "col-sm-2"></div>
+			<div class = "col-sm-3 blueColor"><strong>Remark <span class = "error-message">*</span> </strong></div>
+			<div class = "col-sm-4">
+				<textarea required type="text" class="form-control" ng-model="vm.remark"  name = "rejectRemark" id="rejectRemark" ></textarea>										  
+			</div>
+			<div class = "col-sm-2"></div>
+		</div>
+
+		</div>
+	
+		<div ng-if = "vm.action == 3">
+			<div class = "row">
+				<div class = "col-sm-2"></div>
+				<div class = "col-sm-3 blueColor"><strong>Remark <span class = "error-message">*</span></strong></div>
+				<div class = "col-sm-4">
+					<textarea required type="text" class="form-control" ng-model="vm.remark"  name = "rejectRemark" id="rejectRemark" ></textarea>										  
+				</div>
+				<div class = "col-sm-2"></div>
+			</div>
+		</div>
+	</div>
+
+      </div>
+	  </div>
+    </div>
+        </div>
+		
+   </div>     
+  	</script>
+
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$('#endDate, #endDateAlert').datepicker({
+			format : 'dd/mm/yyyy'
+
+		});
+		$('#endDate, #endDateAlert').on('changeDate', function(ev) {
+			$(this).datepicker('hide');
+		});
+
+		$('#startDate, #startDateAlert').datepicker({
+			format : 'dd/mm/yyyy'
+
+		});
+		$('#startDate, #startDateAlert').on('changeDate', function(ev) {
+			$(this).datepicker('hide');
+		});
+	});
+</script>
+<script id="print-header" type="text/x-jquery-tmpl">
+   <!DOCTYPE html>
+   <head>
+
+       <title>Law Matters Management System</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+    <link rel="stylesheet" href="./app/lib/bootstrap/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="./app/lib/multiselect/bootstrap-select.css">
+    
+
+    <link rel="stylesheet" href="./app/lib/fontawesome/all.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/datatables/jquery.dataTables.min.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/angular-datatables-0.6.2/dist/plugins/bootstrap/datatables.bootstrap.min.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/moment/multi-date-picker.css"  type="text/css" crossorigin="anonymous">
+	<link rel="stylesheet" href="./app/lib/multiselect/bootstrap-multiselect.css">
+    
+    <link rel="stylesheet" href="./app/css/common.css" >
+    <link rel="stylesheet" href="./app/css/media.css" >
+ 	<link rel="stylesheet" href="./app/css/login.css" >
+ 	<link rel="stylesheet" href="./app/css/dashboard.css" >
+
+   
+  <style>
+
+@media print {
+    body {
+    color: black;
+    background : white;
+ 	font-size: 14pt; 
+    }
+
+	#viewPopupTable tr, #viewPopupTable th, #viewPopupTable td {
+	
+    font-size: 17px !important;
+}
+.col-sm-3 {
+	font-size : 18px !important;
+}
+}
+ body {
+    color: black;
+    background : white;
+ 	font-size: 14pt; 
+    }
+
+	#viewPopupTable tr, #viewPopupTable th, #viewPopupTable td {
+	
+    font-size: 17px !important;
+}
+.col-sm-3 {
+	font-size : 18px !important;
+}
+    .cardTable td, .cardTable th {
+   padding : 5px;
+}
+
+.cardTable th{
+	color : #005199;
+}
+.cardTable tr, .cardTable th, .cardTable td {
+	border: 1px dashed #005199;
+    font-size: 17px;
+}  
+       
+       </style>
+	
+   </head>
+   <body onload="window.print()">
+  
+</script>
+<script id="print-footer" type="text/x-jquery-tmpl">
+    </body>
+    </html>
+</script>
+
+
+
+
+
+

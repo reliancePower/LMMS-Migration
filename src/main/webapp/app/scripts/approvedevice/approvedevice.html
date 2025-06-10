@@ -1,0 +1,64 @@
+<div id = "approveContainer" >
+	<br>
+	<div class = "container-fluid">
+	
+		<div class="tableContainer">
+    		<table datatable = "ng"  dt-options = "vm.dtOptions" class="table table-bordered tableCls" style="width:100%" id = "todaysHearing">
+    		<thead>
+    			<tr>
+    				
+    				<th data-priority = "3">User ID</th> 
+    				<th data-priority = "1">Name</th>    				
+    				<th>Company</th>
+    				<th>Email ID</th>
+	    			<th>No.of Devices Requested</th>
+	    			<th>Device Unique ID</th>
+	    			<th>Device Type</th>
+	    			<th>Device Manufacturer</th>
+	    			<th>Device Version</th>	    			
+	    			<th >Request Date</th>
+	    			<th data-priority = "2">*</th>
+	    			
+    			</tr>
+    		</thead>
+    		<tbody>    		
+	    		<tr ng-repeat="item in vm.approveRequestArray" >
+	    			
+	    			<td>{{item.userID}}</td>	    		
+	    			<td>{{item.name}}</td>
+	    			<td>{{item.company}}</td>	    			
+	    			<td>{{item.emailID}}</td>
+	    			<td>{{item.deviceNo}}</td>
+	    			<td>{{item.deviceUID}}</td>
+	    			<td>{{item.deviceType}}</td>
+	    			<td>{{item.deviceManufact}}</td>
+	    			<td>{{item.deviceVersion}}</td>
+	    			<td>{{item.requestDate}}</td>
+	    			<td style="text-align: center;">
+	    			<div class = "button-group">
+						<button type = "button" ng-click="vm.approveUserReq(item)"><i class="fa fa-check bn" ></i></button>
+						<button type = "button" ng-click="vm.rejectUserReq(item)"><i class="fas fa-times bn" ></i></button>
+				   </div>
+				   </td>
+	    			    	     	
+	    		</tr>	    		
+    		</tbody>
+    		 
+    		</table>
+		
+		</div>
+		
+	</div>
+	<br>
+
+
+
+	
+</div>
+
+
+
+
+
+
+  

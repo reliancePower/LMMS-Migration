@@ -1,0 +1,550 @@
+<div id="viewContainer" class="container-fluid">
+	<br>
+	<div class="row" style="text-align: center;">
+		<div class="col-sm-3">
+			<button type="button" class="btn btn-primary text-center"
+				ng-click="vm.goBack()">Back</button>
+		</div>
+		<div class="col-sm-6" style="text-align: left;">
+			<h4 class="blueColor">Manage Documents for case ID -
+				{{vm.caseID}}</h4>
+		</div>
+		<div class="col-sm-3" style="text-align: center;">
+			<button type="button" class="btn btn-info" ng-click="vm.AddNewDoc()">
+				Add New <i style="color: white !important;" class="fas fa-plus"></i>
+			</button>
+			<button style="text-align: right;" class="btn btn-primary"
+				ng-click="vm.goBack()" type="button">Close</button>
+		</div>
+	</div>
+
+	<br>
+	<div id="caseInfoContainer"
+		style="background: white; padding: 0 0 10px 0;">
+		<h5 class="titleCont">Case Info</h5>
+		<div class="row">
+
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Company :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{vm.company}}</div>
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Case Category :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{ vm.caseType
+				}}</div>
+
+		</div>
+		<div class="row">
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Business :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{vm.business}}</div>
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Case No :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{ vm.caseNo }}</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Vertical :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{vm.vertical}}</div>
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong> Forum :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{ vm.forum }}</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Subject Matter :</strong>
+			</div>
+			<div class="col-sm-9" style="font-size: 16px;">{{vm.subMatter}}</div>
+		</div>
+	</div>
+
+	<br>
+	<div id="docUploadContainer" style="background: white;display:none;"
+		class="container collapse">
+
+		<h5 class="titleCont">
+			Upload documents <i>(only PDF, Word, Excel and Zip files are
+				allowed) </i>
+		</h5>
+		<form id="docUploadForm" name="docUploadForm" method="POST"
+			action="./DocumentUpload" enctype="multipart/form-data"
+			ng-submit="vm.showLoader()">
+			<div class="row">
+
+				<div class="form-group col-sm-4">
+					<label for="docType">Document Type :<span
+						class="error-message">*</span>
+					</label> <select name="docType" id="docType" ng-model="vm.form.docType"
+						class="form-control" ng-required=true>
+						<option ng-repeat="item in vm.docTypeInfo" value="{{item.id-0}}">{{item.name}}</option>
+					</select>
+				</div>
+
+
+				<div class="form-group col-sm-4">
+					<label for="docDesc">Description :<span
+						class="error-message">*</span>
+					</label>
+					<textarea speclchars name="docDesc" id="docDesc"
+						ng-model="vm.form.docDesc" required class="form-control" rows="3"
+						maxlength="100"></textarea>
+				</div>
+
+
+				<div class="form-group col-sm-4">
+					<label for="docDate">Document Date : <span
+						class="error-message">*</span></label>
+					<div class="input-group">
+						<span class="input-group-addon"> <i
+							class="fas fa-calendar-alt"></i>
+						</span> <input id="docDate" type="text" autocomplete="off"
+							ng-change="vm.onChangeDate()" required name="docDate"
+							class="form-control" autocomplate="off"
+							placeholder="Select document date" ng-model="vm.form.docDate">
+					</div>
+				</div>
+
+				<input id="docDateFormat" type="hidden" name="docDateFormat"
+					value="" /> <input id="isChecked" type="hidden" name="isChecked"
+					value="{{vm.form.isChecked}}" /> <input type="hidden"
+					name="caseID" id="caseID" value="{{vm.caseID}}" /> <input
+					type="hidden" name="userID" id="userID" value="{{vm.userID}}" /> <input
+					type="hidden" name="authUsersM" id="authUsersM"
+					value="{{vm.userList}}" />
+			</div>
+
+			<div class="row">
+
+				<div class="form-group col-sm-4">
+					<div class="custom-control custom-checkbox mb-3">
+						<input type="checkbox" class="custom-control-input"
+							ng-model="vm.form.isConfidential" id="isConfidential1" value="F"
+							name="isConfidential"
+							ng-change="vm.getCheckBoxVal(vm.form.isConfidential)"> <label
+							class="custom-control-label" for="isConfidential1">Confidential</label>
+					</div>
+				</div>
+
+				<div class="form-group col-sm-4" id="userCtn" style="display: none;">
+					<label for="authUsers">Authorized Users : <span
+						class="error-message">*</span></label> <select name="authUsers"
+						multiple="multiple" ng-change="vm.fetchUsers()" id="authUsers"
+						ng-model="vm.form.authUsers"
+						ng-options="item.userID as item.userName for item in vm.authUsersInfo"
+						class="custom-select-sm form-control">
+					</select>
+					<p class="error-message">You must select your name if you want
+						to access this document in future.</p>
+				</div>
+
+				<div class="form-group col-sm-4">
+					<label for="docFile">File :<span class="error-message">*</span>
+					</label> <input type="file" name="docFile" required id="docFile"
+						ng-model="vm.form.docFile"
+						
+						accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/zip,application/rar"
+						class="form-control " />
+				</div>
+			</div>
+
+			<div class="row text-center">
+				<div class="col-sm-3"></div>
+				<div class="col-sm-6">
+					<button type="submit" class="btn btn-primary text-center"
+						id="uploadBtn"
+						ng-disabled="(vm.form.isConfidential) && (vm.form.authUsers == '')">Upload</button>
+					<button ng-click="vm.resetForm()" type="button"
+						class="btn btn-danger text-center">Clear</button>
+				</div>
+				<div class="col-sm-3"></div>
+			</div>
+		</form>
+	</div>
+
+	<br>
+	<div  style = "text-align:left;" ng-if="vm.docArray.length > 0">
+	
+	<form target="_blank" action="./DocumentDownloadAll"  method="POST"
+								style="display: inline;">
+								<input type="hidden" name="userName" value="{{vm.userName}}">
+								<input type="hidden" name="userID" value="{{vm.userID}}">
+								<input type="hidden" name="caseID" value="{{vm.caseID}}"> 
+								<input type="hidden" name="userType" value="{{vm.userType}}">
+								<input type="hidden" name="caseDocView" value="{{vm.caseDocView}}">
+								
+								<button class = "btn btn-primary" type="submit" title="Download All">
+									Download All
+								</button>
+							</form>
+		<p  class="error-message"
+			style="font-size: 13px; margin-top: 4px;">Note - Documents which you have access will be downloaded as a Zip file. Refer the Zip file with the Case ID in the 'Downloads' folder.</p>
+		
+	</div>
+	
+	<br>
+	<div id="docDetailsContainer" class="" style="background: white;">
+		<h5 class="titleCont">List of Documents</h5>
+		<table style="padding: 5px;" datatable="ng" dt-options="vm.dtOptions"
+			id="viewTable" class="table table-bordered tableCls container-fluid"
+			width="100%">
+			<thead>
+				<tr>
+					<th>S.No</th>
+					<th>Document Type</th>
+					<th>Document Desc.</th>
+					<th>File Name</th>
+					<th>File Size</th>
+					<th>Document Date</th>
+					<th>Uploaded On</th>
+					<th>Uploaded By</th>
+
+					<th style="text-align: center;">*</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="val in vm.docArray">
+
+					<td>{{$index+1}}
+						<p class="notShow" ng-if="val.isConfidential == 'T'">
+							<i class="fas fa-lock"></i>
+						</p>
+					</td>
+					<td>{{val.docTypeName}}</td>
+					<td>{{val.fileDesc}}</td>
+					<td>{{val.fileName}}</td>
+					<td>{{val.fileSize}}</td>
+					<td>{{val.docDate}}</td>
+					<td>{{val.timestamp}}</td>
+					<td>{{val.userName == undefined ? "CIS" : val.userName}}</td>
+					<td style="text-align: center;">
+						<div
+							ng-if="(vm.userType == 'Admin') && (val.source != 'CIS') && (val.isConfidential == 'T') && (val.authUsers.indexOf(vm.userID) > -1)"
+							class="button-group">
+							<form target="_blank" action="./DocumentViewer"  method="POST"
+								style="display: inline;">
+								<input type="hidden" name="fileName" value="{{val.fileName}}">
+								<input type="hidden" name="userName" value="{{vm.userName}}">
+								<input type="hidden" name="userID" value="{{vm.userID}}">
+								<input type="hidden" name="docID" value="{{val.id}}"> <input
+									type="hidden" name="isConfidential"
+									value="{{val.isConfidential}}"> <input type="hidden"
+									name="paperID" value="{{val.mongoID}}">
+
+								<button type="submit" title="View Document">
+									<i class="fas fa-eye bn"></i>
+								</button>
+							</form>
+							<button type="button" ng-click="vm.editDocItem($index)"
+								title="Edit Document Info">
+								<i class="far fa-edit bn"></i>
+							</button>
+
+							<button type="button" ng-click="vm.disableDocItem(val)"
+								title="Delete Document">
+								<i class="fa fa-trash bn"></i>
+							</button>
+
+						</div>
+						<div
+							ng-else-if="(vm.userType == 'Admin') && (val.source != 'CIS') && (val.isConfidential == 'T') && !(val.authUsers.indexOf(vm.userID) > -1)"
+							class="button-group">
+
+							<button type="button" ng-click="vm.editDocItem($index)"
+								title="Edit Document Info">
+								<i class="far fa-edit bn"></i>
+							</button>
+
+							<button type="button" ng-click="vm.disableDocItem(val)"
+								title="Delete Document">
+								<i class="fa fa-trash bn"></i>
+							</button>
+
+							<button type="button"
+								ng-click="vm.showLockModal(val.authUsersName)"
+								title="Restricted access : {{val.authUsersName}}">
+								<i class="fas fa-lock bn"></i>
+							</button>
+
+						</div>
+						<div
+							ng-else-if="((val.source == 'CIS') && (val.isConfidential != 'T'))"
+							class="button-group">
+							<form target="_blank" action="./DocumentViewer" " method="POST"
+								style="display: inline;">
+								<input type="hidden" name="fileName" value="{{val.fileName}}">
+								<input type="hidden" name="userName" value="{{vm.userName}}">
+								<input type="hidden" name="userID" value="{{vm.userID}}">
+								<input type="hidden" name="docID" value="{{val.id}}"> <input
+									type="hidden" name="isConfidential"
+									value="{{val.isConfidential}}"> <input type="hidden"
+									name="paperID" value="{{val.mongoID}}">
+
+								<button type="submit" title="View Document">
+									<i class="fas fa-eye bn"></i>
+								</button>
+							</form>
+
+							<button type="button" ng-click="vm.editDocItem($index)"
+								title="Edit Document Info">
+								<i class="far fa-edit bn"></i>
+							</button>
+
+							<button type="button" ng-click="vm.disableDocItem(val)"
+								title="Delete Document">
+								<i class="fa fa-trash bn"></i>
+							</button>
+						</div>
+
+						<div
+							ng-else-if="((val.source != 'CIS') && (val.isConfidential == 'T') && (val.authUsers.indexOf(vm.userID) > -1))"
+							class="button-group">
+
+							<form target="_blank" action="./DocumentViewer" " method="POST"
+								style="display: inline;">
+								<input type="hidden" name="fileName" value="{{val.fileName}}">
+								<input type="hidden" name="userName" value="{{vm.userName}}">
+								<input type="hidden" name="userID" value="{{vm.userID}}">
+								<input type="hidden" name="docID" value="{{val.id}}"> <input
+									type="hidden" name="isConfidential"
+									value="{{val.isConfidential}}"> <input type="hidden"
+									name="paperID" value="{{val.mongoID}}">
+
+								<button type="submit" title="View Document">
+									<i class="fas fa-eye bn"></i>
+								</button>
+							</form>
+
+							<button type="button" ng-click="vm.editDocItem($index)"
+								title="Edit Document Info">
+								<i class="far fa-edit bn"></i>
+							</button>
+
+							<button type="button" ng-click="vm.disableDocItem(val)"
+								title="Delete Document">
+								<i class="fa fa-trash bn"></i>
+							</button>
+
+						</div>
+
+
+						<div
+							ng-else-if="((val.source != 'CIS') && (val.isConfidential == 'T') && (vm.userID == val.createdBy) && (!(val.authUsers.indexOf(vm.userID) > -1)))"
+							class="button-group">
+
+							<button type="button" ng-click="vm.editDocItem($index)"
+								title="Edit Document Info">
+								<i class="far fa-edit bn"></i>
+							</button>
+
+							<button type="button" ng-click="vm.disableDocItem(val)"
+								title="Delete Document">
+								<i class="fa fa-trash bn"></i>
+							</button>
+
+							<button type="button"
+								ng-click="vm.showLockModal(val.authUsersName)"
+								title="Restricted access : {{val.authUsersName}}">
+								<i class="fas fa-lock bn"></i>
+							</button>
+
+						</div>
+
+
+						<div
+							ng-else-if="((val.source != 'CIS') && (val.isConfidential != 'T') && ((vm.caseDocView == 'Y') || (vm.userID == val.createdBy)))"
+							class="button-group">
+							<form target="_blank" action="./DocumentViewer" " method="POST"
+								style="display: inline;">
+								<input type="hidden" name="fileName" value="{{val.fileName}}">
+								<input type="hidden" name="userName" value="{{vm.userName}}">
+								<input type="hidden" name="userID" value="{{vm.userID}}">
+								<input type="hidden" name="docID" value="{{val.id}}"> <input
+									type="hidden" name="isConfidential"
+									value="{{val.isConfidential}}"> <input type="hidden"
+									name="paperID" value="{{val.mongoID}}">
+								<button type="submit" title="View Document">
+									<i class="fas fa-eye bn"></i>
+								</button>
+							</form>
+
+							<button type="button" ng-click="vm.editDocItem($index)"
+								title="Edit Document Info">
+								<i class="far fa-edit bn"></i>
+							</button>
+
+							<button type="button" ng-click="vm.disableDocItem(val)"
+								title="Delete Document">
+								<i class="fa fa-trash bn"></i>
+							</button>
+						</div>
+
+						<div ng-else>
+							<button type="button"
+								ng-click="vm.showLockModal(val.authUsersName)"
+								title="Restricted access : {{val.authUsersName}}">
+								<i class="fas fa-lock bn"></i>
+							</button>
+
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script type="text/ng-template" id="editDoc.html">
+    	<div class="modal-header row text-center" style = "border-bottom :2px dashed #ddd;margin: 0 5px;"  >
+			
+			<div class = "col-sm-9 blueColor">
+				<h5 class="blueColor modal-title" style = "font-weight:600;">Edit Document details </h5>
+			</div>			
+			<div class = "col-sm-3" style = "text-align:right;">
+				<button  class="btn btn-primary" ng-click="$dismiss('cancel')" type="button">Close</button>
+       		</div>
+        </div>
+		
+        <div class="modal-body" id = "viewAllMatter">
+			<div class="" style = "margin-left:5px;margin-right:25px;">
+				<form novalidate id="docUploadForm" name="docUploadForm" method="POST"
+			action="./DocumentUpload" style="padding: 25px 15px;"
+			enctype="multipart/form-data">
+			<div class="row">
+
+			
+					<label for="docType">Document Type :<span
+						class="error-message">*</span> </label> <select
+						name="docType" id="docType" ng-model="vm.editform.docType"
+						class="form-control" required="required">
+						<option ng-repeat="item in vm.docTypeInfo" value="{{item.id-0}}">{{item.name}}</option>
+					</select>
+
+
+				</div>
+<br>
+
+			<div class="row">
+					<label for="docDesc">Description : <span
+						class="error-message">*</span> </label>
+					<textarea speclchars name="docDesc" id="docDesc" ng-model="vm.editform.docDesc"
+						required class="form-control" ng-maxlength="40"
+						ng-class="{'has-error': docUploadForm.docDesc.$error.maxlength}"></textarea>
+
+				</div>
+
+<br>
+<div class = "row">
+<label for="docDate">Document Date : <span class = "error-message">*</span></label> 
+					<div class="input-group">
+						<span class="input-group-addon"> <i
+							class="fas fa-calendar-alt"></i>
+						</span> <input id="docDateEdit" type = "text" required name="docDateEdit" class="form-control"
+							autocomplate = "off" placeholder="Select document date" ng-model="vm.editform.docDate">
+					</div>
+
+				</div>
+<br>
+<div class = "row">
+	<div class="custom-control custom-checkbox mb-3">
+						<input type="checkbox" class="custom-control-input"
+							ng-model="vm.editform.isConfidential" id="isConfidential2" 
+							name="isConfidential2" > <label
+							class="custom-control-label" for="isConfidential2">Confidential</label>
+					</div>
+</div>
+<br>
+<div class = "row" ng-if = "vm.editform.isConfidential" id = "authID">
+	<label for="authUsers">Authorized Users : <span
+									class="error-message">*</span></label> 
+
+				<select name="authUsers" multiple="multiple" ng-change="vm.fetchEditUsers()"
+									id="authUsers" ng-model="vm.editform.authUsers" required="required"
+									ng-options="item.userID as item.userName for item in vm.authUsersInfo"
+									
+									class="custom-select-sm form-control">
+								</select>
+<p class="error-message">You must select your name if you want
+						to access this document in future.</p>
+</div>
+			</form>
+<div class = "row text-center">
+<div class = "col-sm-2"></div>
+<div class = "col-sm-8">
+<button  type="button" class="btn btn-primary text-center" ng-click = "vm.editDoc()" id = "editBtn">Save</button>
+					<button ng-click="$dismiss('cancel')" type="button"
+						class="btn btn-danger text-center">Cancel</button>
+</div><div class = "col-sm-2"></div>
+</div>
+				
+			</div>
+		</div>
+</script>
+
+<script type="text/ng-template" id="lock.html">
+    	<div class="modal-header row text-center" style = "border-bottom :2px dashed #ddd;margin: 0 5px;"  >
+			
+			<div class = "col-sm-9 blueColor">
+				<h5 class="blueColor modal-title" style = "font-weight:600;">Confidential Document </h5>
+			</div>			
+			<div class = "col-sm-3" style = "text-align:right;">
+				<button  class="btn btn-primary" ng-click="$dismiss('cancel')" type="button">Close</button>
+       		</div>
+        </div>
+		
+        <div class="modal-body" >
+			<p>You do not have the access to view this document currently. </p>
+
+<div id = "lockInfo" ng-bind-html = "vm.lockInfo"></div> 
+
+				
+			</div>
+		</div>
+</script>
+
+<script type="text/javascript">
+	window.onload = function() {
+		var txts = document.getElementsByTagName('TEXTAREA');
+
+		for (var i = 0, l = txts.length; i < l; i++) {
+			if (/^[0-9]+$/.test(txts[i].getAttribute("maxlength"))) {
+				var func = function() {
+					var len = parseInt(this.getAttribute("maxlength"), 10);
+
+					if (this.value.length > len) {
+						alert('Maximum length exceeded: ' + len);
+						this.value = this.value.substr(0, len);
+						return false;
+					}
+				}
+
+				txts[i].onkeyup = func;
+				txts[i].onblur = func;
+			}
+		}
+		;
+	}
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#docDate, #docDateEdit').datepicker({
+			format : 'dd/mm/yyyy',
+			todayHighlight : true
+
+		});
+	});
+</script>

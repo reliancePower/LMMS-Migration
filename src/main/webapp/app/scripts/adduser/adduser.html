@@ -1,0 +1,190 @@
+<div id = "addCaseContainer" >
+	<br>
+	
+	<div class = "container-fluid">
+		<div class = "row">
+			
+			<div class = "col-sm-12">
+					<form novalidate id ="addNewUserForm" name = "addNewUserForm">
+						  	<div class = "row"> 
+					  	
+					  		<div class="form-group col-sm-4">
+						    	<label for="company" >Company : <span class = "error-message">*</span></label>
+						    	<select   name="company" id = "company" ng-model="vm.form.company" 
+									multiple="multiple" class="form-control" required>
+									 <option ng-repeat="item in vm.companyInfo" value="{{item.id-0}}">{{item.name}}</option>
+								</select>
+								
+								<p ng-show="addNewUserForm.company.$invalid || (addNewUserForm.company.$touched && addNewUserForm.company.$pristine)" class="error-message">
+		                          Company must be selected
+		                        </p>
+						  	</div>
+						  	
+						  	
+						  	<div class="form-group col-sm-4">
+						    	<label for="business" >Business : <span class = "error-message">*</span></label>
+						    	<select   name="business" id = "business" ng-model="vm.form.business" 
+						     class="form-control" multiple="multiple" required>
+									<!--  <option ng-repeat="item in vm.businessInfo" value="{{item.id-0}}" valueC="{{item.compID-0}}">{{item.name}}</option>
+								--></select>
+								<p ng-show="addNewUserForm.business.$invalid || (addNewUserForm.business.$touched && addNewUserForm.business.$pristine)" class="error-message">
+		                          Business must be selected
+		                        </p>
+						  	</div>
+						  	
+						  	
+						  	<div class="form-group col-sm-4">
+						    	<label for="vertical" >Vertical : <span class = "error-message">*</span></label>
+						    	<select  name="vertical" id = "vertical" ng-model="vm.form.vertical" 
+						    	 class="form-control" multiple="multiple" required>
+								<!--  	<option ng-repeat="item in vm.verticalInfo" value="{{item.id-0}}" valueB="{{item.busiID-0}}" >{{item.name}}</option>
+								--></select>
+								<p ng-show="addNewUserForm.vertical.$invalid || (addNewUserForm.vertical.$touched && addNewUserForm.vertical.$pristine)" class="error-message">
+		                          Vertical must be selected
+		                        </p>
+						  	</div>
+							 
+					  	
+					  	</div>
+						<div class = "row"> 
+							<div class="form-group col-sm-4">
+						    	<label for="caseType" >Case Category : <span class = "error-message">*</span></label>
+						    	<select multiple-select  name="caseType" id = "caseType" ng-model="vm.form.caseType" 
+						    	multiple="multiple" class="form-control" required>
+									<option ng-repeat="item in vm.caseTypeInfo" value="{{item.id}}" >{{item.name}}</option>
+								
+								</select>
+								<p ng-show="addNewUserForm.caseType.$invalid || (addNewUserForm.caseType.$touched && addNewUserForm.caseType.$pristine)" class="error-message">
+		                          Case Category must be selected
+		                        </p>
+						  	</div>
+							
+							<div class="form-group col-sm-4">
+						    	<label for="payrollNo" >Payroll No : <span class = "error-message">*</span></label>
+						    	<input speclchars type="text" class="form-control" ng-model="vm.form.payrollNo"  name = "payrollNo" id="payrollNo" required>										  
+								<p ng-show="addNewUserForm.payrollNo.$invalid && addNewUserForm.payrollNo.$dirty" class="error-message">
+		                          Payroll No is required
+		                        </p>
+						  	</div>
+						  	
+							<div class="form-group col-sm-4">
+						    	<label for="userName" >User Full Name : <span class = "error-message">*</span></label>
+						    	<input speclchars type="text" class="form-control" ng-model="vm.form.userName"  name = "userName" id="userName" required>										  
+								<p ng-show="addNewUserForm.userName.$invalid && addNewUserForm.userName.$dirty" class="error-message">
+		                          User Name is required
+		                        </p>
+						  	</div>
+						  	
+						  
+					  	
+					  	</div>
+					  	<div class = "row"> 
+					  		
+					  		<div class="form-group col-sm-4">
+						    	<label for="webMail" >Webmail ID : <span class = "error-message">*</span></label>
+						    	<input ng-keyup="vm.getEmail()" type="text" class="form-control" ng-model="vm.form.webMail"  name = "webMail" id="webMail" required>										  
+								<p ng-show="addNewUserForm.webMail.$invalid && addNewUserForm.webMail.$dirty" class="error-message">
+		                          WebMail ID is required
+		                        </p>
+						  	</div>
+					  	
+					  		<div class="form-group col-sm-4">
+						    	<label for="mobileNo" >Mobile No : <span class = "error-message">*</span></label>
+						    	<input speclchars type="text" num-only class="form-control" ng-model="vm.form.mobileNo"  name = "mobileNo" id="mobileNo" required>										  
+								<p ng-show="addNewUserForm.mobileNo.$invalid && addNewUserForm.mobileNo.$dirty" class="error-message">
+		                          Mobile No is required
+		                        </p>
+						  	</div>
+						  	
+							<div class="form-group col-sm-4">
+						    	<label for="emailID" >Email ID : <span class = "error-message">*</span></label>
+						    	<input type="email" class="form-control" ng-model="vm.form.emailID"  name = "emailID" id="emailID" required>										  
+								<p ng-show="addNewUserForm.emailID.$invalid && addNewUserForm.emailID.$dirty" class="error-message">
+		                          Email ID is required
+		                        </p>
+						  	</div>		  
+						  	
+						  	
+					  	
+					  	</div>	
+					  	
+					  	 <div class = "row"> 
+					  	 
+					  	 	<div class="form-group col-sm-4">
+						    	<label for="userType" >User Type : <span class = "error-message">*</span></label>
+						    	<select name="userType" id = "userType" ng-model="vm.form.userType" 
+						    	ng-options="item.name for item in vm.userTypeInfo" class="custom-select-sm form-control" required>
+								</select>
+								<p ng-show="addNewUserForm.userType.$invalid || (addNewUserForm.userType.$touched && addNewUserForm.userType.$pristine)" class="error-message">
+		                          User Type must be selected
+		                        </p>
+						  	</div>	
+					  	 
+					  	 	 <div class="form-group col-sm-4">
+						    	<label for="accessType" >Access Type : <span class = "error-message">*</span></label>
+						    	<select name="accessType" id = "userType" ng-model="vm.form.accessType" 
+						    	ng-options="item.name for item in vm.accessTypeInfo"  class="custom-select-sm form-control" required>
+								</select>
+								<p ng-show="addNewUserForm.accessType.$invalid || (addNewUserForm.accessType.$touched && addNewUserForm.userType.$pristine)" class="error-message">
+		                          Access Type must be selected
+		                        </p>
+						  	</div> 	 	
+					  	 						
+		  						 
+							  <div class="form-group col-md-4">							  
+								<label  for="dob"> Date of Birth (ddmmyyyy): <span class = "error-message">*</span></label>						  		
+		  							<input  speclchars type="text" class="form-control" ng-model = "vm.form.dob" name = "dob" id="dob" placeholder = "ddmmyyyy">										  
+							  		<p ng-show="addNewUserForm.dob.$invalid && addNewUserForm.dob.$dirty" class="error-message">
+		                          		Date of Birth is required
+		                       		 </p>
+							  </div>
+							 
+							  			  	
+						  	 				  	 
+					  	
+					  	</div>
+					  	
+							 
+					  	
+					  	<div class = "row"> 
+					  	
+					  		<div class="form-group col-md-4">							  
+								<label  for="imeiNo1"> Device - 1 :</label>						  		
+		  							<input num-only type="text" class="form-control" ng-model = "vm.form.imeiNo1" name = "imeiNo1" id="imeiNo1" placeholder = "Device 1">										  
+							  		
+							  </div>
+							  
+							  <div class="form-group col-md-4">							  
+								<label  for="imeiNo2"> Device - 2 :</label>						  		
+		  							<input num-only type="text" class="form-control" ng-model = "vm.form.imeiNo2" name = "imeiNo2" id="imeiNo2" placeholder = "Device 2">										  
+							  		
+							  </div>
+							  
+							  <div class="form-group col-md-4">							  
+								<label  for="imeiNo3"> Device - 3 :</label>						  		
+		  							<input num-only type="text" class="form-control" ng-model = "vm.form.imeiNo3" name = "imeiNo3" id="imeiNo3" placeholder = "Device 3">										  
+							  		
+							  </div>	
+										  	
+					  	</div>		 
+					  	
+					  	
+					  <div class = 'text-center'>
+			<button ng-click = "vm.submit(addNewUserForm)" type = "button" class="btn btn-primary text-center">Save</button>
+			<button type = "reset" class="btn btn-primary text-center">Cancel</button>
+							
+		</div>
+				  
+					</form>
+			</div>
+			
+			</div>
+				
+		</div>
+		<div class = "col-sm-1"></div>
+		
+	</div>
+	
+  	
+  	
+	

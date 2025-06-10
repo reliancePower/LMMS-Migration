@@ -1,0 +1,1735 @@
+<div id="viewContainer" class="container-fluid">
+	<br>
+	<div style="background: white;">
+		<form novalidate id="searchCaseForm" name="searchCaseForm"
+			style="padding: 25px 15px;">
+			<div class="row">
+
+				<div class="form-group col-sm-3">
+					<label for="company">Company : </label> <select name="company"
+						id="company" ng-model="vm.form.company" multiple="multiple"
+						class="form-control mulSel">
+						<option ng-repeat="item in vm.companyInfo" value="{{item.id-0}}">{{item.name}}</option>
+					</select>
+
+
+				</div>
+
+
+				<div class="form-group col-sm-3">
+					<label for="business">Business : </label> <select name="business"
+						id="business" ng-model="vm.form.business"
+						class="form-control mulSel" multiple="multiple">
+					</select>
+
+				</div>
+
+
+				<div class="form-group col-sm-3">
+					<label for="vertical">Vertical : </label> <select name="vertical"
+						id="vertical" ng-model="vm.form.vertical"
+						class="form-control mulSel" multiple="multiple">
+					</select>
+
+				</div>
+
+				<div class="form-group col-sm-3">
+					<label for="caseType">Case Category : </label> <select
+						multiple-select name="caseType" id="caseType"
+						ng-model="vm.form.caseType" multiple="multiple"
+						class="form-control mulSel">
+						<option ng-repeat="item in vm.caseTypeInfo" value="{{item.id}}">{{item.name}}</option>
+
+					</select>
+
+				</div>
+
+			</div>
+			<div class="row">
+
+				<div class="form-group col-sm-3">
+					<label for="forumCategory"> Forum Category </label> <select
+					multiple-select	name="forumCategory" id="forumCategory"
+				multiple="multiple"		ng-model="vm.form.forumCategory"
+						ng-change="vm.fetchForumInfo(vm.form.forumCategory)"
+						class="form-control mulSel" ng-required="true">
+						<option ng-repeat="item in vm.forumCategoryInfo"
+							value="{{item.name}}">{{item.name | titleCase}}</option>
+					</select>
+				</div>
+
+
+
+				<div class="form-group col-sm-3">
+					<label for="forum">Forum : </label> <select name="forum"
+						multiple="multiple" id="forum" ng-model="vm.form.forum"
+						class="form-control mulSel">
+
+					</select>
+
+				</div>
+
+				<div class="form-group col-sm-3">
+					<label for="state">State/Location : </label> <select
+						multiple-select name="state" id="state" ng-model="vm.form.state"
+						multiple="multiple" class="form-control mulSel">
+						<option ng-repeat="item in vm.stateInfo" value="{{item.id}}">{{item.name}}</option>
+
+					</select>
+
+				</div>
+
+
+
+
+
+				<div class="form-group col-sm-3">
+					<label for="nextHearingDate">Next Hearing : </label>
+					<div class="custom-control custom-checkbox"
+						style="display: inline-block !important;">
+						<input type="checkbox" ng-model="vm.nextHearingIsChecked"
+							class="custom-control-input" id="customCheck"
+							name="nextHearingDateNA"> <label
+							class="custom-control-label" for="customCheck"
+							style="color: black !important;">Not Available</label>
+					</div>
+					<div class="input-group">
+						<input id="startDate" name="startDate" class="form-control"
+							placeholder="Start Date" ng-model="vm.form.startDate"
+							ng-disabled="vm.nextHearingIsChecked"> <span
+							class="input-group-btn" style="width: 3px;"></span> <input
+							id="endDate" name="endDate" class="form-control"
+							placeholder="End Date" ng-model="vm.form.endDate"
+							ng-disabled="vm.nextHearingIsChecked">
+					</div>
+				</div>
+
+			</div>
+
+			<div class="row">
+				<div class="form-group col-sm-3">
+					<label for="caseStatus">Status : </label> <select multiple-select
+						name="caseStatus" id="caseStatus" ng-model="vm.form.caseStatus"
+						multiple="multiple" class="form-control mulSel">
+						<option ng-repeat="item in vm.caseStatusInfo" value="{{item.id}}">{{item.name}}</option>
+					</select>
+
+				</div>
+
+
+				<div class="form-group col-sm-3">
+					<label for="caseID">Case ID : </label> <input num-only id="caseID"
+						name="caseID" class="form-control" placeholder="Case ID"
+						type="text" ng-model="vm.form.caseID">
+
+				</div>
+
+				<div class="form-group col-sm-3">
+					<label for="caseNo">Court Case No : </label> <input speclchars
+						id="caseNo" name="caseNo" class="form-control"
+						placeholder="Court Case No" type="text" ng-model="vm.form.caseNo">
+
+				</div>
+
+
+
+				<div class="form-group col-sm-3">
+					<label for="lastHearingDate">Last Hearing Date : </label>
+					<div class="input-group">
+						<input id="startDateLast" name="startDateLast"
+							class="form-control" placeholder="Start Date"
+							ng-model="vm.form.startDateLast"> <span
+							class="input-group-btn" style="width: 3px;"></span> <input
+							id="endDateLast" name="endDateLast" class="form-control"
+							placeholder="End Date" ng-model="vm.form.endDateLast">
+					</div>
+
+
+				</div>
+
+
+			</div>
+
+
+
+			<div class='row'>
+				<div class="form-group col-sm-3">
+					<label for="judgeResPron"> Judgment Pronounced 						: </label>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" ng-model="vm.judgeResPronIsChecked"
+							class="custom-control-input" id="judgePronCheck"
+							name="judgeResPron"> <label class="custom-control-label"
+							for="judgePronCheck" style="color: black !important;">
+							Exclude </label>
+
+					</div>
+				</div>
+				<div class="form-group col-sm-3"
+					style="margin-top: 10px; text-align: right;">
+					<button ng-click="vm.search(searchCaseForm)" type="button"
+						class="btn btn-primary text-center">Search</button>
+				</div>
+				<div class="form-group col-sm-3"
+					style="margin-top: 10px; text-align: left;">
+					<button ng-click="vm.resetFilter()" type="button"
+						class="btn btn-primary text-center">Clear Filters</button>
+				</div>
+
+
+			</div>
+
+		</form>
+	</div>
+
+	<br>
+	<div style="text-align: left;">
+
+	<!--	<button ng-if="vm.listOfCases.length > 0"
+			ng-click="vm.generatePDFWithPageNo()" type="button"
+			class="btn btn-primary text-center">Generate Report - New
+			Format</button> -->
+			
+			<button ng-if="vm.listOfCases.length > 0"
+			ng-click="vm.generatePDFWithPageNo2()" type="button"
+			class="btn btn-primary text-center">Generate Report </button>
+
+	<!--  	<button ng-if="vm.listOfCases.length > 0" ng-click="vm.generatePDF()"
+			type="button" class="btn btn-primary text-center">Generate
+			Report - Old Format</button> -->
+			
+			<button ng-if="vm.listOfCases.length > 0"
+			ng-click="vm.getReviewReport()" type="button"
+			class="btn btn-primary text-center">Management Review</button>
+			
+			<button ng-if="(vm.listOfCases.length > 0) && (vm.userType == 'Admin')" type="button"
+						class="btn btn-primary text-center"		ng-click="vm.getReviewReportWOFormat()" >
+								Mgmt. Review - Unformatted
+							</button>
+
+
+		<p ng-if="vm.listOfCases.length > 0" class="blueColor"
+			style="font-size: 13px; margin-top: 4px;">Note - Use the New
+			format of the report from Chrome browser</p>
+	</div>
+	<div class="tableContainer" style="display: none;" id="searchCaseTable">
+		<hr>
+
+		<table datatable="ng" dt-column-defs="vm.dtColumnDefs"
+			dt-instance="vm.dtInstance" dt-options="vm.dtOptions" id="viewTable"
+			class="table table-bordered tableCls" width="100%">
+
+			<thead>
+				<tr>
+					<th class="noVis" data-priority="1">Case ID</th>
+					<th data-priority="3">Company</th>
+					<th>Business</th>
+					<th>Vertical</th>
+					<th>Forum</th>
+					<th>Bench</th>
+					<th>Case Category</th>
+					<th>Case Type</th>
+					<th>Case No</th>
+					<th>Case Year</th>
+					<th>Petitioner</th>
+					<th>AOR of Petitioner</th>
+					<th>Counsel of Petitioner</th>
+					<th>Respondent</th>
+					<th>AOR of Respondent</th>
+					<th>Counsel of Respondent</th>
+					<th>Last Hearing</th>
+					<th>Next Hearing</th>
+					<th>Status</th>
+					<th>Further Dates</th>
+					<th>Business Rep</th>
+					<th>Legal Rep</th>
+					<th style="width: 15% !important;">Subject Matter</th>
+					<th>Brief Facts</th>
+					<th>Interim Prayer</th>
+					<th>Final Prayer</th>
+					<th>Outcome of Last Hearing</th>
+					<th>Likely outcome of Next Hearing</th>
+					<th>Financial Impact (Total / One time)</th>
+					<th>Recurring Amount</th>
+					<th>Duration if Recurring (in years)</th>
+					<th>Case Priority</th>
+					<th>Assessment Year</th>
+					<th>Financial Year</th>
+					<th>Amount of Disallowance</th>
+					<th>State</th>
+					<th>Ref No</th>
+					<th>Asset Segment</th>
+					<th>Trust Name</th>
+					<th>Account Name</th>
+					<th>Substitution Filed</th>
+					<th>Substitution Allowed</th>
+					<th>Interim Stay</th>
+					<th>Stay Order</th>
+					<th>Doc Count</th>
+					<th class="noVis" data-priority="2"
+						style='width: 5%; text-align: center;'>*</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in vm.listOfCases track by item.caseID">
+					<td id="caseID">{{item.caseID}}
+						<p class="notShow" ng-if="item.docCount > 0">
+							<i class="fa fa-paperclip"></i>
+						</p>
+					</td>
+					<td>{{item.company}}</td>
+					<td>{{item.business}}</td>
+					<td>{{item.vertical}}</td>
+					<td>{{item.forum}}</td>
+					<td>{{item.bench}}</td>
+					<td>{{item.caseType}}</td>
+					<td>{{item.caseTypeName}}</td>
+					<td>{{item.cNo}}</td>
+					<td>{{item.caseYear != 0 ? item.caseYear : '' }}</td>
+					<td id="petitioners"
+						style="text-align: left; word-break: break-word;" hm-read-more
+						hm-text="{{item.petitioners}}" hm-limit="150" hm-more-text=" more"
+						hm-less-text=" less" hm-dots-class="dots"></td>
+					<td>{{item.aorOfCompany}}</td>
+					<td>{{item.counselOfCompany}}</td>
+					<td id="respondents"
+						style="text-align: left; word-break: break-word;" hm-read-more
+						hm-text="{{item.respondents}}" hm-limit="150" hm-more-text=" more"
+						hm-less-text=" less" hm-dots-class="dots"></td>
+
+
+					<td>{{item.aorOfRespondent}}</td>
+
+					<td>{{item.counselOfRespondent}}</td>
+					<td>{{item.lastHearingDate | date:'dd/MM/yyyy'}}</td>
+					<td>{{item.nextHearingDate | date:'dd/MM/yyyy'}}</td>
+					<td>{{item.statusName}}</td>
+					<td>{{item.furtherDates}}</td>
+					<td>{{item.businessRep}}</td>
+					<td>{{item.legalRep}}</td>
+					<td id="subMatter" style="text-align: left; width: 15% !important;"
+						hm-read-more hm-text="{{item.subMatter.trim()}}" hm-limit="150"
+						hm-more-text=" more" hm-less-text=" less" hm-dots-class="dots"></td>
+
+
+
+					<td>{{item.briefFacts}}</td>
+					<td>{{item.interimPrayer}}</td>
+					<td>{{item.finalPrayer}}</td>
+					<td>{{item.outcomeLast}}</td>
+					<td>{{item.outcomeNext}}</td>
+					<td>{{item.finImpact}}</td>
+					<td>{{item.finImpRecurring}}</td>
+					<td>{{item.finImaRecurringDuration}}</td>
+					<td>{{item.categoryName}}</td>
+					<td>{{item.assessYear}}</td>
+					<td>{{item.finYear}}</td>
+					<td>{{item.amtOfDisallow}}</td>
+					<td>{{item.state}}</td>
+					<td>{{item.refNo}}</td>
+					<td>{{item.assetSegment}}</td>
+					<td>{{item.trustName}}</td>
+					<td>{{item.accountName}}</td>
+					<td>{{item.substitutionFiled}}</td>
+					<td>{{item.substitutionAllowed}}</td>
+					<td>{{item.interimStay}}</td>
+					<td>{{item.stayOrder}}</td>					
+					<td>{{item.docCount}}</td>
+					<td class="noVis" style="width: 5%; text-align: center;"><div
+							class="button-group">
+							<button type="button" ng-click="vm.viewCaseItem($index)"
+								title="View Case">
+								<i class="fas fa-eye bn"></i>
+							</button>
+							<button ng-if="item.accessType == 'Edit' " type="button"
+								ng-click="vm.editCaseItem(item)" title="Edit Case">
+								<i class="far fa-edit bn"></i>
+							</button>
+							<button ng-if="item.accessType == 'Edit' " type="button"
+								ng-click="vm.addDocItem(item)" title="Add Attachment">
+								<i class="fa fa-paperclip bn"></i>
+							</button>
+							<button
+								ng-if="(item.accessType == 'Edit') && (item.nextHearingDate != '') "
+								type="button" ng-click="vm.updateHearingItem(item)"
+								title="Update Hearing">
+								<i class="fas fa-underline bn"></i>
+							</button>
+							<button
+								ng-if="(item.accessType == 'Edit')"
+								type="button" ng-click="vm.sendNotes(item)"
+								title="Send Notes">
+								<i class="fa fa-sticky-note bn"></i>
+							</button>
+							<button ng-if="vm.userType == 'Admin'" type="button"
+								ng-click="vm.disableCaseItem(item)" title="Delete Case">
+								<i class="fa fa-trash bn"></i>
+							</button>
+						</div></td>
+
+
+				</tr>
+
+			</tbody>
+
+		</table>
+
+	</div>
+	</div>
+<a id="dlink"  style="display:none;"></a>
+
+<div id = "reviewReportTable" style="display:none;">
+
+<table  id = "rvTable" border = "1" style = "font-family:Arial; font-size:11px;"  data-cols-width="10,10,150,150,150,150,150,150,150,150,150,150"		
+		 >
+		
+		<tr><td id = "captionTable"></td></tr>
+		<thead valign="top">
+			<tr>
+				<th style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Sn</th>
+				<th style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Case ID</th>
+				<th style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Company / Vertical</th>
+				<th  style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Forum</th>
+				<th  style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Bench / AOR / Counsel</th>
+				<th  style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Case No</th>
+				<th  style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Petitioner</th>
+				<th  style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Respondent</th>
+				<th data-a-wrap="true" style = "font-family:Arial;font-size:14px;">Next Hearing</th>
+				<th data-a-wrap="true" style = "font-family:Arial;font-size:14px;">Status</th>
+				<th data-a-wrap="true" style = "font-family:Arial;font-size:14px;">Subject Matter</th>
+				<th data-a-wrap="true" style = "font-family:Arial;font-size:14px;">Financial Impact</th>
+			</tr>
+		</thead>
+		<tbody id = "dynamicInfo">
+			
+		</tbody>
+
+	</table>
+</div>
+
+
+<script id="print-header" type="text/x-jquery-tmpl">
+  	
+ 
+   <!DOCTYPE html>
+
+   <head>
+
+       <title>     Law Matters Management System</title>
+        <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="./app/img/favicon.png" type="image/png" sizes="16x16">
+    
+   
+
+  
+</script>
+<script id="print-center" type="text/x-jquery-tmpl">
+
+     <style>
+
+
+.cabecalho {
+position : running(runningDate);
+}
+
+
+ @page {
+    size: A4;
+    margin: 1cm 0.5cm 1.5cm 0.5cm;
+ @bottom-right {
+      content: "Page No. " counter(page) "/" counter(pages);
+      color: black;
+      
+    }@top-center {
+      content: "Law Matters Management System";
+     color : #005199 !important;
+		font-size : 14px;
+		font-weight : bold;
+     
+    }@bottom-left {
+       content:  element(runningDate);
+
+      color: black;
+
+     
+    }
+ 
+   }
+ body {
+    color: black;
+    background : white;
+ 	font-size: 12px; 
+
+font-family : -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"
+    }
+
+	
+
+
+.tableRowVal tr td a.pageref {
+	text-decoration : underline;
+  color : #005199 !important;
+}
+ .tableRowVal tr td a.pageref::after {
+         content: target-counter(attr(href), page);
+		  
+         }
+
+      #viewTablePDF thead th td {
+background : #005199 !important;
+color : white !important;
+}
+
+@media print {
+  * {
+    background: transparent;
+    color: #000;
+    text-shadow: none;
+    filter: none;
+    -ms-filter: none;
+   
+    border: none;
+    font-size: 12px;
+  }
+.viewTablePDF {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+text-align:center;
+  }
+  .viewTablePDF * {
+    width: 100%;
+    font-size: 12px;
+    /* overflow: hidden; */
+    white-space: pre-line;
+    text-overflow: ellipsis;
+word-break : break-word;
+  }
+   .viewTablePDF th, .viewTablePDF td {
+    border: 1px solid #bbb;
+  }
+.viewPopupTable  td  {
+   
+padding: 4px;
+font-size : 13px;
+ border: 1px dashed #005191;
+  }
+.viewPopupTable {
+width: 100%;
+
+    border-collapse: collapse;
+  
+}
+
+
+ .viewTablePDF .tableRowVal tr , .viewPopupTable tr{break-inside: avoid;}
+
+
+
+ .viewTablePDF tr {break-inside: avoid;}
+  @page {
+    size: A4;
+     margin: 1cm 0.5cm 1.5cm 0.5cm;
+      @bottom-right {
+      content: "Page No. " counter(page) "/" counter(pages);
+      color: black;
+     
+    }@top-center {
+      content: "Law Matters Management System";
+     color : #005199 !important;
+		font-size : 14px;
+		font-weight : bold;
+     
+    }@bottom-left {
+      content:  element(runningDate);
+      color: black;
+
+     
+    }
+  
+  }
+ 
+
+}
+
+
+  .viewTablePDF {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .viewTablePDF * {
+    width: 100%;
+    font-size: 12px;
+    /* overflow: hidden; */
+    white-space: pre-line;
+    text-overflow: ellipsis;
+word-break : break-word;
+  }
+  .viewTablePDF th, .viewTablePDF td {
+    border: 1px solid #ddd;
+  }
+
+.viewPopupTable  td  {
+   border: 1px dashed #005191;
+padding: 4px;
+font-size : 13px;
+  }
+.viewPopupTable tr{
+ 
+}
+
+
+@media screen {
+
+body {
+  background-color: gray;
+}
+
+.pagedjs_page {
+  background-color: #fdfdfd;
+  margin: 15px auto;
+  flex: none;
+  box-shadow: 0 0 0 1px rgba(0, 0,0,0.2);
+}
+ .viewTablePDF {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+text-align:center;
+  }
+  .viewTablePDF * {
+    width: 100%;
+    font-size: 12px;
+    /* overflow: hidden; */
+    white-space: pre-line;
+    text-overflow: ellipsis;
+word-break : break-word;
+  }
+   .viewTablePDF th, .viewTablePDF td {
+    border: 1px solid #ddd;
+  }
+.viewPopupTable  td  {
+   
+padding: 4px;
+font-size : 13px;
+ border: 1px dashed #005191;
+  }
+.viewPopupTable {
+width: 100%;
+
+    border-collapse: collapse;
+  
+}
+.pagedjs_pages .pagedjs_margin-top .pagedjs_margin-content::after{
+
+font-size : 15px;
+ color : #005199 !important;
+}
+
+
+ .viewTablePDF .tableRowVal tr , .viewPopupTable tr{break-inside: avoid;}
+
+}
+
+.level1{
+break-before : always;}
+.myLogo {
+      display: inline;
+      float: left;
+      
+      
+    }
+
+    .user {
+      text-align: right;
+      white-space: nowrap;
+      display: inline;
+      float: left;
+      margin-left: 200px;
+     font-weight : bold;
+     font-size : 15px;
+ color : #005199 !important;
+    }
+
+    .header {
+      display: inline-block;
+}
+.row {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+margin : 3px 0px;
+	
+	
+
+}
+.col,
+.col-1,
+.col-10,
+.col-11,
+.col-12,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-auto,
+.col-lg,
+.col-lg-1,
+.col-lg-10,
+.col-lg-11,
+.col-lg-12,
+.col-lg-2,
+.col-lg-3,
+.col-lg-4,
+.col-lg-5,
+.col-lg-6,
+.col-lg-7,
+.col-lg-8,
+.col-lg-9,
+.col-lg-auto,
+.col-md,
+.col-md-1,
+.col-md-10,
+.col-md-11,
+.col-md-12,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-md-auto,
+.col-sm,
+.col-sm-1,
+.col-sm-10,
+.col-sm-11,
+.col-sm-12,
+.col-sm-2,
+.col-sm-3,
+.col-sm-4,
+.col-sm-5,
+.col-sm-6,
+.col-sm-7,
+.col-sm-8,
+.col-sm-9,
+.col-sm-auto,
+.col-xl,
+.col-xl-1,
+.col-xl-10,
+.col-xl-11,
+.col-xl-12,
+.col-xl-2,
+.col-xl-3,
+.col-xl-4,
+.col-xl-5,
+.col-xl-6,
+.col-xl-7,
+.col-xl-8,
+.col-xl-9,
+.col-xl-auto {
+	position: relative;
+	width: 100%;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px
+}
+
+.col {
+	-ms-flex-preferred-size: 0;
+	flex-basis: 0;
+	-ms-flex-positive: 1;
+	flex-grow: 1;
+	max-width: 100%
+}
+.col {
+	-ms-flex-preferred-size: 0;
+	flex-basis: 0;
+	-ms-flex-positive: 1;
+	flex-grow: 1;
+	max-width: 100%
+}
+
+.col-auto {
+	-ms-flex: 0 0 auto;
+	flex: 0 0 auto;
+	width: auto;
+	max-width: none
+}
+
+.col-1 {
+	-ms-flex: 0 0 8.333333%;
+	flex: 0 0 8.333333%;
+	max-width: 8.333333%
+}
+
+.col-2 {
+	-ms-flex: 0 0 16.666667%;
+	flex: 0 0 16.666667%;
+	max-width: 16.666667%
+}
+
+.col-3 {
+	-ms-flex: 0 0 25%;
+	flex: 0 0 25%;
+	max-width: 25%
+}
+
+.col-4 {
+	-ms-flex: 0 0 33.333333%;
+	flex: 0 0 33.333333%;
+	max-width: 33.333333%
+}
+
+.col-5 {
+	-ms-flex: 0 0 41.666667%;
+	flex: 0 0 41.666667%;
+	max-width: 41.666667%
+}
+
+.col-6 {
+	-ms-flex: 0 0 50%;
+	flex: 0 0 50%;
+	max-width: 50%
+}
+
+.col-7 {
+	-ms-flex: 0 0 58.333333%;
+	flex: 0 0 58.333333%;
+	max-width: 58.333333%
+}
+
+.col-8 {
+	-ms-flex: 0 0 66.666667%;
+	flex: 0 0 66.666667%;
+	max-width: 66.666667%
+}
+
+.col-9 {
+	-ms-flex: 0 0 75%;
+	flex: 0 0 75%;
+	max-width: 75%
+}
+
+.col-10 {
+	-ms-flex: 0 0 83.333333%;
+	flex: 0 0 83.333333%;
+	max-width: 83.333333%
+}
+
+.col-11 {
+	-ms-flex: 0 0 91.666667%;
+	flex: 0 0 91.666667%;
+	max-width: 91.666667%
+}
+
+.col-12 {
+	-ms-flex: 0 0 100%;
+	flex: 0 0 100%;
+	max-width: 100%
+}
+	.col-sm-3 {
+		-ms-flex: 0 0 25%;
+		flex: 0 0 25%;
+		max-width: 25%
+	}
+</style>
+<body>
+</script>
+<script id="print-footer" type="text/x-jquery-tmpl">
+
+
+    </body>
+    </html>
+</script>
+<script type="text/javascript">
+	$(document).ready(
+			function() {
+				$('#endDate, #startDate, #startDateLast, #endDateLast')
+						.datepicker({
+							format : 'dd/mm/yyyy'
+
+						});
+				$('#endDate, #startDate, #startDateLast, #endDateLast').on(
+						'changeDate', function(ev) {
+							$(this).datepicker('hide');
+						});
+
+				$('#lastDateOfHearing').datepicker({
+					format : 'dd/mm/yyyy',
+					endDate : new Date()
+
+				});
+
+				$('#nextDateOfHearing').datepicker({
+					format : 'dd/mm/yyyy'
+				//startDate: new Date()
+
+				});
+
+				$('#lastDateOfHearing, #nextDateOfHearing').on('changeDate',
+						function(ev) {
+							$(this).datepicker('hide');
+						});
+
+			});
+</script>
+<div id="pdfDownload" style="display: none">
+	<br>
+	<!--  <div class="row text-center" style="border-bottom: none;">
+		<div class="col-sm-3">
+			<img style="width: 200px; height: auto;" src="app/img/logo.png" />
+		</div>
+		<div class="col-sm-9 text-center">
+			<h3 class="modal-title  blueColor" id="dynamicTitle"
+				style="text-align: left;">List of Cases</h3>
+
+		</div>
+	</div> 
+-->
+	<div class="header">
+		<span class="myLogo"><img style="width: 120px; height: auto;"
+			src="app/img/logo.png" /></span> <span class="user blueColor"
+			id="dynamicTitle"> List of Cases </span>
+	</div>
+
+	<br> <br>
+	<div id="down"></div>
+</div>
+
+<div id="editor"></div>
+<div id="pdfDownloadNew" style="display: none">
+	<br>
+	<div class="row text-center" style="border-bottom: none;">
+		<div class="col-sm-3">
+			<img style="width: 200px; height: auto;" src="app/img/logo.png" />
+		</div>
+		<div class="col-sm-9 text-center">
+			<h3 class="modal-title  blueColor" id="dynamicTitle"
+				style="text-align: left;">List of Cases</h3>
+
+		</div>
+	</div>
+	<br>
+	<div id="downNew"></div>
+</div>
+<script id="print-headerNew" type="text/x-jquery-tmpl">
+   <!DOCTYPE html>
+   <head>
+
+       <title>     Law Matters Management System</title>
+        <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <link rel="stylesheet" href="./app/lib/bootstrap/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="./app/lib/multiselect/bootstrap-select.css">
+    
+
+    <link rel="stylesheet" href="./app/lib/fontawesome/all.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/datatables/jquery.dataTables.min.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/angular-datatables-0.6.2/dist/plugins/bootstrap/datatables.bootstrap.min.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/moment/multi-date-picker.css"  type="text/css" crossorigin="anonymous">
+	<link rel="stylesheet" href="./app/lib/multiselect/bootstrap-multiselect.css">
+    
+    <link rel="stylesheet" href="./app/css/common.css" >
+    <link rel="stylesheet" href="./app/css/media.css" >
+ 	<link rel="stylesheet" href="./app/css/login.css" >
+ 	<link rel="stylesheet" href="./app/css/dashboard.css" >
+
+     <style>
+
+
+@media print {
+    body {
+    color: black;
+   
+ 	font-size: 14px; 
+    }
+#viewTablePDF {
+ border: 1px dashed #bbb !important;
+}
+
+	#viewTablePDF thead th  { 
+color : black;
+}
+.col-sm-3, .col-sm-2, .col-sm-4 {
+	font-size : 18px !important;
+}
+.viewPopupTable  td  {
+   
+padding: 6px;
+font-size : 13px;
+ border: 1px dashed #005191!important;
+  }
+.viewPopupTable {
+width: 100%;
+
+    border-collapse: collapse;
+  
+}
+}
+
+@media screen {
+#viewTablePDF {
+ border: 1px dashed #bbb !important;
+}
+.viewPopupTable  td  {
+   
+padding: 4px;
+font-size : 13px;
+ border: 1px dashed #005191!important;
+  }
+.viewPopupTable {
+width: 100%;
+
+    border-collapse: collapse;
+  
+}
+
+}
+
+
+ body {
+    color: black;
+    background : white;
+ 	font-size: 14px; 
+    }
+
+	
+.col-sm-3, .col-sm-2, .col-sm-4 {
+	font-size : 14px !important;
+}
+      
+       </style>
+  
+	
+   </head>
+   <body onload="window.print()">
+  
+</script>
+<script id="print-footerNew" type="text/x-jquery-tmpl">
+    </body>
+    </html>
+</script>
+
+<script id="print-headerPg" type="text/x-jquery-tmpl">
+  	
+ 
+   <!DOCTYPE html>
+
+   <head>
+
+       <title>     Law Matters Management System</title>
+        <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="./app/img/favicon.png" type="image/png" sizes="16x16">
+    
+   <link rel="stylesheet" href="./app/lib/fontawesome/all.css"
+	type="text/css" crossorigin="anonymous">
+
+  
+</script>
+<script id="print-centerPg" type="text/x-jquery-tmpl">
+
+     <style>
+.blueColor, .fa, .fas, .far {
+	color : #005199 !important;
+}
+
+.cabecalho {
+position : running(runningDate);
+}
+
+
+ @page {
+    size: A4;
+    margin: 1cm 0.5cm 1.5cm 0.5cm;
+ @bottom-right {
+      content: "Page No. " counter(page) "/" counter(pages);
+      color: black;
+      
+    }@top-center {
+      content: "Law Matters Management System";
+     color : #005199 !important;
+		font-size : 14px;
+		font-weight : bold;
+     
+    }@bottom-left {
+       content:  element(runningDate);
+
+      color: black;
+
+     
+    }
+ 
+   }
+ body {
+    color: black;
+    background : white;
+ 	font-size: 12px; 
+
+font-family : -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"
+    }
+
+	
+
+
+.tableRowVal tr td a.pageref {
+	text-decoration : underline;
+  color : #005199 !important;
+}
+ .tableRowVal tr td a.pageref::after {
+         content: target-counter(attr(href), page);
+		  
+         }
+
+      #viewTablePDF thead th td {
+background : #005199 !important;
+color : white !important;
+}
+
+@media print {
+  * {
+    background: transparent;
+    color: #000;
+    text-shadow: none;
+    filter: none;
+    -ms-filter: none;
+   
+    border: none;
+    font-size: 12px;
+  }
+.viewTablePDF {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+text-align:center;
+  }
+  .viewTablePDF * {
+    width: 100%;
+    font-size: 12px;
+    /* overflow: hidden; */
+    white-space: pre-line;
+    text-overflow: ellipsis;
+word-break : break-word;
+  }
+   .viewTablePDF th, .viewTablePDF td {
+    border: 1px solid #bbb;
+  }
+.viewPopupTable  td  {
+   
+padding: 3px;
+font-size : 12px;
+ border: 1px dashed #005191;
+  }
+.viewPopupTable {
+width: 100%;
+
+    border-collapse: collapse;
+  
+}
+
+
+ .viewTablePDF .tableRowVal tr , .viewPopupTable tr{break-inside: avoid;}
+
+
+
+ .viewTablePDF tr {break-inside: avoid;}
+  @page {
+    size: A4;
+     margin: 1cm 0.5cm 1.5cm 0.5cm;
+      @bottom-right {
+      content: "Page No. " counter(page) "/" counter(pages);
+      color: black;
+     
+    }@top-center {
+      content: "Law Matters Management System";
+     color : #005199 !important;
+		font-size : 14px;
+		font-weight : bold;
+     
+    }@bottom-left {
+      content:  element(runningDate);
+      color: black;
+
+     
+    }
+  
+  }
+ 
+
+}
+
+
+  .viewTablePDF {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .viewTablePDF * {
+    width: 100%;
+    font-size: 12px;
+    /* overflow: hidden; */
+    white-space: pre-line;
+    text-overflow: ellipsis;
+word-break : break-word;
+  }
+  .viewTablePDF th, .viewTablePDF td {
+    border: 1px solid #ddd;
+text-align: left;
+  }
+
+.viewPopupTable  td  {
+   border: 1px dashed #005191;
+padding: 3px;
+font-size : 12px;
+  }
+.viewPopupTable tr{
+ 
+}
+
+
+@media screen {
+
+body {
+  background-color: gray;
+}
+
+.pagedjs_page {
+  background-color: #fdfdfd;
+  margin: 10px auto;
+  flex: none;
+  box-shadow: 0 0 0 1px rgba(0, 0,0,0.2);
+}
+ .viewTablePDF {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+text-align:center;
+  }
+  .viewTablePDF * {
+    width: 100%;
+    font-size: 12px;
+    /* overflow: hidden; */
+    white-space: pre-line;
+    text-overflow: ellipsis;
+word-break : break-word;
+  }
+   .viewTablePDF th, .viewTablePDF td {
+    border: 1px solid #ddd;
+text-align: left;
+  }
+.viewPopupTable  td  {
+   
+padding: 3px;
+font-size : 12px;
+ border: 1px dashed #005191;
+  }
+.viewPopupTable {
+width: 100%;
+
+    border-collapse: collapse;
+  
+}
+.pagedjs_pages .pagedjs_margin-top .pagedjs_margin-content::after{
+
+font-size : 15px;
+ color : #005199 !important;
+}
+
+
+ .viewTablePDF .tableRowVal tr , .viewPopupTable tr{break-inside: avoid;}
+
+}
+
+.level1{
+break-before : always;}
+.myLogo {
+      display: inline;
+      float: left;
+      
+      
+    }
+
+    .user {
+      text-align: right;
+      white-space: nowrap;
+      display: inline;
+      float: left;
+      margin-left: 200px;
+     font-weight : bold;
+     font-size : 15px;
+ color : #005199 !important;
+    }
+
+    .header {
+      display: inline-block;
+}
+.row {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+margin : 2px 0px;
+	
+	
+
+}
+.col,
+.col-1,
+.col-10,
+.col-11,
+.col-12,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-auto,
+.col-lg,
+.col-lg-1,
+.col-lg-10,
+.col-lg-11,
+.col-lg-12,
+.col-lg-2,
+.col-lg-3,
+.col-lg-4,
+.col-lg-5,
+.col-lg-6,
+.col-lg-7,
+.col-lg-8,
+.col-lg-9,
+.col-lg-auto,
+.col-md,
+.col-md-1,
+.col-md-10,
+.col-md-11,
+.col-md-12,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-md-auto,
+.col-sm,
+.col-sm-1,
+.col-sm-10,
+.col-sm-11,
+.col-sm-12,
+.col-sm-2,
+.col-sm-3,
+.col-sm-4,
+.col-sm-5,
+.col-sm-6,
+.col-sm-7,
+.col-sm-8,
+.col-sm-9,
+.col-sm-auto,
+.col-xl,
+.col-xl-1,
+.col-xl-10,
+.col-xl-11,
+.col-xl-12,
+.col-xl-2,
+.col-xl-3,
+.col-xl-4,
+.col-xl-5,
+.col-xl-6,
+.col-xl-7,
+.col-xl-8,
+.col-xl-9,
+.col-xl-auto {
+	position: relative;
+	width: 100%;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px
+}
+
+.col {
+	-ms-flex-preferred-size: 0;
+	flex-basis: 0;
+	-ms-flex-positive: 1;
+	flex-grow: 1;
+	max-width: 100%
+}
+.col {
+	-ms-flex-preferred-size: 0;
+	flex-basis: 0;
+	-ms-flex-positive: 1;
+	flex-grow: 1;
+	max-width: 100%
+}
+
+.col-auto {
+	-ms-flex: 0 0 auto;
+	flex: 0 0 auto;
+	width: auto;
+	max-width: none
+}
+
+.col-1 {
+	-ms-flex: 0 0 8.333333%;
+	flex: 0 0 8.333333%;
+	max-width: 8.333333%
+}
+
+.col-2 {
+	-ms-flex: 0 0 16.666667%;
+	flex: 0 0 16.666667%;
+	max-width: 16.666667%
+}
+
+.col-3 {
+	-ms-flex: 0 0 25%;
+	flex: 0 0 25%;
+	max-width: 25%
+}
+
+.col-4 {
+	-ms-flex: 0 0 33.333333%;
+	flex: 0 0 33.333333%;
+	max-width: 33.333333%
+}
+
+.col-5 {
+	-ms-flex: 0 0 41.666667%;
+	flex: 0 0 41.666667%;
+	max-width: 41.666667%
+}
+
+.col-6 {
+	-ms-flex: 0 0 50%;
+	flex: 0 0 50%;
+	max-width: 50%
+}
+
+.col-7 {
+	-ms-flex: 0 0 58.333333%;
+	flex: 0 0 58.333333%;
+	max-width: 58.333333%
+}
+
+.col-8 {
+	-ms-flex: 0 0 66.666667%;
+	flex: 0 0 66.666667%;
+	max-width: 66.666667%
+}
+
+.col-9 {
+	-ms-flex: 0 0 75%;
+	flex: 0 0 75%;
+	max-width: 75%
+}
+
+.col-10 {
+	-ms-flex: 0 0 83.333333%;
+	flex: 0 0 83.333333%;
+	max-width: 83.333333%
+}
+
+.col-11 {
+	-ms-flex: 0 0 91.666667%;
+	flex: 0 0 91.666667%;
+	max-width: 91.666667%
+}
+
+.col-12 {
+	-ms-flex: 0 0 100%;
+	flex: 0 0 100%;
+	max-width: 100%
+}
+	.col-sm-3 {
+		-ms-flex: 0 0 25%;
+		flex: 0 0 25%;
+		max-width: 25%
+	}
+.table {
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: 1rem;
+	background-color: transparent
+}
+
+.table td, .table th {
+	padding: .50rem;
+	vertical-align: top;
+	border-top: 1px solid #dee2e6
+}
+
+.table thead th {
+	vertical-align: bottom;
+	
+}
+
+.table tbody+tbody {
+	border-top: 2px solid #dee2e6
+}
+
+.table .table {
+	background-color: #fff
+}
+
+.table-sm td, .table-sm th {
+	padding: .3rem
+}
+
+.table-bordered {
+	border: 1px solid #dee2e6
+}
+
+.table-bordered td, .table-bordered th {
+	border: 1px solid #dee2e6
+}
+
+.table-bordered thead td, .table-bordered thead th {
+	
+}
+
+.table-borderless tbody+tbody, .table-borderless td, .table-borderless th,
+	.table-borderless thead th {
+	border: 0
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+	background-color: rgba(0, 0, 0, .05)
+}
+
+.table-hover tbody tr:hover {
+	background-color: rgba(0, 0, 0, .075)
+}
+
+.table-primary, .table-primary>td, .table-primary>th {
+	background-color: #b8daff
+}
+
+.table-hover .table-primary:hover {
+	background-color: #9fcdff
+}
+
+.table-hover .table-primary:hover>td, .table-hover .table-primary:hover>th
+	{
+	background-color: #9fcdff
+}
+
+.table-secondary, .table-secondary>td, .table-secondary>th {
+	background-color: #d6d8db
+}
+
+.table-hover .table-secondary:hover {
+	background-color: #c8cbcf
+}
+
+.table-hover .table-secondary:hover>td, .table-hover .table-secondary:hover>th
+	{
+	background-color: #c8cbcf
+}
+
+.table-success, .table-success>td, .table-success>th {
+	background-color: #c3e6cb
+}
+
+.table-hover .table-success:hover {
+	background-color: #b1dfbb
+}
+
+.table-hover .table-success:hover>td, .table-hover .table-success:hover>th
+	{
+	background-color: #b1dfbb
+}
+
+.table-info, .table-info>td, .table-info>th {
+	background-color: #bee5eb
+}
+
+.table-hover .table-info:hover {
+	background-color: #abdde5
+}
+
+.table-hover .table-info:hover>td, .table-hover .table-info:hover>th {
+	background-color: #abdde5
+}
+
+.table-warning, .table-warning>td, .table-warning>th {
+	background-color: #ffeeba
+}
+
+.table-hover .table-warning:hover {
+	background-color: #ffe8a1
+}
+
+.table-hover .table-warning:hover>td, .table-hover .table-warning:hover>th
+	{
+	background-color: #ffe8a1
+}
+
+.table-danger, .table-danger>td, .table-danger>th {
+	background-color: #f5c6cb
+}
+
+.table-hover .table-danger:hover {
+	background-color: #f1b0b7
+}
+
+.table-hover .table-danger:hover>td, .table-hover .table-danger:hover>th
+	{
+	background-color: #f1b0b7
+}
+
+.table-light, .table-light>td, .table-light>th {
+	background-color: #fdfdfe
+}
+
+.table-hover .table-light:hover {
+	background-color: #ececf6
+}
+
+.table-hover .table-light:hover>td, .table-hover .table-light:hover>th {
+	background-color: #ececf6
+}
+
+.table-dark, .table-dark>td, .table-dark>th {
+	background-color: #c6c8ca
+}
+
+.table-hover .table-dark:hover {
+	background-color: #b9bbbe
+}
+
+.table-hover .table-dark:hover>td, .table-hover .table-dark:hover>th {
+	background-color: #b9bbbe
+}
+
+.table-active, .table-active>td, .table-active>th {
+	background-color: rgba(0, 0, 0, .075)
+}
+
+.table-hover .table-active:hover {
+	background-color: rgba(0, 0, 0, .075)
+}
+
+.table-hover .table-active:hover>td, .table-hover .table-active:hover>th
+	{
+	background-color: rgba(0, 0, 0, .075)
+}
+
+.table .thead-dark th {
+	color: #fff;
+	background-color: #212529;
+	border-color: #32383e
+}
+
+.table .thead-light th {
+	color: #495057;
+	background-color: #e9ecef;
+	border-color: #dee2e6
+}
+
+.table-dark {
+	color: #fff;
+	background-color: #212529
+}
+
+.table-dark td, .table-dark th, .table-dark thead th {
+	border-color: #32383e
+}
+
+.table-dark.table-bordered {
+	border: 0
+}
+
+.table-dark.table-striped tbody tr:nth-of-type(odd) {
+	background-color: rgba(255, 255, 255, .05)
+}
+
+.table-dark.table-hover tbody tr:hover {
+	background-color: rgba(255, 255, 255, .075)
+}
+
+@media ( max-width :575.98px) {
+	.table-responsive-sm {
+		display: block;
+		width: 100%;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		-ms-overflow-style: -ms-autohiding-scrollbar
+	}
+	.table-responsive-sm>.table-bordered {
+		border: 0
+	}
+}
+
+@media ( max-width :767.98px) {
+	.table-responsive-md {
+		display: block;
+		width: 100%;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		-ms-overflow-style: -ms-autohiding-scrollbar
+	}
+	.table-responsive-md>.table-bordered {
+		border: 0
+	}
+}
+
+@media ( max-width :991.98px) {
+	.table-responsive-lg {
+		display: block;
+		width: 100%;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		-ms-overflow-style: -ms-autohiding-scrollbar
+	}
+	.table-responsive-lg>.table-bordered {
+		border: 0
+	}
+}
+
+@media ( max-width :1199.98px) {
+	.table-responsive-xl {
+		display: block;
+		width: 100%;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		-ms-overflow-style: -ms-autohiding-scrollbar
+	}
+	.table-responsive-xl>.table-bordered {
+		border: 0
+	}
+}
+
+.table-responsive {
+	display: block;
+	width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	-ms-overflow-style: -ms-autohiding-scrollbar
+}
+
+.table-responsive>.table-bordered {
+	border: 0
+}
+</style>
+<body>
+</script>
+<script id="print-footerPg" type="text/x-jquery-tmpl">
+
+
+    </body>
+    </html>
+</script>
+

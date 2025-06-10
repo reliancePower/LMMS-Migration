@@ -1,0 +1,328 @@
+<div id="viewContainer">
+	<div class="container-fluid">
+		<br>
+
+<div class = "titleContainer">Active Users</div>
+
+		<div class="tableContainer">
+			<table datatable="ng" id="viewTable" dt-options="vm.dtOptions"
+				class="table row-border table-bordered tableCls">
+
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Payroll No</th>
+						<th data-priority="1">User Name</th>
+						<th>Web Mail ID</th>
+						<th>Email ID</th>
+						<th>User Type</th>
+						<th>Access Type</th>
+						<th>Date of Birth</th>
+						<th data-priority="2">*</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in vm.userArray">
+						<td>{{$index+1}}</td>
+						<td>{{item.userID}}</td>
+						<td>{{item.userName}}</td>
+						<td>{{item.webMailID}}</td>
+						<td>{{item.emailID}}</td>
+						<td>{{item.userType}}</td>
+						<td>{{item.accessType}}</td>
+						<td>{{item.dob}}</td>
+						<td style="text-align: center;">
+							<div class = "button-group btn-group">
+							<button type="button" ng-click="vm.editUserItem(item)">
+								<i class="far fa-edit bn"></i>
+							</button>
+							<button type="button" style="padding: 0 10px;"
+								ng-click="vm.confirmDeleteItem(item)">
+								<i class="fa fa-trash bn"></i>
+							</button>
+							</div>
+						</td>
+
+					</tr>
+
+				</tbody>
+
+			</table>
+
+		</div>
+	
+<br>
+<div class = "titleContainer">Disabled Users</div>
+<div class="tableContainer">
+			<table datatable="ng" id="viewTable1" dt-options="vm.dtOptions2"
+				class="table row-border table-bordered tableCls">
+
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Payroll No</th>
+						<th data-priority="1">User Name</th>
+						<th>Disable Reason</th>
+						<th>Remark</th>
+						<th>Deleted By</th>
+						<th>Deleted Timestamp</th>
+						
+						
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in vm.disabledUsersArray">
+						<td>{{$index+1}}</td>
+						<td>{{item.userID}}</td>
+						<td>{{item.userName}}</td>
+						<td>{{item.reason}}</td>
+						<td>{{item.remark}}</td>
+						<td>{{item.deletedBy}}</td>
+						<td>{{item.timestamp}}</td>
+						
+						
+
+					</tr>
+
+				</tbody>
+
+			</table>
+
+		</div>
+	</div>
+
+
+
+
+</div>
+
+<script type="text/ng-template" id="editUser.html">
+    	<div class="modal-header text-center" >
+            <h5 class="modal-title  blueColor">Edit User Details</h5>
+			<button style = "text-align:right;" class="btn btn-default" ng-click="vm.cancel()" type="button">Close</button>
+       
+        </div>
+		
+        <div class="modal-body">
+						<form novalidate id ="editNewUserForm" name = "editNewUserForm">
+						<div class = "row"> 
+					  	
+					  		<div class="form-group col-sm-4">
+						    	<label for="company" >Company : <span class = "error-message">*</span></label>
+						    	<select  name="company" id = "company" ng-model="vm.form.company" 
+									multiple="multiple" class="form-control" >
+									 
+								</select>
+								
+								
+						  	</div>
+						  	
+						  	
+						  	<div class="form-group col-sm-4">
+						    	<label for="business" >Business : <span class = "error-message">*</span></label>
+						    	<select  name="business" id = "business" ng-model="vm.form.business" 
+						      multiple="multiple" class="form-control" >
+									
+								</select>
+								
+						  	</div>
+						  	
+						  	
+						  	<div class="form-group col-sm-4">
+						    	<label for="vertical" >Vertical : <span class = "error-message">*</span></label>
+						    	<select name="vertical" id = "vertical" ng-model="vm.form.vertical" 
+						    	 class="form-control" multiple="multiple" >
+									</select>
+								
+						  	</div>
+							 
+					  	
+					  	</div>
+
+						<div class = "row"> 
+							<div class="form-group col-sm-4">
+						    	<label for="payrollNo" >Payroll No : <span class = "error-message">*</span></label>
+						    	<input type="text" ng-disabled = "true" class="form-control" ng-model="vm.form.payrollNo"  name = "payrollNo" id="payrollNo" required>										  
+								<p ng-show="editNewUserForm.payrollNo.$invalid && editNewUserForm.payrollNo.$dirty" class="error-message">
+		                          Payroll No is required
+		                        </p>
+						  	</div>
+
+							<div class="form-group col-sm-4">
+						    	<label for="caseType" >Case Category : <span class = "error-message">*</span></label>
+						    	<select  name="caseType" id = "caseType" ng-model="vm.form.caseType" 
+						    	multiple="multiple" class="form-control" >
+									<option ng-repeat="item in vm.caseTypeInfo" value="{{item.id}}" >{{item.name}}</option>
+								
+								</select>
+								
+						  	</div>	
+						  	
+							<div class="form-group col-sm-4">
+						    	<label for="userName" >User Full Name : <span class = "error-message">*</span></label>
+						    	<input type="text" class="form-control" ng-model="vm.form.userName"  name = "userName" id="userName" required>										  
+								<p ng-show="editNewUserForm.userName.$invalid && editNewUserForm.userName.$dirty" class="error-message">
+		                          User Name is required
+		                        </p>
+						  	</div>
+						  	
+						  	
+					  	
+					  	</div>
+					  	<div class = "row"> 
+							
+							<div class="form-group col-sm-4">
+						    	<label for="webMail" >Webmail ID : <span class = "error-message">*</span></label>
+						    	<input ng-keyup="vm.getEmail()" type="text" class="form-control" ng-model="vm.form.webMail"  name = "webMail" id="webMail" required>										  
+								<p ng-show="editNewUserForm.webMail.$invalid && editNewUserForm.webMail.$dirty" class="error-message">
+		                          WebMail ID is required
+		                        </p>
+						  	</div>
+					  	
+					  		<div class="form-group col-sm-4">
+						    	<label for="mobileNo" >Mobile No : <span class = "error-message">*</span></label>
+						    	<input type="text" class="form-control" ng-model="vm.form.mobileNo"  name = "mobileNo" id="mobileNo" required>										  
+								<p ng-show="editNewUserForm.mobileNo.$invalid && editNewUserForm.mobileNo.$dirty" class="error-message">
+		                          Mobile No is required
+		                        </p>
+						  	</div>
+						  	
+							<div class="form-group col-sm-4">
+						    	<label for="emailID" >Email ID : <span class = "error-message">*</span></label>
+						    	<input type="email" class="form-control" ng-model="vm.form.emailID"  name = "emailID" id="emailID" required>										  
+								<p ng-show="editNewUserForm.emailID.$invalid && editNewUserForm.emailID.$dirty" class="error-message">
+		                          Email ID is required
+		                        </p>
+						  	</div>
+						  	
+						  
+						  	
+						  	
+					  	
+					  	</div>	
+					  	
+					  	 <div class = "row"> 
+
+							<div class="form-group col-sm-4">
+						    	<label for="userType" >User Type : <span class = "error-message">*</span></label>
+						    	<select name="userType" id = "userType" ng-model="vm.form.userType" 
+						    	 class="custom-select-sm form-control" required>
+									<option ng-repeat="item in vm.userTypeInfo" value="{{item.name}}">{{item.name}}</option>
+								</select>
+								<p ng-show="editNewUserForm.userType.$invalid || (editNewUserForm.userType.$touched && editNewUserForm.userType.$pristine)" class="error-message">
+		                          User Type must be selected
+		                        </p>
+						  	</div>	
+					  	 
+					  	 	 <div class="form-group col-sm-4">
+						    	<label for="accessType" >Access Type : <span class = "error-message">*</span></label>
+						    	<select name="accessType" id = "userType" ng-model="vm.form.accessType" 
+						    	 class="custom-select-sm form-control" required>
+									<option ng-repeat="item in vm.accessTypeInfo" value="{{item.name}}">{{item.name}}</option>
+								</select>
+								<p ng-show="editNewUserForm.accessType.$invalid || (editNewUserForm.accessType.$touched && editNewUserForm.userType.$pristine)" class="error-message">
+		                          Access Type must be selected
+		                        </p>
+						  	</div> 	 	
+					  	 						
+		  						 
+							  <div class="form-group col-md-4">							  
+								<label  for="dob"> Date of Birth (ddmmyyyy): <span class = "error-message">*</span></label>						  		
+		  							<input  type="text" class="form-control" ng-model = "vm.form.dob" name = "dob" id="dob" placeholder = "ddmmyyyy">										  
+							  		<p ng-show="editNewUserForm.dob.$invalid && editNewUserForm.dob.$dirty" class="error-message">
+		                          		Date of Birth is required
+		                       		 </p>
+							  </div>
+							 
+							 		  	
+						  	 				  	 
+					  	
+					  	</div>
+					  	
+				 
+					  	
+					  	<div class = "row"> 
+					  	
+					  		
+
+							<div class="form-group col-md-4">							  
+								<label  for="imeiNo1"> Device - 1 :</label>						  		
+		  							<input num-only type="text" class="form-control" ng-model = "vm.form.imeiNo1" name = "imeiNo1" id="imeiNo1" placeholder = "Device - 1">										  
+							  		
+							 </div>
+							  
+							 <div class="form-group col-md-4">							  
+								<label  for="imeiNo2"> Device - 2 :</label>						  		
+		  							<input num-only type="text" class="form-control" ng-model = "vm.form.imeiNo2" name = "imeiNo2" id="imeiNo2" placeholder = "Device - 2">										  
+							  		
+							 </div>
+							  
+							 <div class="form-group col-md-4">							  
+								<label  for="imeiNo3"> Device - 3 :</label>						  		
+		  							<input num-only type="text" class="form-control" ng-model = "vm.form.imeiNo3" name = "imeiNo3" id="imeiNo3" placeholder = "Device - 3">										  
+							  		
+							 </div>	
+										  	
+					  	</div>		 
+					  	
+					  	
+					  <div class = 'text-center'>
+			<button ng-click = "vm.submit(editNewUserForm)" type = "button" class="btn btn-primary text-center">Save</button>
+			<button class="btn btn-primary text-center" ng-click="vm.cancel()" type="button">Cancel</button>
+							
+		</div>
+				  
+					</form>
+        </div>
+		
+        
+  	</script>
+
+<script type="text/ng-template" id="confirmDelete.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title blueColor">Are you sure to delete the user {{vm.delUser}} </h5>
+        </div>
+		
+        <div class="modal-body">
+<p> Please provide the following Information </p>		
+		
+				<form style = "margin: 0 30px;" id="deleteUser" name="deleteUser" method="POST"
+			>
+			<div class="row">
+
+			
+					<LABEL for="reason" class = "blueColor">Reason for Deletion</LABEL> <select
+							name="reason" id="reason"
+							ng-model="vm.reason" required
+							class="custom-select-sm form-control">
+					<option ng-repeat="item in vm.disableUserReason"
+								value="{{item.id}}">{{item.name}}</option>
+						</select>
+<p class="error-message" ng-if="vm.reason == ''">Please select the reason  {{vm.reason}}</p>
+
+				</div>
+
+<div class="row">
+
+			
+					<LABEL for="remark" class = "blueColor">Remark</LABEL>
+	<textarea class="form-control" ng-model="vm.remark"  name = "remark" id="remark" required>	</textarea>									  
+	<p class="error-message" ng-if="vm.remark == ''">Please enter the remark</p>
+
+				</div>
+
+</form>
+			
+	</div>	
+
+
+	<div class = "modal-footer">	 
+<button class="btn btn-primary" ng-disabled = "vm.reason == '' || vm.remark == ''" type="button" ng-click="vm.disableUserItem()">Disable</button>
+			<button class="btn btn-primary" type="button" ng-click="$dismiss('cancel');">Cancel</button>
+           
+   </div>     
+        
+  	</script>
+
+
+

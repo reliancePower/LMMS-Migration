@@ -1,0 +1,546 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="X-UA-Compatible" content="IE=11">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
+<link rel="icon" href="./app/img/favicon.png" type="image/png"
+	sizes="16x16">
+<link rel="stylesheet" href="./app/lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="./app/lib/multiselect/bootstrap-select.css">
+<link rel="stylesheet" href="./app/lib/fontawesome/all.css"
+	type="text/css" crossorigin="anonymous">
+<link rel="stylesheet"
+	href="./app/lib/datatables/jquery.dataTables.min.css" type="text/css"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="./app/lib/angular-datatables-0.6.2/dist/plugins/bootstrap/datatables.bootstrap.min.css"
+	type="text/css" crossorigin="anonymous">
+<link rel="stylesheet" href="./app/lib/moment/multi-date-picker.css"
+	type="text/css" crossorigin="anonymous">
+<link rel="stylesheet"
+	href="./app/lib/multiselect/bootstrap-multiselect.css">
+<link rel="stylesheet"
+	href="./app/lib/datatables/buttons.dataTables.min.css" type="text/css"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="./app/lib/datatables/responsive.dataTables.min.css"
+	type="text/css" crossorigin="anonymous">
+<link rel="stylesheet"
+	href="./app/lib/datatables/fixedColumns.dataTables.min.css"
+	type="text/css" crossorigin="anonymous">
+<link rel="stylesheet" href="./app/lib/select.css" type="text/css"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="./app/lib/selectize.default.css"
+	type="text/css" crossorigin="anonymous">
+<link rel="stylesheet" href="./app/lib/angular/textAngular.css">
+<link rel="stylesheet" href="./app/css/common.css">
+<link rel="stylesheet" href="./app/css/media.css">
+<link rel="stylesheet" href="./app/css/login.css">
+<link rel="stylesheet" href="./app/css/dashboard.css">
+
+<title>Law Matters Management System</title>
+
+<script type="text/javascript"
+	src="./app/lib/bootstrap/js/jquery-3.3.1.slim.min.js">
+	
+</script>
+<script type="text/javascript" src="./app/lib/angular/angular.min.js">
+	
+</script>
+<script type="text/javascript"
+	src="./app/lib/angular/angular-animate.js"></script>
+<script src='./app/lib/angular/textAngular-rangy.min.js'></script>
+<script type="text/javascript">
+
+if (!angular.lowercase) angular.lowercase = str => angular.isString(str) ? str.toLowerCase() : str
+		</script>
+<script src='./app/lib/angular/textAngular-sanitize.min.js'></script>
+
+	
+<script type="text/javascript"
+	src="./app/lib/angular/textAngular.min.js">
+	
+</script>
+<script type="text/javascript"
+	src="./app/lib/angular/angular-ui-router.js"></script>
+<script type="text/javascript" src="./app/lib/angular/angular-idle.js"></script>
+<script type="text/javascript"
+	src="./app/lib/angular/angular-local-storage.js">
+	
+</script>
+<script type="text/javascript"
+	src="./app/lib/angular/angular-spinner.min.js">
+	
+</script>
+
+
+
+<script type="text/javascript"
+	src="./app/lib/moment/moment-with-locales.min.js">
+	
+</script>
+<script type="text/javascript"
+	src="./app/lib/moment/multi-date-picker-min.js">
+	
+</script>
+<script type="text/javascript"
+	src="./app/lib/bootstrap/js/popper.min.js">
+	
+</script>
+<script type="text/javascript"
+	src="./app/lib/datatables/jquery.dataTables.min.js">
+	
+</script>
+<script type="text/javascript" src="./app/lib/datatables/date-euro.js">
+	
+</script>
+<script type="text/javascript" src="./app/lib/readmore.min.js"></script>
+<script type="text/javascript" src="./app/lib/select.js">
+	
+</script>
+<script type="text/javascript" src="./app/lib/elif.js">
+	
+</script>
+
+
+
+<script type="text/javascript" src="./app/lib/FileSaver.min.js"></script>
+
+<script type="text/javascript" src="./app/lib/tableexport.js"></script>
+
+<script type="text/javascript" src="./app/lib/tableToExcel.js"></script>
+
+<script type="text/javascript" src="./app/lib/xlsx.full.min.js"></script>
+
+<script type="text/javascript" src="./app/lib/xls.core.min.js"></script>
+
+<script>
+	jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+		"date-euro-pre" : function(a) {
+			return moment(a, 'DD/MM/YYYY');
+		},
+
+		"date-euro-asc" : function(a, b) {
+
+			if (a.isBefore(b))
+				return -1;
+			else if (b.isBefore(a))
+				return 1;
+			else
+				return 0;
+		},
+
+		"date-euro-desc" : function(a, b) {
+
+			if (a.isBefore(b))
+				return 1;
+			else if (b.isBefore(a))
+				return -1;
+			else
+				return 0;
+		}
+	});
+</script>
+<script type="text/javascript"
+	src="./app/lib/angular-datatables-0.6.2/dist/angular-datatables.js">
+	
+</script>
+<script type="text/javascript"
+	src="./app/lib/angular-datatables-0.6.2/dist/plugins/bootstrap/angular-datatables.bootstrap.min.js">
+	
+</script>
+<script type="text/javascript"
+	src="./app/lib/datatables/dataTables.lightColumnFilter.js">
+	
+</script>
+<script type="text/javascript"
+	src="./app/lib/datatables/angular-datatable-column-filter.js">
+	
+</script>
+
+<script type="text/javascript"
+	src="./app/lib/datatables/dataTables.responsive.min.js">
+	
+</script>
+
+<script type="text/javascript"
+	src="./app/lib/datatables/dataTables.buttons.min.js"></script>
+<script type="text/javascript"
+	src="./app/lib/datatables/buttons.colVis.min.js"></script>
+<script type="text/javascript"
+	src="./app/lib/datatables/buttons.flash.min.js"></script>
+<script type="text/javascript"
+	src="./app/lib/datatables/buttons.html5.min.js"></script>
+<script type="text/javascript"
+	src="./app/lib/datatables/buttons.print.min.js"></script>
+<script type="text/javascript" src="./app/lib/datatables/jszip.min.js"></script>
+<script type="text/javascript" src="./app/lib/datatables/pdfmake.min.js"></script>
+<script type="text/javascript" src="./app/lib/datatables/vfs_fonts.js"></script>
+<script type="text/javascript"
+	src="./app/lib/datatables/dataTables.fixedColumns.min.js"></script>
+<script type="text/javascript"
+	src="./app/lib/datatables/angular-datatables.fixedcolumns.js"></script>
+
+<script type="text/javascript"
+	src="./app/lib/datatables/angular-datatables.buttons.min.js"></script>
+<script type="text/javascript" src="./app/lib/datatables/jspdf.min.js"></script>
+
+<script type="text/javascript"
+	src="./app/lib/datatables/html2canvas.min.js"></script>
+<script type="text/javascript"
+	src="./app/lib/bootstrap/js/ui-bootstrap-tpls-3.0.4.min.js">
+	
+</script>
+<script type="text/javascript" src="./app/lib/bootstrap/js/bootstrap.js">
+	
+</script>
+<script type="text/javascript"
+	src="./app/lib/multiselect/bootstrap-select.min.js">
+	
+</script>
+
+<script type="text/javascript" src="./app/lib/angular/underscore-min.js">
+	
+</script>
+<script type="text/javascript"
+	src="./app/lib/multiselect/bootstrap-multiselect.js">
+	
+</script>
+
+
+<script type="text/javascript" src="./app/lib/charts/chart.min.js">
+	
+</script>
+
+<script type="text/javascript" src="./app/lib/encryption/aes.js">
+	
+</script>
+<script type="text/javascript" src="./app/lib/encryption/AesUtil.js">
+	
+</script>
+<script type="text/javascript" src="./app/lib/encryption/pbkdf2.js">
+	
+</script>
+
+
+
+</head>
+<body ng-app="regCalApp">
+	<div ui-view name="nav"></div>
+	<div class="ct">
+		<div ui-view name="content"></div>
+		<span us-spinner="{radius:30, width:8, length: 16}"
+			spinner-key="spinner-1"></span>
+
+	</div>
+
+
+	<script type="text/javascript" src="./app/app.js">
+		
+	</script>
+	<script type="text/javascript" src="./app/scripts/spinner.js">
+		
+	</script>
+	<script type="text/javascript" src="./app/scripts/constants.js">
+		
+	</script>
+
+	<script type="text/javascript" src="./app/view/navbar.controller.js">
+		
+	</script>
+	<script type="text/javascript" src="./app/view/navbar.service.js">
+		
+	</script>
+
+
+
+	<script type="text/javascript"
+		src="./app/scripts/login/login.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/login/login.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/login/login.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/dashboard/dashboard.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/dashboard/dashboard.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/dashboard/dashboard.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/addcase/addcase.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/addcase/addcase.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/addcase/addcase.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/searchcase/searchcase.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/searchcase/searchcase.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/searchcase/searchcase.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/viewcase/viewcase.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/viewcase/viewcase.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/viewcase/viewcase.service.js">
+		
+	</script>
+	
+	<script type="text/javascript"
+		src="./app/scripts/viewadditionalnotice/viewadditionalnotice.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/viewadditionalnotice/viewadditionalnotice.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/viewadditionalnotice/viewadditionalnotice.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/editcase/editcase.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/editcase/editcase.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/editcase/editcase.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/updatehearing/updatehearing.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/updatehearing/updatehearing.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/updatehearing/updatehearing.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/managedocs/managedocs.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/managedocs/managedocs.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/managedocs/managedocs.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/managenoticedocs/managenoticedocs.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/managenoticedocs/managenoticedocs.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/managenoticedocs/managenoticedocs.service.js">
+		
+	</script>
+
+
+	<script type="text/javascript"
+		src="./app/scripts/manageforum/manageforum.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/manageforum/manageforum.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/manageforum/manageforum.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/pvforumupdatelog/pvforumupdatelog.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/pvforumupdatelog/pvforumupdatelog.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/pvforumupdatelog/pvforumupdatelog.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/adduser/adduser.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/adduser/adduser.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/adduser/adduser.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/viewuser/viewuser.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/viewuser/viewuser.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/viewuser/viewuser.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/approvedevice/approvedevice.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/approvedevice/approvedevice.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/approvedevice/approvedevice.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/approveforum/approveforum.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/approveforum/approveforum.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/approveforum/approveforum.service.js">
+		
+	</script>
+
+
+	<script type="text/javascript"
+		src="./app/scripts/appstore/appstore.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/appstore/appstore.controller.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/addnotice/addnotice.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/addnotice/addnotice.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/addnotice/addnotice.service.js">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="./app/scripts/viewnotice/viewnotice.module.js">
+		
+	</script>
+	
+	<script type="text/javascript"
+		src="./app/scripts/viewnotice/viewnotice.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/viewnotice/viewnotice.service.js">
+		
+	</script>
+	
+		<script type="text/javascript"
+		src="./app/scripts/gst/gst.module.js">
+		
+	</script>
+	
+	<script type="text/javascript"
+		src="./app/scripts/gst/gst.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/gst/gst.service.js">
+		
+	</script>
+	
+	<script type="text/javascript"
+		src="./app/scripts/managenotes/managenotes.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/managenotes/managenotes.controller.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/managenotes/managenotes.service.js">
+		
+	</script>
+
+
+	<script type="text/javascript"
+		src="./app/scripts/error/error.module.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="./app/scripts/error/error.controller.js">
+		
+	</script>
+
+</body>
+</html>

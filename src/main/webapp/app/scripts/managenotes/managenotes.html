@@ -1,0 +1,607 @@
+<div id="viewContainer" class="container-fluid">
+	<br>
+	<div class="row" style="text-align: center;">
+		<div class="col-sm-3">
+			<button type="button" class="btn btn-primary text-center"
+				ng-click="vm.goBack()">Back</button>
+		</div>
+		<div class="col-sm-6" style="text-align: left;">
+			<h4 class="blueColor">Manage Notes for case ID - {{vm.caseID}}</h4>
+		</div>
+		<div class="col-sm-3" style="text-align: center;">
+			<button type="button" class="btn btn-info"
+				ng-click="vm.AddNewNotes()">
+				Add New <i style="color: white !important;" class="fas fa-plus"></i>
+			</button>
+			<button style="text-align: right;" class="btn btn-primary"
+				ng-click="vm.goBack()" type="button">Close</button>
+		</div>
+	</div>
+
+	<br>
+	<div id="caseInfoContainer"
+		style="background: white; padding: 0 0 10px 0;">
+		<h5 class="titleCont">Case Info</h5>
+		<div class="row">
+
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Company :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{vm.company}}</div>
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Case Category :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{ vm.caseType
+				}}</div>
+
+		</div>
+		<div class="row">
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Business :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{vm.business}}</div>
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Case No :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{ vm.caseNo }}</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Vertical :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{vm.vertical}}</div>
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong> Forum :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{ vm.forum }}</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Subject Matter :</strong>
+			</div>
+			<div class="col-sm-9" style="font-size: 16px;">{{vm.subMatter}}</div>
+		</div>
+	</div>
+
+	<br>
+	<div id="MailContainer" style="background: white; display: none;"
+		class="container">
+		
+		<div class="container-fluid" id="templateSelect">
+			<br>
+			<div class="row">
+				<div class="col-md-4">
+					<label for="tempSelect" class="blueColor">Template : <span
+						class="error-message">*</span></label> <select name="tempSelect"
+						id="tempSelect" ng-model="vm.tempSelect" required
+						ng-options="item.id as item.name for item in vm.emailArray"
+						ng-change="vm.fetchTemplateDetails(vm.tempSelect)"
+						class="custom-select-sm form-control">
+					</select>
+				</div>
+				<div class="col-md-8">
+					<p>
+						<b>To: </b>
+						<textarea class="form-control" name="toM" id="toM"
+							ng-model=vm.toMail>  </textarea>
+					</p>
+					<p>
+						<b>CC: </b>
+						<textarea class="form-control" id="ccM" ng-model="vm.ccMail"> </textarea>
+					</p>
+					<p>
+						<b>Sub: </b>
+						<textarea class="form-control" id="mailSub"
+							ng-model="vm.mailSubject">   </textarea>
+					</p>
+				</div>
+			</div>
+
+		</div>
+		<br>
+		<div id="mTemp" style="display: none;">
+			<h5 class="titleCont">Email Notification Draft</h5>
+			<div text-angular="text-angular" safe-paste
+				ng-model="vm.mailTemplateHTML" id="txtAngID">
+				
+				
+				</div>
+			<br>
+
+			<div class="row text-center">
+				<div class="col-sm-3"></div>
+				<div class="col-sm-6">
+					<button type="button" ng-click="vm.previewNoteItem()"
+						ng-if="!vm.isHOD" class="btn btn-primary text-center"
+						id="uploadBtn">Send to HOD for approval</button>
+					<button type="button" ng-click="vm.previewNoteItem()"
+						ng-if="vm.isHOD" class="btn btn-primary text-center"
+						id="uploadBtn">Save Draft</button>
+					<button ng-click="vm.finalPreviewNoteItem()" type="button"
+						ng-if="vm.isHOD" class="btn btn-primary text-center"
+						id="uploadBtn">Send Mail</button>
+					<button ng-click="vm.resetForm()" type="button"
+						class="btn btn-danger text-center">Clear</button>
+				</div>
+				<div class="col-sm-3"></div>
+			</div>
+			<br>
+		</div>
+	</div>
+
+	<br>
+	<div id="docDetailsContainer" class="" style="background: white;">
+		<h5 class="titleCont">List of Notes</h5>
+		<div style="padding: 5px;">
+			<table datatable="ng" dt-column-defs="vm.dtColumnDefs"
+				dt-instance="vm.dtInstance" dt-options="vm.dtOptions" id="viewTable"
+				class="table table-bordered tableCls container-fluid" width="100%">
+				<thead>
+					<tr>
+						<th>Case ID</th>
+						<th>Company</th>
+						<th>Business</th>
+						<th>Vertical</th>
+						<th>Forum</th>
+						<th>Case Category</th>
+						<th>Case No</th>
+						<th>CR No</th>
+						<th>Status</th>
+						<th>Template Name</th>
+						<th>To Mail IDs</th>
+						<th>CC Mail IDs</th>
+						<th>Draft By</th>
+						<th>Sent By</th>
+						<th>Sent On</th>
+						<th class="noVis" style="text-align: center;">*</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="val in vm.notesArray">
+						<td>{{vm.caseID}}</td>
+						<td>{{vm.company}}</td>
+						<td>{{vm.business}}</td>
+						<td>{{vm.vertical}}</td>
+						<td>{{vm.forum}}</td>
+						<td>{{vm.caseType}}</td>
+						<td>{{vm.caseItem.cNo}}</td>
+						<td>{{val.crNo}}</td>
+						<td>{{val.templateStatus}}</td>
+						<td>{{val.templateName}}</td>
+						<td>{{val.toMail}}</td>
+						<td>{{val.ccMail}}</td>
+						<td>{{val.draftByName}}</td>
+						<td>{{val.sentByName}}</td>
+						<td>{{val.sentTimestamp}}</td>
+						<td class="noVis" style="text-align: center;">
+							<div class="button-group">
+
+								<button type="submit" ng-click="vm.viewNoteItem(val)"
+									title="View Notes">
+									<i class="fas fa-eye bn"></i>
+								</button>
+
+								<button type="button" ng-if="(val.templateStatus == 'Draft')"
+									ng-click="vm.editNoteItem(val)" title="Edit Note Info">
+									<i class="far fa-edit bn"></i>
+								</button>
+
+								<button
+									ng-if="(val.hodPayrollNo.trim().indexOf(vm.userID) > -1) && (val.templateStatus == 'Draft') && (vm.userID != val.draftBy)"
+									type="button" ng-click="vm.approveNoteItem(val)"
+									title="Send Note">
+									<i class="fa fa-check bn"></i>
+								</button>
+
+								<button type="button"
+									ng-if="(val.templateStatus == 'Draft')"
+									ng-click="vm.disableNoteItem(val)" title="Delete Note">
+									<i class="fa fa-trash bn"></i>
+								</button>
+
+							</div>
+
+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div id="mailAppend" ng-include src="'mailTemplate.html'"
+			style="display: none;"></div>
+	</div>
+</div>
+
+<script type="text/ng-template" id="mailTemplate.html">
+
+<table   style="font-size: 14px; font-family: Arial;">
+<tr>
+<td style = "background-color:#eee;">
+ 	<b> Case No : </b> {{vm.caseItem.cNo}} ({{vm.caseItem.caseType}} Matter) 	
+</td>
+</tr>
+<tr>
+<td style = "background-color:#eee;">
+	 <b> Forum : </b> {{vm.caseItem.forum}} 
+</td>
+</tr>
+<tr>
+<td style = "background-color:#eee;">
+	 <b> Bench : </b> {{vm.caseItem.bench}} 
+</td>
+</tr>
+<tr>
+<td>	
+		
+	<b> Matter : </b> <span contenteditable="true" id = "subjMatter">{{vm.caseItem.subMatter == '' ? 'NA' : vm.caseItem.subMatter.trim()}}</span> 	
+</td>
+</tr>
+<tr>
+<td>
+	 <b> Financial Impact- One time : </b> <span contenteditable="true" id = "finImpOneTime"> {{vm.caseItem.finImpact == '' ? 'Nil' : vm.caseItem.finImpact}} </span>,  <b> Recurring : </b> <span contenteditable="true"  id = "finImpRecurring">Nil</span> , <b> Duration : </b> <span contenteditable="true"  id = "finImaRecurringDuration">NA</span>	
+</td>
+</tr>
+<tr>
+<td style = "background-color:#eee;">	
+	 <b> Petitioner : </b> {{vm.pet}}   <b> AOR : </b> {{vm.caseItem.aorOfCompany == '' ? 'NA' : vm.caseItem.aorOfCompany}}  <b> Counsel: </b> {{vm.caseItem.counselOfCompany == '' ? 'NA' : vm.caseItem.counselOfCompany}}   
+</td>
+</tr>
+<tr>
+<td style = "background-color:#eee;">	
+	 <b> Respondent : </b> {{vm.resp}}  <b> AOR : </b> {{vm.caseItem.aorOfRespondent == '' ? 'NA' : vm.caseItem.aorOfRespondent}} <b> Counsel: </b> {{vm.caseItem.counselOfRespondent == '' ? 'NA' : vm.caseItem.counselOfRespondent}} 
+</td>
+</tr>
+<tr>
+<td>
+	 <b> Brief Facts : </b> <span contenteditable="true" id = "briefFacts">{{vm.caseItem.briefFacts == '' ? 'NA' : vm.caseItem.briefFacts.trim()}}</span> 
+</td>
+</tr>
+<tr>
+<td  style = "background-color:#eee;">
+	 <b> Last Hearing Date : </b> {{vm.caseItem.lastHearingDate == undefined ? 'NA' : vm.caseItem.lastHearingDate | date:'dd/MM/yyyy'}} 
+</td>
+</tr>
+<tr>
+<td style = "background-color:#eee;">
+	 <b> Outcome Of Last Hearing : </b> {{vm.caseItem.outcomeLast == '' ? 'NA' : vm.caseItem.outcomeLast}} 
+</td>
+</tr>
+<tr>
+<td style = "background-color:#eee;">
+	 <b> Next Hearing Date : </b> {{vm.caseItem.nextHearingDate == undefined ? 'NA' : vm.caseItem.nextHearingDate | date:'dd/MM/yyyy'}} <b> Case Status : </b> {{vm.caseItem.statusName}}  
+</td>
+</tr>
+<tr>
+<td>
+	 <b> Additional Comments: </b>  
+		
+	<ol contenteditable="true" type="a" id = "additionalComments">
+						<li>Nil</li>
+
+	</ol>
+</td>
+</tr>
+</table>
+	
+	<p><strong>Regards,</strong></p><p id = "userName">{{vm.userName}}</p>	
+
+</script>
+
+<script type="text/ng-template" id="finalPreviewApproveNote.html">
+<div class="modal-header text-center">
+  <h5 id = "titleText" class="modal-title w-100 blueColor" style = "font-weight:bold;">Final Preview and Send Mail</h5>
+</div>
+<div class="modal-body" id="viewAllMatter">
+	<div id = "headerFinalTemp">
+		
+		<div class = "row">
+			<div class="col-md-2"></div>
+			<div class = "col-md-2"> <b> To  </b> </div>
+			<div class = "col-md-6"> <textarea rows = "2" class = "form-control" ng-model = "vm.headerFPreviewTo"> </textarea> </div> 
+			<div class="col-md-2"></div>
+		</div>
+		<div class = "row">
+			<div class="col-md-2"></div>
+			<div class = "col-md-2"> <b> CC  </b> </div>
+ 			<div class = "col-md-6"> <textarea rows = "2" class = "form-control" ng-model = "vm.headerFPreviewCC"> </textarea> </div> 
+			<div class="col-md-2"></div> 
+		</div>
+		<div class = "row">	
+			<div class="col-md-2"></div>		
+			<div class = "col-md-2"> <b> Subject  </b> </div>
+ 			<div class = "col-md-6">   <textarea rows = "2" class = "form-control" ng-model = "vm.headerFPreviewSubject"> </textarea></div>  
+			<div class="col-md-2"></div> 
+		</div>
+	</div>
+<hr>
+	<div id="emailTempFPreview" contenteditable = "false" ng-model = "vm.fPreviewMailTemplate"></div>
+</div>
+<div class="modal-footer" >
+	<div class="text-center">
+		
+			<button  type="button" class="btn btn-primary" 
+			ng-click = "vm.approveNote()" >Submit</button>
+			<button ng-click="$dismiss('cancel')" type="button"
+				class="btn btn-danger text-center">Cancel</button>
+		
+	</div>
+
+</div>
+
+
+</script>
+
+<script type="text/ng-template" id="finalPreviewNote.html">
+<div class="modal-header text-center">
+  <h5 id = "titleText" class="modal-title w-100 blueColor" style = "font-weight:bold;">Final Preview </h5>
+</div>
+<div class="modal-body" id="viewAllMatter">
+	<div id = "headerFinalTemp">		
+		<div class = "row">
+			<div class="col-md-2"></div>
+			<div class = "col-md-2"> <b> To  </b> </div>
+			<div class = "col-md-6"> : {{vm.headerFinalPreviewTo}}</div>
+			<div class="col-md-2"></div> 
+		</div>
+		<div class = "row">	
+			<div class="col-md-2"></div>
+			<div class = "col-md-2"> <b> CC  </b> </div>
+ 			<div class = "col-md-6"> : {{vm.headerFinalPreviewCC}}</div> 
+			<div class="col-md-2"></div> 
+		</div>
+		<div class = "row">	
+			<div class="col-md-2"></div>		
+			<div class = "col-md-2"> <b> Subject  </b> </div>
+ 			<div class = "col-md-6">  : {{vm.headerFinalPreviewSubject}}</div>
+			<div class="col-md-2"></div>
+ 
+		</div>
+	</div>
+<hr>
+	<div id="emailTempFinalPreview" contenteditable = "false" ng-bind-html = "vm.finalPreviewNoteMailTemplate"></div>
+</div>
+<div class="modal-footer" >
+	<div class="text-center">
+		
+			<button  type="button" class="btn btn-primary" 
+			ng-click = "vm.sendNote()" >Submit</button> 
+			<button ng-click="$dismiss('cancel')" type="button"
+				class="btn btn-danger text-center">Cancel</button>
+		
+	</div>
+
+</div>
+
+
+</script>
+
+<script type="text/ng-template" id="addRecip.html">
+    	
+        <div class="modal-body">
+			<div class="form-group">
+				<label class = "blueColor"> Copy this draft mail to :</label>
+				<textarea class = "form-control" ng-model = "vm.moreRecipients" placeholder = "Add Comma in-between in case of multiple recipients "></textarea>
+            </div>          
+			<br>
+			
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="vm.sendDraft()">Submit</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Cancel</button>
+        </div>
+        
+  	</script>
+
+<script type="text/ng-template" id="previewNote.html">
+<div class="modal-header text-center">
+  <h5 id = "titleText" class="modal-title w-100 blueColor" style = "font-weight:bold;">Preview</h5>
+</div>
+<div class="modal-body" id="viewAllMatter">
+	<div id = "headerTemp">		
+		<div class = "row">
+			<div class="col-md-2"></div>
+			<div class = "col-md-2"> <b> To  </b> </div>
+			<div class = "col-md-6"> : {{vm.headerPreviewTo}}</div>
+			<div class="col-md-2"></div> 
+		</div>
+		<div class = "row">
+			<div class="col-md-2"></div>
+			<div class = "col-md-2"> <b> CC  </b> </div>
+ 			<div class = "col-md-6"> : {{vm.headerPreviewCC}}</div>
+			<div class="col-md-2"></div>  
+		</div>
+		<div class = "row">	
+			<div class="col-md-2"></div>		
+			<div class = "col-md-2"> <b> Subject  </b> </div>
+ 			<div class = "col-md-6">  : {{vm.headerPreviewSubject}}</div>
+			<div class="col-md-2"></div> 
+		</div>
+	</div>
+<hr>
+	<div id="emailTempPreview" contenteditable = "false" ng-bind-html = "vm.previewNoteMailTemplate"></div>
+</div>
+<div class="modal-footer" >
+	<div class="text-center">
+		<button  type="button" class="btn btn-primary" 
+			ng-click = "vm.confirmNote()" >Submit</button>
+			<!--<button  type="button" class="btn btn-primary" 
+			ng-click = "vm.sendDraft()" >Send</button>-->
+			<button ng-click="$dismiss('cancel')" type="button"
+				class="btn btn-danger text-center">Cancel</button>
+		
+	</div>
+
+</div>
+
+
+</script>
+
+
+<script type="text/ng-template" id="viewNote.html">
+<div class="modal-header text-center">
+  <h5 id = "titleText" class="modal-title w-100 blueColor" style = "font-weight:bold;">View Note for {{vm.footerInfo}}</h5>
+</div>
+<div class="modal-body" id="viewNoteMatter">
+	<div id = "headerTemp">		
+		<div class = "row">
+			<div class="col-md-2"></div>
+			<div class = "col-md-2"> <b> To  </b> </div>
+			<div class = "col-md-6"> : {{vm.headerTo}}</div> 
+			<div class="col-md-2"></div>
+		</div>
+		<div class = "row">
+			<div class="col-md-2"></div>
+			<div class = "col-md-2"> <b> CC  </b> </div>
+ 			<div class = "col-md-6"> : {{vm.headerCC}}</div>  
+			<div class="col-md-2"></div>
+		</div>
+		<div class = "row">
+			<div class="col-md-2"></div>
+			<div class = "col-md-2"> <b> Subject  </b> </div>
+ 			<div class = "col-md-6">  : {{vm.headerSubject}}</div>
+			<div class="col-md-2"></div> 
+		</div>
+	</div>
+<hr>
+	<div id="emailTemp" contenteditable = "false" ng-bind-html = "vm.viewNoteMailTemplate"></div>
+	<div id="footerInfo"> <b> {{vm.footerInfo}} </b></div>
+</div>
+<div class="modal-footer" >
+	<div class="text-center">
+		
+			<button  type="button" class="btn btn-primary " 
+			ng-click = "vm.printViewNote()" >Print</button>
+			<button ng-click="$dismiss('cancel')" type="button"
+				class="btn btn-danger text-center">Cancel</button>
+		
+	</div>
+
+</div>
+
+
+</script>
+
+<script type="text/ng-template" id="editNote.html">
+<div class="modal-header text-center">
+  <h5 id = "titleText" class="modal-title w-100 blueColor">Edit Note</h5>
+</div>
+<div class="modal-body" id="viewAllMatter">
+	<div id = "editHeaderTemp">
+		
+		<div class = "row">
+			<div class="col-md-2"></div>
+			<div class = "col-md-2"> <b> To   </b> </div>
+			<div class = "col-md-6"> <textarea rows = "2" class = "form-control" ng-model = "vm.headerEditTo"></textarea></div> 
+			<div class="col-md-2"></div>
+		</div>
+		<div class = "row">
+			<div class="col-md-2"></div>
+			<div class = "col-md-2"> <b> CC </b> </div>
+ 			<div class = "col-md-6"> <textarea rows = "2" class = "form-control" ng-model = "vm.headerEditCC">  </textarea></div>  
+			<div class="col-md-2"></div>
+		</div>
+		<div class = "row">
+			<div class="col-md-2"></div>		
+			<div class = "col-md-2"> <b> Subject </b> </div>
+ 			<div class = "col-md-6">  <textarea rows = "2" class = "form-control" ng-model = "vm.headerEditSubject"> </textarea></div> 
+			<div class="col-md-2"></div>		
+		</div>
+	</div>
+<hr>
+	<div id="editTemplateNote" text-angular="text-angular" safe-paste
+			ng-model="vm.editMailTemplateHTML" ></div>
+</div>
+<hr>
+<div class="modal-footer" >
+	<div class="text-center">
+			<button  ng-if = "(vm.editItem.hodPayrollNo.trim().indexOf(vm.userID) > -1)" type="button" class="btn btn-primary" 
+			ng-click = "vm.hodEditDraft()" >Update and Send Mail</button>			
+			<button  ng-if = "!(vm.editItem.hodPayrollNo.trim().indexOf(vm.userID) > -1)" type="button" class="btn btn-primary" 
+			ng-click = "vm.editDraft()" >Update and Sent to HOD for Approval</button>
+			<button ng-click="$dismiss('cancel')" type="button"
+				class="btn btn-danger text-center">Close</button>
+		
+	</div>
+</div>
+
+
+
+</script>
+
+<script id="print-header" type="text/x-jquery-tmpl">
+   <!DOCTYPE html>
+   <head>
+
+       <title>     Law Matters Management System</title>
+        <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <link rel="stylesheet" href="./app/lib/bootstrap/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="./app/lib/multiselect/bootstrap-select.css">
+    
+
+    <link rel="stylesheet" href="./app/lib/fontawesome/all.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/datatables/jquery.dataTables.min.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/angular-datatables-0.6.2/dist/plugins/bootstrap/datatables.bootstrap.min.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/moment/multi-date-picker.css"  type="text/css" crossorigin="anonymous">
+	<link rel="stylesheet" href="./app/lib/multiselect/bootstrap-multiselect.css">
+    
+    <link rel="stylesheet" href="./app/css/common.css" >
+    <link rel="stylesheet" href="./app/css/media.css" >
+ 	<link rel="stylesheet" href="./app/css/login.css" >
+ 	<link rel="stylesheet" href="./app/css/dashboard.css" >
+
+     <style>
+
+
+@media print {
+    body {
+    color: black;
+    background : white;
+ 	font-size: 14pt; 
+    }
+
+	#viewPopupTable tr, #viewPopupTable th, #viewPopupTable td {
+	
+    font-size: 17px !important;
+}
+.col-sm-3, .col-sm-2, .col-sm-4 {
+	font-size : 18px !important;
+}
+}
+ body {
+    color: black;
+    background : white;
+ 	font-size: 14pt; 
+    }
+
+	#viewPopupTable tr, #viewPopupTable th, #viewPopupTable td {
+	
+    font-size: 17px !important;
+}
+.col-sm-3, .col-sm-2, .col-sm-4 {
+	font-size : 18px !important;
+}
+      
+       </style>
+  
+	
+   </head>
+   <body onload="window.print()">
+  
+</script>
+<script id="print-footer" type="text/x-jquery-tmpl">
+    </body>
+    </html>
+</script>
+

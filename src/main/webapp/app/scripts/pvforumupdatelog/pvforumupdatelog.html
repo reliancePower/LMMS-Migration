@@ -1,0 +1,115 @@
+<div id="appStoreContainer">
+	<div class="row container text-center" style="margin-top: 10px;">
+		<div class="col-sm-4 blueColor">
+			<h4>PV forum Update log</h4>
+			</div>
+		<div class="col-sm-4 blueColor">
+			<h6>Last Run on : <strong>{{vm.lastJobRun}}</strong></h6>
+			</div>
+			
+		<div class="col-sm-4" style = "text-align:right;">
+			
+			<button type = "button" class = "btn btn-primary " ng-click = "vm.updateNewForum()">Forum Master Refresh</button>
+		</div>
+
+	</div>
+
+	<hr>
+	<div class="container">
+		<div style = "background:white;margin:0px 80px;">
+			<form novalidate id="pvForumLog" name="pvForumLog"
+				style="padding: 15px 30px;">
+				<div class="row">
+				<div class="col-md-2"></div>
+					<div class="col-md-4">
+						<LABEL>Start Date</LABEL> <input id="startDate" name="startDate"
+							class="form-control" placeholder="Select Start Date"
+							ng-model="vm.startDate">
+					</div>
+
+					<div class="col-md-4">
+						<label>End Date</label> <input id="endDate" name="endDate"
+							class="form-control" placeholder="Select End Date"
+							ng-model="vm.endDate">
+					</div>
+					<div class="col-md-2"></div>
+				</div>
+			</form>
+			<div class='text-center'>
+				<button ng-click="vm.fetchLog(pvForumLog)" type="button"
+					class="btn btn-primary text-center">Search</button>
+				<button ng-click="vm.resetFilter()" type="reset"
+					class="btn btn-primary text-center">Clear</button>
+
+
+
+			</div>
+			<br>
+		</div>
+<br><br>
+		<div class="tableContainer" ng-if = "vm.resultArray.length > 0">
+			<table class="table table-bordered tableCls" datatable="ng" dt-column-defs="vm.dtColumnDefs"
+			dt-instance="vm.dtInstance" dt-options="vm.dtOptions"
+				style="width: 100%; background: white;" id="todaysHearing">
+				<thead>
+					<tr>
+
+
+						<th>Category</th>
+						<th>Forum Name</th>
+						<th>Updated Item</th>
+						<th>Action</th>
+						<th>Execution Type</th>
+						<th>Uploaded On</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in vm.resultArray">
+						<td>{{item.category | titleCase}}</td>
+						<td>{{item.forumName}}</td>
+						<td>{{item.updatedItem}}</td>
+						<td>{{item.action}}</td>
+						<td>{{item.executionType}}</td>
+						<td>{{item.updatedOn | date : 'dd/MM/yyyy'}}</td>
+						
+					</tr>
+					
+				</tbody>
+
+			</table>
+
+		</div>
+
+	</div>
+	<br>
+
+
+
+
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$('#endDate, #endDateAlert').datepicker({
+			format : 'dd/mm/yyyy'
+
+		});
+		$('#endDate, #endDateAlert').on('changeDate', function(ev) {
+			$(this).datepicker('hide');
+		});
+
+		$('#startDate, #startDateAlert').datepicker({
+			format : 'dd/mm/yyyy'
+
+		});
+		$('#startDate, #startDateAlert').on('changeDate', function(ev) {
+			$(this).datepicker('hide');
+		});
+	});
+</script>
+
+
+
+

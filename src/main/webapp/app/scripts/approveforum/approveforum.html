@@ -1,0 +1,320 @@
+<div id="approveContainer">
+	<br>
+	<div class="container-fluid">
+
+		<div class="tableContainer">
+			<table datatable="ng" dt-options="vm.dtOptions"
+				class="table table-bordered tableCls" style="width: 100%"
+				id="todaysHearing">
+				<thead>
+					<tr>
+
+						<th data-priority="3">ID</th>
+						<th>Forum Category</th>
+						<th data-priority="1">Forum Name</th>						
+						<th>Added User</th>
+						<th>Mobile No</th>
+						<th>Timestamp</th>
+						<th data-priority="2" style="text-align: center;">*</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in vm.approveRequestArray">
+						<td>{{item.id}}</td>
+						<td>{{item.category}}</td>
+						<td>{{item.name}}</td>						
+						<td>{{item.userName}}</td>
+						<td>{{item.mobileNo}}</td>
+						<td>{{item.timestamp}}</td>
+
+						<td style="text-align: center;">
+							<div class="button-group">
+								<button type="button" ng-click="vm.approveForumItem(item)">
+									<i class="fa fa-check bn"></i>
+								</button>
+								<button type="button" ng-click="vm.rejectForumItem(item)">
+									<i class="fas fa-times bn"></i>
+								</button>
+							</div>
+						</td>
+
+					</tr>
+				</tbody>
+
+			</table>
+
+		</div>
+
+	</div>
+	<br>
+	<div class="container">
+		<div class="card">
+			<div class="card-header">
+				<a class="card-link" data-toggle="collapse"
+					data-target="#docDetailsContainer" aria-expanded="true"
+					aria-controls="docDetailsContainer">List of Available Forums<span
+					class="collapsed"><p>
+							<b>+</b>
+						</p></span> <span class="expanded"><p>
+							<b>-</b>
+						</p></span></a>
+			</div>
+			<div id="docDetailsContainer" class="collapse show"
+				style="background: white;">
+				<div class="card-body">
+
+
+
+					<div class="row" style="padding-bottom: 30px;">
+						<div class="col-md-3"></div>
+
+						<div class="col-md-3">
+							<LABEL for="forumCategory1">Forum Category</LABEL> <select
+								name="forumCategory1" id="forumCategory1"
+								ng-model="vm.forumCategory" required
+								class="custom-select-sm form-control">
+								<option ng-repeat="item in vm.forumCategoryArray"
+									value="{{item}}">{{item | titleCase}}</option>
+							</select>
+
+						</div>
+						<div class='col-md-3 text-center' style="margin-top: 20px;">
+							<button ng-click="vm.fetchForums()" type="button"
+								class="btn btn-primary text-center">Search</button>
+
+						</div>
+						<div class="col-md-3"></div>
+					</div>
+
+					<div id="tableContainer" style="display: none; padding: 0 30px;">
+						<table style="padding: 15px;" datatable="ng"
+							dt-options="vm.dtOptions" id="viewTable"
+							class="table table-bordered tableCls container-fluid"
+							width="100%">
+							<thead>
+								<tr>
+									<th>S.No</th>
+									<th>Forum Category</th>
+									<th>Name</th>
+									<th>Source</th>
+									<th ng-if="vm.userType == 'Admin'" style="text-align: center;">*</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="val in vm.forumArray">
+
+									<td>{{$index+1}}</td>
+									<td>{{val.category | titleCase}}</td>
+									<td>{{val.name}}</td>
+									<td>{{val.source}}</td>
+									<td style="text-align: center;"><div
+											ng-if="val.source != 'CIS'" class="button-group">
+
+											<button type="button" ng-click="vm.editForumItem(val)"
+												title="Edit Forum">
+												<i class="far fa-edit bn"></i>
+											</button>
+
+											<button type="button" ng-click="vm.deleteForum(val)"
+												title="Delete Forum">
+												<i class="fa fa-trash bn"></i>
+											</button>
+										</div></td>
+
+								</tr>
+
+							</tbody>
+
+						</table>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+</div>
+<script type="text/ng-template" id="editForum.html">
+    	<div class="modal-header row text-center" style = "border-bottom :2px dashed #ddd;margin: 0 5px;"  >
+			
+			<div class = "col-sm-9 blueColor">
+				<h5 class="blueColor modal-title" style = "font-weight:600;">Edit Document details </h5>
+			</div>			
+			<div class = "col-sm-3" style = "text-align:right;">
+				<button  class="btn btn-primary" ng-click="$dismiss('cancel')" type="button">Close</button>
+       		</div>
+        </div>
+		
+        <div class="modal-body" id = "viewAllMatter">
+			<div class="" style = "margin:25px;">
+				<form id="editForumForm" name="editForumForm" method="POST"
+			>
+			<div class="row">
+
+			
+					<LABEL for="forumCategory">Forum Category</LABEL> <select
+							name="forumCategory" id="forumCategory"
+							ng-model="vm.editform.forumCategory" required
+							class="custom-select-sm form-control">
+							<option ng-repeat="item in vm.forumCategoryArray"
+								value="{{item}}">{{item | titleCase}}</option>
+						</select>
+
+
+				</div>
+<br>
+
+			<div class="row">
+					<label for="forumName"> Forum : </label> <input type="text"
+							class="form-control" ng-model="vm.editform.forumName"
+						speclchars	name="forumName" id="forumName" placeholder="Forum Name" required>
+
+				</div>
+
+
+<br>
+
+			</form>
+<div class = "row text-center">
+<div class = "col-sm-2"></div>
+<div class = "col-sm-8">
+<button  type="button" class="btn btn-primary text-center" ng-click = "vm.editForum()" id = "editBtn">Save</button>
+					<button ng-click="$dismiss('cancel')" type="button"
+						class="btn btn-danger text-center">Cancel</button>
+</div><div class = "col-sm-2"></div>
+</div>
+				
+			</div>
+		</div>
+</script>
+
+<script type="text/ng-template" id="approveForum.html">
+    	<div class="modal-header row text-center" style = "border-bottom :2px dashed #ddd;margin: 0 5px;"  >
+			
+			<div class = "col-sm-9 blueColor">
+				<h5 class="blueColor modal-title" style = "font-weight:600;">Approve New Forum </h5>
+			</div>			
+			<div class = "col-sm-3" style = "text-align:right;">
+				<button  class="btn btn-primary" ng-click="$dismiss('cancel')" type="button">Close</button>
+       		</div>
+        </div>
+		
+        <div class="modal-body" id = "viewAllMatter">
+			<div class="" style = "margin:25px;">
+				<form id="editForumForm" name="editForumForm" method="POST"
+			>
+			<div class="row">
+
+			
+					<LABEL for="forumCategory">Forum Category :</LABEL> <select
+							name="forumCategory" id="forumCategory"
+							ng-model="vm.editform.forumCategory" required
+							class="custom-select-sm form-control">
+							<option ng-repeat="item in vm.forumCategoryArray"
+								value="{{item}}">{{item | titleCase}}</option>
+						</select>
+
+
+				</div>
+<br>
+
+			<div class="row">
+					<label for="forumName"> Forum : </label> <input type="text"
+							class="form-control" ng-model="vm.editform.forumName"
+							speclchars name="forumName" id="forumName" placeholder="Forum Name" required>
+
+				</div>
+
+
+<br>
+<div class="row">
+					<label for="remark"> Remark : </label> 
+<textarea
+							class="form-control" ng-model="vm.editform.remark"
+							speclchars name="remark" id="remark" placeholder="" required></textarea>
+
+				</div>
+<br>
+			</form>
+<div class = "row text-center">
+<div class = "col-sm-2"></div>
+<div class = "col-sm-8">
+<button  type="button" class="btn btn-primary text-center" ng-click = "vm.approveForumReq()" id = "editBtn">Save</button>
+					<button ng-click="$dismiss('cancel')" type="button"
+						class="btn btn-danger text-center">Cancel</button>
+</div><div class = "col-sm-2"></div>
+</div>
+				
+			</div>
+		</div>
+</script>
+
+<script type="text/ng-template" id="rejectForum.html">
+    	<div class="modal-header row text-center" style = "border-bottom :2px dashed #ddd;margin: 0 5px;"  >
+			
+			<div class = "col-sm-9 blueColor">
+				<h5 class="blueColor modal-title" style = "font-weight:600;">Reject Forum with Details </h5>
+			</div>			
+			<div class = "col-sm-3" style = "text-align:right;">
+				<button  class="btn btn-primary" ng-click="$dismiss('cancel')" type="button">Close</button>
+       		</div>
+        </div>
+		
+        <div class="modal-body" id = "viewAllMatter">
+			<div class="" style = "margin:25px;">
+				<form id="editForumForm" name="editForumForm" method="POST"
+			>
+			<div class="row">
+
+			
+					<LABEL for="forumCategory">Forum Category :</LABEL> <select
+							name="forumCategory" id="forumCategory"
+							ng-model="vm.editform.forumCategory" required
+							class="custom-select-sm form-control" ng-disabled = "true">
+							<option ng-repeat="item in vm.forumCategoryArray"
+								value="{{item}}">{{item | titleCase}}</option>
+						</select>
+
+
+				</div>
+<br>
+
+			<div class="row">
+					<label for="forumName"> Forum : </label> <input type="text"
+						ng-disabled = "true"	class="form-control" ng-model="vm.editform.forumName"
+							name="forumName" id="forumName" placeholder="Forum Name" required>
+
+				</div>
+
+
+<br>
+<div class="row">
+					<label for="remark"> Remark : <span
+									class="error-message">*</span> </label> 
+<textarea
+							class="form-control" ng-model="vm.editform.remark"
+						speclchars	name="remark" id="remark" placeholder="" required></textarea>
+
+				</div>
+<br>
+			</form>
+<div class = "row text-center">
+<div class = "col-sm-2"></div>
+<div class = "col-sm-8">
+<button  type="button" class="btn btn-primary text-center" ng-disabled = "vm.editform.remark == ''" ng-click = "vm.rejectForumReq()" id = "editBtn">Save</button>
+					<button ng-click="$dismiss('cancel')" type="button"
+						class="btn btn-danger text-center">Cancel</button>
+</div><div class = "col-sm-2"></div>
+</div>
+				
+			</div>
+		</div>
+</script>
+
+
+
+
+
+

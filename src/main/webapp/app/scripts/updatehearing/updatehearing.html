@@ -1,0 +1,380 @@
+<div id="viewContainer" class="container-fluid">
+	<br>
+	<div style="background: white;">
+		<div class="dashboardCt" style="padding-top: 20px;">
+			<div class="row" style="text-align: center;">
+				<div class="col-sm-3">
+					<button type="button" class="btn btn-primary text-center"
+						ng-click="vm.goBack()">Back</button>
+				</div>
+				<div class="col-sm-6" style="text-align: left;">
+					<h4 class="blueColor">Hearing Update for case ID -
+						{{vm.caseID}}</h4>
+					</div>
+					<div class="col-sm-3" style="text-align: center;">
+					<button type="button" class="btn btn-info"
+						ng-click="vm.AddNewHearing()">
+						Add New <i style="color: white !important;" class="fas fa-plus"></i>
+					</button>
+					<button style="text-align: right;" class="btn btn-primary"
+						ng-click="vm.goBack()" type="button">Close</button>
+				</div>
+			</div>
+
+			<hr>
+
+
+			<div class="container collapse" id="formContainer" style = "display:none">
+
+				<form novalidate id="updateHearingForm" name="updateHearingForm">
+
+					<div class="row">
+
+						<div class="form-group col-md-3">
+							<label for="lastDateOfHearing"> Hearing Date: <span
+								class="error-message">*</span>
+							</label>
+							<div class="input-group">
+								<span class="input-group-addon"> <i
+									class="fas fa-calendar-alt"></i>
+								</span> <input id="lastDateOfHearing" name="lastDateOfHearing"
+									class="form-control" placeholder="Last Hearing"
+									ng-model="vm.form.lastDateOfHearing">
+
+
+							</div>
+
+
+						</div>
+
+						<div class="form-group col-md-3">
+							<label for="bench"> Bench : <span class="error-message">*</span>
+							</label>
+							<div class="input-group" ng-click="vm.openBenchModal()">
+								<input type="text" class="form-control" ng-model="vm.form.bench"
+									name="bench" id="bench" placeholder="Bench"> <span
+									class="input-group-addon"> <i class="far fa-edit"></i>
+								</span>
+
+							</div>
+
+
+
+						</div>
+
+						<div class="form-group col-md-3">
+							<label for="counselOfCompany"> Counsel for the Petitioner
+								: </label>
+							<div class="input-group" ng-click="vm.openCounselCompModal()">
+								<input speclchars type="text" class="form-control"
+									ng-model="vm.form.counselOfCompany" name="counselOfCompany"
+									id="counselOfCompany" placeholder="Counsel Name"> <span
+									class="input-group-addon"> <i class="far fa-edit"></i>
+								</span>
+
+							</div>
+						</div>
+						<div class="form-group col-md-3">
+							<label for="counselOfRespondent"> Counsel for the
+								Respondent : </label>
+							<div class="input-group" ng-keyup="vm.openCounselRespModal()"
+								ng-click="vm.openCounselRespModal()">
+								<input speclchars type="text" class="form-control"
+									ng-model="vm.form.counselOfRespondent"
+									name="counselOfRespondent" id="counselOfRespondent"
+									placeholder="Counsel Name"> <span
+									class="input-group-addon"> <i class="far fa-edit"></i>
+								</span>
+
+							</div>
+						</div>
+
+					</div>
+
+
+					<div class="row">
+
+						<div class="form-group col-md-4">
+							<div class="input-group">
+								<label for="outcomeLast"> Outcome of Hearing : <span
+									class="error-message">*</span>
+								</label> <span style="display: contents;" 
+									ng-click="vm.outcomeLastModal()" class="input-group-addon">
+									<i class="fas fa-plus"></i>
+								</span>
+							</div>
+							<div ng-bind-html="vm.outcomeLastHTML" contenteditable="true" safe-paste  class="divTxtArea form-control"
+								ng-model="vm.form.outcomeLast" id="outcomeLast"
+								name="outcomeLast" placeholder="Remarks"></div>
+
+
+
+						</div>
+
+
+
+
+						<div class="form-group col-sm-2">
+
+							<label for="caseStatus"> Case Status :</label> <select
+								name="caseStatus" id="caseStatus" ng-model="vm.form.caseStatus"
+								ng-options="item.id as item.name for item in vm.caseStatusInfo"
+								class="custom-select-sm form-control">
+							</select>
+						</div>
+
+						<div class="form-group col-md-2">
+							<label for="nextDateOfHearing">Next date of Hearing :</label>
+							<div class="input-group">
+								<span class="input-group-addon"> <i
+									class="fas fa-calendar-alt"></i>
+								</span> <input id="nextDateOfHearing" name="nextDateOfHearing"
+									class="form-control" placeholder="Next Hearing"
+									ng-model="vm.form.nextDateOfHearing">
+							</div>
+						</div>
+
+						<div class="form-group col-md-4">
+							<div class="input-group">
+								<label for="outcomeNext"> Likely outcome of next hearing
+									:</label> <span style="display: contents;" 
+									ng-click="vm.outcomeNextModal()" class="input-group-addon">
+									<i class="fas fa-plus"></i>
+								</span>
+							</div>
+							<div ng-bind-html="vm.outcomeNextHTML" contenteditable="true" safe-paste  class="divTxtArea form-control"
+								ng-model="vm.form.outcomeNext" id="outcomeNext"
+								name="outcomeNext" placeholder="Remarks"></div>
+						</div>
+
+					</div>
+
+					<div class="text-center">
+						<button type="button" id="saveBtn"
+							ng-click="vm.submit(updateHearingForm)"
+							class="btn btn-primary text-center">Save</button>
+						<button type="button" class="btn btn-danger text-center"
+							ng-click="vm.cancelForm()">Cancel</button>
+					</div>
+				</form>
+				<hr>
+			</div>
+			<br>
+
+
+			<div class="container-fluid">
+				<table datatable="ng" dt-options="vm.dtOptions3"
+					class="table table-bordered tableCls" width="100%"
+					id="hearingTable">
+					<thead>
+						<tr>
+							<th style="width: 5%; text-align: center;">SR.</th>
+							<th>HID</th>
+							<th>Hearing Date</th>
+							<th style="width: 25%;">Outcome Of Hearing</th>
+							<th>Next Hearing Date</th>
+							<th style="width: 25%;">Likely Outcome of Next Hearing</th>
+							<th style="width: 15%;">Bench</th>
+							<th>Counsel of Petitioner</th>
+							<th>Counsel of Respondent</th>
+							<th >Status</th>
+							<th style="width: 10%; text-align: center;">*</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in vm.hearingHistory">
+							<td>{{$index+1}}</td>
+							<td>{{item.id}}</td>
+							<td>{{(item.lastHearingDate == undefined ? '' :
+								item.lastHearingDate)}}</td>
+							<td style = "text-align: left;" hm-read-more
+    hm-text="{{item.outcomeLast}}" 
+    hm-limit="200" 
+    hm-more-text=" more" 
+    hm-less-text=" less"
+    hm-dots-class="dots"></td>
+							<td>{{(item.nextHearingDate == undefined ? '' :
+								item.nextHearingDate)}}</td>
+							<td style = "text-align: left;" hm-read-more
+    hm-text="{{item.outcomeNext}}" 
+    hm-limit="200" 
+    hm-more-text=" more" 
+    hm-less-text=" less"
+    hm-dots-class="dots"></td>
+							<td style = "text-align: left;" hm-read-more
+    hm-text="{{item.bench}}" 
+    hm-limit="100" 
+    hm-more-text=" more" 
+    hm-less-text=" less"
+    hm-dots-class="dots"></td>
+							<td style = "text-align: left;" hm-read-more
+    hm-text="{{item.counselOfCompany}}" 
+    hm-limit="50" 
+    hm-more-text=" more" 
+    hm-less-text=" less"
+    hm-dots-class="dots">{{item.counselOfCompany}}</td>
+							<td style = "text-align: left;" hm-read-more
+    hm-text="{{item.counselOfRespondent}}" 
+    hm-limit="50" 
+    hm-more-text=" more" 
+    hm-less-text=" less"
+    hm-dots-class="dots">{{item.counselOfRespondent}}</td>
+							<td>{{((item.statusName == undefined || item.statusName ==
+								'') ? '' : item.statusName)}}</td>
+							<td style="width: 10%; text-align: center;">
+								<div class="btn-group">
+
+									<button ng-if="vm.accessCtrl != 'View'"
+										ng-click="vm.editHearingItem($index)" title="Edit Hearing">
+										<i class="far fa-edit bn"></i>
+									</button>
+									<button ng-if="vm.accessCtrl != 'View'"
+										ng-click="vm.disableHearingItem($index)"
+										title="Delete Hearing">
+										<i class="fa fa-trash bn"></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+<script type="text/ng-template" id="bench.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Bench Member</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete">
+				<input style = "margin-right: 5px;" ng-model="vm.selBench" typeahead-on-select='onSelect($item, $model, $label)' uib-typeahead="item.name for item in vm.benchInfo | filter:$viewValue | limitTo:100" class="form-control" placeholder = "Search or Add member name">
+        		<button class="btn btn-primary" type="button" ng-click="vm.AddMember('bench')">Add</button>
+            </div>          
+			<br>
+			<div class = "container-fluid">
+           		<ul id="myUL">
+					<li ng-repeat="a in vm.benchSelected">{{a}} <span class = "close" ng-click="vm.removeMember($index, 'bench')">X</span></li>
+				</ul>
+			</div>
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="vm.diplayMember('bench')">Done</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Cancel</button>
+        </div>
+        
+  	</script>
+
+<script type="text/ng-template" id="counselOfCompany.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add member for Counsel </h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete">
+				<input style = "margin-right: 5px;" ng-model="vm.selCounselCompany" typeahead-on-select='onSelect($item, $model, $label)' uib-typeahead="item.name for item in vm.counselCompanyInfo | filter:$viewValue | limitTo:100" class="form-control" placeholder = "Search or Add member name">
+        		<button class="btn btn-primary" type="button" ng-click="vm.AddMember('councelCompany')">Add</button>
+            </div>          
+			<br>
+			<div class = "container-fluid">
+           		<ul id="myUL">
+					<li ng-repeat="a in vm.counselCompanySelected">{{a}} <span class = "close" ng-click="vm.removeMember($index, 'councelCompany')">X</span></li>
+				</ul>
+			</div>
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="vm.diplayMember('councelCompany')">Done</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Cancel</button>
+        </div>
+        
+  	</script>
+
+
+<script type="text/ng-template" id="counselOfResp.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add member for Counsel </h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete">
+				<input style = "margin-right: 5px;" ng-model="vm.selCounselResp" typeahead-on-select='onSelect($item, $model, $label)' uib-typeahead="item.name for item in vm.counselCompanyInfo | filter:$viewValue | limitTo:100" class="form-control" placeholder = "Search or Add member name">
+        		<button class="btn btn-primary" type="button" ng-click="vm.AddMember('councelResp')">Add</button>
+            </div>          
+			<br>
+			<div class = "container-fluid">
+           		<ul id="myUL">
+					<li ng-repeat="a in vm.counselRespSelected">{{a}} <span class = "close" ng-click="vm.removeMember($index, 'councelResp')">X</span></li>
+				</ul>
+			</div>
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-primary" type="button" ng-click="vm.diplayMember('councelResp')">Done</button>
+            <button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Cancel</button>
+        </div>
+        
+  	</script>
+<script type="text/ng-template" id="outcomeLast.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Outcome of Last Yearing</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete">
+
+				<div text-angular="text-angular" safe-paste ng-model = "vm.outcomeLastHTML" ta-disabled='disabled'></div>			 	
+			</div>          
+			<br>			
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Okay</button>
+        </div>
+	  </div>
+        
+  	</script>
+<script type="text/ng-template" id="outcomeNext.html">
+    	<div class="modal-header" >
+            <h5 class="modal-title">Add Likelyhood Outcome of Next Yearing</h5>
+        </div>
+		
+        <div class="modal-body">
+			<div class="input-group autocomplete">
+ 
+				<div text-angular="text-angular" safe-paste ng-model = "vm.outcomeNextHTML" ta-disabled='disabled'></div>			 				 	
+			</div>          
+			<br>			
+        </div>
+		<div class="modal-footer"> 
+			<button class="btn btn-default" ng-click="$dismiss('cancel')" type="button">Okay</button>
+        </div>
+	  </div>
+        
+  	</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	
+	$('#lastDateOfHearing').datepicker({
+		format : 'dd/mm/yyyy',
+		endDate: new Date()
+		
+	});
+	
+	$('#nextDateOfHearing').datepicker({
+		format : 'dd/mm/yyyy'
+		//startDate: new Date()
+		
+	});
+	
+	
+	
+	$('#lastDateOfHearing, #nextDateOfHearing').on('changeDate', function(ev){
+	    $(this).datepicker('hide');
+	});
+
+});
+</script>
