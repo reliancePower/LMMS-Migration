@@ -3,18 +3,18 @@ package com.lawsuittracker.service;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 
@@ -32,7 +32,7 @@ import com.lawsuittracker.modal.ManageNotices;
 import com.lawsuittracker.modal.ManageUser;
 
 import java.io.File;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 
 
 @Path("/V2")
@@ -192,6 +192,38 @@ public class LegalService {
 		String sessUser = (String) session.getAttribute("userID");
 
 		response = mCases.fetchCaseDetails(input, sessionID, sessUser);
+
+		return response;
+
+	}
+	
+	@POST
+	@Path("/viewAiSuggestion")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public String fetchAiDetails(@Context HttpServletRequest request, String input) throws Exception {
+		String response = "";
+		HttpSession session = request.getSession(false);
+		String sessionID = (String) session.getAttribute("csrfToken");
+		String sessUser = (String) session.getAttribute("userID");
+
+		response = mCases.fetchAiDetails(input, sessionID, sessUser);
+
+		return response;
+
+	}
+	
+	@POST
+	@Path("/saveFeedBack")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public String saveFeedBack(@Context HttpServletRequest request, String input) throws Exception {
+		String response = "";
+		HttpSession session = request.getSession(false);
+		String sessionID = (String) session.getAttribute("csrfToken");
+		String sessUser = (String) session.getAttribute("userID");
+
+		response = mCases.saveAiFeedback(input, sessionID, sessUser);
 
 		return response;
 

@@ -11,6 +11,7 @@
 	function SearchCaseController($state,  SearchCaseService,  localStorageService, DTOptionsBuilder, DTColumnBuilder, DTColumnDefBuilder, $scope, $uibModal, $uibModalStack, $compile, $window, $filter, dashboardService, AddUserService , addCaseService, DTInstances, navbarService, $timeout) {
 		var vm = angular.extend(this, {
 			viewCaseItem : viewCaseItem,
+			viewAiSuggestion : viewAiSuggestion,
 			editCaseItem : editCaseItem,			
 			fetchAllMaster : fetchAllMaster,			
 			listOfCases	 : [],		
@@ -20,6 +21,8 @@
 			vertical : '',
 			forum : '',
 			caseNo : '',
+			partyName : '',
+			aiFilter : '',
 			petitioner : '',
 			respondent : '',
 			bench : '',
@@ -49,6 +52,7 @@
 			disableCaseItem : disableCaseItem,
 			finImpTable : '',
 			caseDetails : '',
+			aiDetails : '',
 			hearingTable : '',
 			updateHearingItem : updateHearingItem,			
 			form: {
@@ -71,6 +75,8 @@
 				endDate : '',
 				caseID : '',
 				caseNo : '',
+				partyName : '',
+				aiFilter : '',
 				startDateLast : '',
 				endDateLast : '',
 			},
@@ -1125,6 +1131,8 @@
 			 	vm.form.endDateLast = '';
 				vm.form.caseID = '';
 				vm.form.caseNo = '';
+				vm.form.partyName = '';
+				vm.form.aiFilter = '';
 				localStorageService.set('searchCaseDetails', {});
 			  
 			  
@@ -1205,11 +1213,13 @@
 					var endDate = vm.form.endDate;
 					var caseID = vm.form.caseID;
 					var caseNo = vm.form.caseNo;
+					var partyName = vm.form.partyName;
+					var aiFilter = vm.form.aiFilter;
 					var stDateLast = vm.form.startDateLast;
 					var endDateLast = vm.form.endDateLast;
 					
 					if((comp == "") && (busi == "0") && (vert == "0") && (caseTy == "") && (forum == "") && (caseStatus == "") && (state == "") && (stDate == "") && (endDate == "") 
-							&& (caseID == "") && (caseNo == "") && (nextDateCheck == false) && (judgePronCheck == false) && (stDateLast == '') && (endDateLast == '') && (vm.form.forumCategory == '')){
+							&& (caseID == "") && (caseNo == "") && (partyName == "") &&  (aiFilter == "") && (nextDateCheck == false) && (judgePronCheck == false) && (stDateLast == '') && (endDateLast == '') && (vm.form.forumCategory == '')){
 						alert("Please select atleast one filter...");
 						return false;
 					}
@@ -1220,7 +1230,7 @@
 					}
 					var jsonReq = {"company" : comp.toString(), "business" : busi.toString(), "vertical" : vert.toString(), 
 							"caseType" : caseTy, "userID" : localStorageService.get('payrollNo'), "forum" : forum, "caseStatus" : caseStatus, "state" : state, "forumCategory" : vm.form.forumCategory.toString(),
-							"startDate" : stDate, "endDate" : endDate, "caseID" : (caseID == '') ? '' : caseID, "caseNo" : caseNo, "startDateLast" : stDateLast
+							"startDate" : stDate, "endDate" : endDate, "caseID" : (caseID == '') ? '' : caseID, "caseNo" : caseNo, "partyName" : partyName,"aiFilter" : aiFilter, "startDateLast" : stDateLast
 									, "endDateLast" : endDateLast, "nextDateNA" : (nextDateCheck == true) ? 'Y' : 'N', "judgePronCheck" : (judgePronCheck == false) ? 'N' : 'Y' , "sessID" : localStorageService.get('sessionID')}
 					localStorageService.set('searchCaseDetails', jsonReq);
 					// alert(JSON.stringify(jsonReq));
@@ -1849,6 +1859,26 @@
 			
 		 }
 		 
+		 function viewAiSuggestion(item){
+						 
+						 SearchCaseService.viewAiSuggestions(vm.listOfCases[item].caseID)
+						 	    		.then(function(result) {    			
+						 	    			if(result.data.status == 'F'){
+						 						alert(result.data.msg);
+						 						return false;
+						 					}
+						 	    			 vm.caseDetails = result.data;
+						 	    			 localStorageService.set('viewCaseDetails' , vm.caseDetails )
+						 	    			 $state.goToNewTab('viewai', {});
+
+						 			 }, function caseError(error){
+						 			      alert('There seems some problem. Please try again later...');
+						 			      return false;
+						 			 });
+		 			 
+		 			
+		 		 }
+		 
 		 function editCaseItem(item){
 			
 			 SearchCaseService.viewCase(item.caseID)
@@ -2055,7 +2085,7 @@
 			 var tbody = '';
 			var today =  $filter('date')(vm.today, "MMM dd, yyyy");
 			var todayWithFormat =  $filter('date')(vm.today, "dd/MM/yyyy HH:mm");
-			var tableHeader = '<div class = "cabecalho" style = "display:none;">Report as on '+todayWithFormat+'</div><table id="viewTablePDF" class="table table-bordered tableCls noPadd viewTablePDF" >  <thead> <tr> <th style = "width: 55%;">Case ID</th>  <th>Vertical</th> <th>Forum</th> <th style = "width: 55%;">Year</th> <th style = "width: 125%;">Petitioner</th><th style = "width: 125%;">Respondent</th> <th style = "width: 90%;">Next Hearing</th> <th>Status</th> <th style = "width: 145%;">Subject Matter</th>  <th style = "width: 55%;">Page</th> </tr> </thead> <tbody class = "tableRowVal">';
+			var tableHeader = '<div class = "cabecalho" style = "display:none;">Report as on '+todayWithFormat+'</div><table id="viewTablePDF" class="table table-bordered tableCls noPadd viewTablePDF" >  <thead> <tr> <th style = "width: 55%;">Case ID</th> <th>Case No</th>  <th>Vertical</th> <th>Forum</th> <th style = "width: 55%;">Year</th> <th style = "width: 125%;">Petitioner</th><th style = "width: 125%;">Respondent</th> <th style = "width: 90%;">Next Hearing</th> <th>Status</th> <th style = "width: 145%;">Subject Matter</th>  <th style = "width: 55%;">Page</th> </tr> </thead> <tbody class = "tableRowVal">';
 			var tableFooter = '</tbody>  </table><br>';
 				 _.each(sorted, function(item, key){
 				 var tab1 = '';
@@ -2089,7 +2119,7 @@
 				// item.respondents.substring(0,50) + '...' : item.respondents;
 				 
 				 
-				 tbody += '<tr id = "summary_'+key+'"><td style = "width: 55%;">'+item.caseID+'</td><td>'+item.vertical+'</td><td>'+ (item.forum != undefined ? item.forum : '')  +'</td><td style = "width: 55%;">'+ (item.caseYear != 0 ? item.caseYear : '')   +'</td><td style = "width: 125%;">'+pet+'</td><td style = "width: 125%;">'+resp+'</td><td style = "width: 90%;">'+nextdate+'</td><td>'+statusName+'</td><td style = "width: 145%;">'+subMat+'</td><td style = "width: 55%;"><a class = "pageref" href="#viewPage_'+key+'"></a></td></tr>';
+				 tbody += '<tr id = "summary_'+key+'"><td style = "width: 55%;">'+item.caseID+'</td><td>'+item.cNo+'</td><td>'+item.vertical+'</td><td>'+ (item.forum != undefined ? item.forum : '')  +'</td><td style = "width: 55%;">'+ (item.caseYear != 0 ? item.caseYear : '')   +'</td><td style = "width: 125%;">'+pet+'</td><td style = "width: 125%;">'+resp+'</td><td style = "width: 90%;">'+nextdate+'</td><td>'+statusName+'</td><td style = "width: 145%;">'+subMat+'</td><td style = "width: 55%;"><a class = "pageref" href="#viewPage_'+key+'"></a></td></tr>';
 				 if(item.caseTypeID != 1){
 					 amountAllow = '<tr><td class = "blueColor" style = "font-weight:600;">Financial Impact </td><td colspan = "4"> <b>One time :</b>'+ (item.finImpact == '' ? 'Nil' : item.finImpact) + ', <b>Recurring : </b>' + (item.finImpRecurring == undefined ? 'Nil' : item.finImpRecurring) + ', <b>Duration :</b>' + (item.finImaRecurringDuration == undefined ? 'NA' : item.finImaRecurringDuration) + '</td></tr>';
 					 bussLegal = '<tr> <td class = "blueColor" style = "font-weight:600;">Business Team </td><td>'+item.businessRep+'</td><td class = "blueColor" style = "font-weight:600;">Legal Team </td><td>'+item.legalRep+'</td></tr>';

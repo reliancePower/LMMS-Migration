@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -862,7 +862,7 @@ public class ManageMaster {
 								outJson.put("reqID", rs1.getInt(2));
 								String sub = "LMMS App - Forum Addition Request from " + rs1.getString(3);
 								String template = "<html><body style=\"font-family:Georgia;font-size:14;\"><p> Dear Admin, </p>	<p> A new forum addition request is pending with you for approval. <br><br>Kindly take the appropriate action. PFB - the details <p> <table border = \"1\" style=\"font-family:Georgia;font-size:12;\">"
-										+ "<tr><td><b>Forum Category</b></td><td>" + StringUtils.capitaliseAllWords(category) + "</td></tr><tr><td><b>Name</b></td><td>" + name + ", " + state 
+										+ "<tr><td><b>Forum Category</b></td><td>" + WordUtils.capitalizeFully(category) + "</td></tr><tr><td><b>Name</b></td><td>" + name + ", " + state 
 										+ "</td></tr></table></p><p>Please click <a href= \"https://mportal.reliancepower.co.in/LMMS/\">here</a> to approve the forum</p><p><strong>Regards,</strong></p><p>LMMS admin Team</p><br><br><p><b>Note : </b>This is system generated mail. Hence do not reply</p></body></html>";
 								System.out.println(template);
 								sm.sendAMail(LawSuitTrackerConstants.adminMail, sub, template, "",
@@ -974,7 +974,7 @@ public class ManageMaster {
 						outJson.put("reqID", rs.getInt(2));
 						String sub = "LMMS App - Forum Addition Request from " + rs.getString(3);
 						String template = "<html><body style=\"font-family:Georgia;font-size:14;\"><p> Dear Admin, </p>	<p> A new forum addition request is pending with you for approval. <br><br>Kindly take the appropriate action. PFB - the details <p> <table border = \"1\" style=\"font-family:Georgia;font-size:12;\">"
-								+ "<tr><td><b>Forum Category</b></td><td>" + StringUtils.capitaliseAllWords(category) + "</td></tr><tr><td><b>Name</b></td><td>" + name + ", " + state 
+								+ "<tr><td><b>Forum Category</b></td><td>" + WordUtils.capitalizeFully(category) + "</td></tr><tr><td><b>Name</b></td><td>" + name + ", " + state 
 								+ "</td></tr></table></p><p>Please click <a href= \"https://mportal.reliancepower.co.in/LMMS/\">here</a> to approve the forum</p><p><strong>Regards,</strong></p><p>LMMS admin Team</p><br><br><p><b>Note : </b>This is system generated mail. Hence do not reply</p></body></html>";
 						System.out.println(template);
 						sm.sendAMail(LawSuitTrackerConstants.adminMail, sub, template, "",
@@ -1000,7 +1000,7 @@ public class ManageMaster {
 						String sub = "LMMS App - Forum Addition Request - Approved";
 						String template = "<html><body style=\"font-family:Georgia;font-size:14;\"><p>Dear <b>" + rs.getString(4)  + 
 								"</b>, </p>	<p> A new forum addition request sent by you is approved successfully . <br><br> Now you can access forum based on Category. PFB - the details <p> <table border = \"1\" style=\"font-family:Georgia;font-size:12;\">"
-								+ "<tr><td><b>Forum Category</b></td><td>" + StringUtils.capitaliseAllWords(category) + "</td></tr><tr><td><b>Name</b></td><td>" + name + ", " + state 
+								+ "<tr><td><b>Forum Category</b></td><td>" + WordUtils.capitalizeFully(category) + "</td></tr><tr><td><b>Name</b></td><td>" + name + ", " + state 
 								+ "</td></tr><tr><td><b>Remark</b></td><td>" + remark + "</td></tr>" 
 								+ "</table></p><p><strong>Regards,</strong></p><p>LMMS admin Team</p><br><br><p><b>Note : </b>This is system generated mail. Hence do not reply</p></body></html>";
 						sm.sendAMail(rs.getString(5), sub, template, name, LawSuitTrackerConstants.adminMail);
@@ -1025,7 +1025,7 @@ public class ManageMaster {
 						String sub = "LMMS App - Forum Addition Request - Rejected";
 						String template = "<html><body style=\"font-family:Georgia;font-size:14;\"><p> Dear <b>" + rs.getString(2) + 
 								"</b>,</p>	<p> A new forum addition request sent by you is not approved. Refer the adminstrator comment below: <p> <table border = \"1\" style=\"font-family:Georgia;font-size:12;\">"
-								+ "<tr><td><b>Forum Category</b></td><td>" + StringUtils.capitaliseAllWords(category) + "</td></tr><tr><td><b>Name</b></td><td>" + name + ", " + state 
+								+ "<tr><td><b>Forum Category</b></td><td>" + WordUtils.capitalizeFully(category) + "</td></tr><tr><td><b>Name</b></td><td>" + name + ", " + state 
 								+ "</td></tr><tr><td><b>Remark</b></td><td>" + remark + "</td></tr>" 
 								+ "</table></p><p><strong>Regards,</strong></p><p>LMMS admin Team</p><br><br><p><b>Note : </b>This is system generated mail. Hence do not reply</p></body></html>";
 						sm.sendAMail(rs.getString(3), sub, template, name, LawSuitTrackerConstants.adminMail);

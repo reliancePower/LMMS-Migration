@@ -49,8 +49,8 @@
 
 				<div class="form-group col-sm-3">
 					<label for="forumCategory"> Forum Category </label> <select
-					multiple-select	name="forumCategory" id="forumCategory"
-				multiple="multiple"		ng-model="vm.form.forumCategory"
+						multiple-select name="forumCategory" id="forumCategory"
+						multiple="multiple" ng-model="vm.form.forumCategory"
 						ng-change="vm.fetchForumInfo(vm.form.forumCategory)"
 						class="form-control mulSel" ng-required="true">
 						<option ng-repeat="item in vm.forumCategoryInfo"
@@ -131,6 +131,21 @@
 
 				</div>
 
+				<div class="form-group col-sm-3">
+					<label for="caseNo">Party Name : </label> <input speclchars
+						id="partyName" name="partyName" class="form-control"
+						placeholder="Party Name" type="text" ng-model="vm.form.partyName">
+
+				</div>
+
+				<div class="form-group col-sm-3">
+					<label for="aiFilter">AI Advisory :</label> <select id="aiFilter"
+						name="aiFilter" class="form-control" ng-model="vm.form.aiFilter">
+						<option value="">Select</option>
+						<option value="Y">Yes</option>
+						<option value="">No</option>
+					</select>
+				</div>
 
 
 				<div class="form-group col-sm-3">
@@ -154,7 +169,7 @@
 
 			<div class='row'>
 				<div class="form-group col-sm-3">
-					<label for="judgeResPron"> Judgment Pronounced 						: </label>
+					<label for="judgeResPron"> Judgment Pronounced : </label>
 					<div class="custom-control custom-checkbox">
 						<input type="checkbox" ng-model="vm.judgeResPronIsChecked"
 							class="custom-control-input" id="judgePronCheck"
@@ -184,27 +199,28 @@
 	<br>
 	<div style="text-align: left;">
 
-	<!--	<button ng-if="vm.listOfCases.length > 0"
+		<!--	<button ng-if="vm.listOfCases.length > 0"
 			ng-click="vm.generatePDFWithPageNo()" type="button"
 			class="btn btn-primary text-center">Generate Report - New
 			Format</button> -->
-			
-			<button ng-if="vm.listOfCases.length > 0"
-			ng-click="vm.generatePDFWithPageNo2()" type="button"
-			class="btn btn-primary text-center">Generate Report </button>
 
-	<!--  	<button ng-if="vm.listOfCases.length > 0" ng-click="vm.generatePDF()"
+		<button ng-if="vm.listOfCases.length > 0"
+			ng-click="vm.generatePDFWithPageNo2()" type="button"
+			class="btn btn-primary text-center">Generate Report</button>
+
+		<!--  	<button ng-if="vm.listOfCases.length > 0" ng-click="vm.generatePDF()"
 			type="button" class="btn btn-primary text-center">Generate
 			Report - Old Format</button> -->
-			
-			<button ng-if="vm.listOfCases.length > 0"
+
+		<button ng-if="vm.listOfCases.length > 0"
 			ng-click="vm.getReviewReport()" type="button"
 			class="btn btn-primary text-center">Management Review</button>
-			
-			<button ng-if="(vm.listOfCases.length > 0) && (vm.userType == 'Admin')" type="button"
-						class="btn btn-primary text-center"		ng-click="vm.getReviewReportWOFormat()" >
-								Mgmt. Review - Unformatted
-							</button>
+
+		<button
+			ng-if="(vm.listOfCases.length > 0) && (vm.userType == 'Admin')"
+			type="button" class="btn btn-primary text-center"
+			ng-click="vm.getReviewReportWOFormat()">Mgmt. Review -
+			Unformatted</button>
 
 
 		<p ng-if="vm.listOfCases.length > 0" class="blueColor"
@@ -275,6 +291,9 @@
 						<p class="notShow" ng-if="item.docCount > 0">
 							<i class="fa fa-paperclip"></i>
 						</p>
+						<p class="notShow" ng-if="item.aiCount > 0">
+							<i class="fas fa-lightbulb"></i>
+						</p>
 					</td>
 					<td>{{item.company}}</td>
 					<td>{{item.business}}</td>
@@ -332,7 +351,7 @@
 					<td>{{item.substitutionFiled}}</td>
 					<td>{{item.substitutionAllowed}}</td>
 					<td>{{item.interimStay}}</td>
-					<td>{{item.stayOrder}}</td>					
+					<td>{{item.stayOrder}}</td>
 					<td>{{item.docCount}}</td>
 					<td class="noVis" style="width: 5%; text-align: center;"><div
 							class="button-group">
@@ -354,11 +373,13 @@
 								title="Update Hearing">
 								<i class="fas fa-underline bn"></i>
 							</button>
-							<button
-								ng-if="(item.accessType == 'Edit')"
-								type="button" ng-click="vm.sendNotes(item)"
-								title="Send Notes">
+							<button ng-if="(item.accessType == 'Edit')" type="button"
+								ng-click="vm.sendNotes(item)" title="Send Notes">
 								<i class="fa fa-sticky-note bn"></i>
+							</button>
+							<button ng-if="item.aiCount > 0" type="button"
+								ng-click="vm.viewAiSuggestion($index)" title="AI Advisory">
+								<i class="fas fa-lightbulb"></i>
 							</button>
 							<button ng-if="vm.userType == 'Admin'" type="button"
 								ng-click="vm.disableCaseItem(item)" title="Delete Case">
@@ -374,33 +395,43 @@
 		</table>
 
 	</div>
-	</div>
-<a id="dlink"  style="display:none;"></a>
+</div>
+<a id="dlink" style="display: none;"></a>
 
-<div id = "reviewReportTable" style="display:none;">
+<div id="reviewReportTable" style="display: none;">
 
-<table  id = "rvTable" border = "1" style = "font-family:Arial; font-size:11px;"  data-cols-width="10,10,150,150,150,150,150,150,150,150,150,150"		
-		 >
-		
-		<tr><td id = "captionTable"></td></tr>
+	<table id="rvTable" border="1"
+		style="font-family: Arial; font-size: 11px;"
+		data-cols-width="10,10,150,150,150,150,150,150,150,150,150,150">
+
+		<tr>
+			<td id="captionTable"></td>
+		</tr>
 		<thead valign="top">
 			<tr>
-				<th style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Sn</th>
-				<th style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Case ID</th>
-				<th style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Company / Vertical</th>
-				<th  style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Forum</th>
-				<th  style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Bench / AOR / Counsel</th>
-				<th  style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Case No</th>
-				<th  style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Petitioner</th>
-				<th  style = "font-family:Arial;font-size:14px;" data-a-wrap="true">Respondent</th>
-				<th data-a-wrap="true" style = "font-family:Arial;font-size:14px;">Next Hearing</th>
-				<th data-a-wrap="true" style = "font-family:Arial;font-size:14px;">Status</th>
-				<th data-a-wrap="true" style = "font-family:Arial;font-size:14px;">Subject Matter</th>
-				<th data-a-wrap="true" style = "font-family:Arial;font-size:14px;">Financial Impact</th>
+				<th style="font-family: Arial; font-size: 14px;" data-a-wrap="true">Sn</th>
+				<th style="font-family: Arial; font-size: 14px;" data-a-wrap="true">Case
+					ID</th>
+				<th style="font-family: Arial; font-size: 14px;" data-a-wrap="true">Company
+					/ Vertical</th>
+				<th style="font-family: Arial; font-size: 14px;" data-a-wrap="true">Forum</th>
+				<th style="font-family: Arial; font-size: 14px;" data-a-wrap="true">Bench
+					/ AOR / Counsel</th>
+				<th style="font-family: Arial; font-size: 14px;" data-a-wrap="true">Case
+					No</th>
+				<th style="font-family: Arial; font-size: 14px;" data-a-wrap="true">Petitioner</th>
+				<th style="font-family: Arial; font-size: 14px;" data-a-wrap="true">Respondent</th>
+				<th data-a-wrap="true" style="font-family: Arial; font-size: 14px;">Next
+					Hearing</th>
+				<th data-a-wrap="true" style="font-family: Arial; font-size: 14px;">Status</th>
+				<th data-a-wrap="true" style="font-family: Arial; font-size: 14px;">Subject
+					Matter</th>
+				<th data-a-wrap="true" style="font-family: Arial; font-size: 14px;">Financial
+					Impact</th>
 			</tr>
 		</thead>
-		<tbody id = "dynamicInfo">
-			
+		<tbody id="dynamicInfo">
+
 		</tbody>
 
 	</table>

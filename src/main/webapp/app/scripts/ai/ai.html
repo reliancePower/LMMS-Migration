@@ -1,0 +1,179 @@
+<div id="viewAiContainer" class="container" style="background: white;">
+	<br>
+
+	<div class="row text-center">
+		<div class="col-sm-8 blueColor">
+			<h5 class="blueColor modal-title" style="font-weight: 600;">AI Suggestion for Case Id : {{vm.aiDetails.caseID}}</h5>
+		</div>
+	</div>
+
+
+
+<!-- 	<p style="border-bottom: 2px dashed #ddd; margin: 5px;"></p>
+
+	<br>
+	<div class="container-accord">
+	<p style="font-weight: 600;">{{vm.aiDetails.aiDetails}}</p>
+			</div> -->
+			
+			
+		<div class="card" style="border: none !important;">
+					<div class="card-header" style="background: lightSlateGrey;">
+						<a class="card-link" style="background: lightSlateGrey;"
+							data-toggle="collapse" data-target="#hearingHistoryColl"
+							aria-expanded="false" aria-controls="hearingHistoryColl">
+							Ai Suggestion History<span class="collapsed"><p>
+									<b>+</b>
+								</p></span> <span class="expanded"><p>
+									<b>-</b>
+								</p></span>
+						</a>
+					</div>
+					<div id="hearingHistoryColl" class="collapse">
+						<div class="card-body">
+							<div class="tableContainer">
+								<div class="text-center noInfo" ng-if="vm.hearing.length == 0">No
+									Ai details found</div>
+								<table class="table cardTable" width="100%"
+									ng-if="vm.hearing.length > 0">
+
+									<thead>
+										<tr>
+											<th>Sr.No</th>
+											<th>Petitioner</th>
+											<th>Respondent</th>
+											<th>Rejoinder</th>
+											<th>Analysis</th>
+											<th>Date</th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="item in vm.hearing">
+											<td>{{$index+1}}
+											</td>
+											<td>{{item.petitioner}}</td>
+											<td>{{item.respondent}}</td>
+											<td>{{item.rejoinder}}</td>
+											<td>{{item.data}}</td>
+											<td>{{(item.date == undefined ? '' :
+												item.date)}}</td>
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+</div>
+
+<script id="print-header" type="text/x-jquery-tmpl">
+   <!DOCTYPE html>
+   <head>
+
+       <title>     Law Matters Management System</title>
+        <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <link rel="stylesheet" href="./app/lib/bootstrap/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="./app/lib/multiselect/bootstrap-select.css">
+    
+
+    <link rel="stylesheet" href="./app/lib/fontawesome/all.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/datatables/jquery.dataTables.min.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/angular-datatables-0.6.2/dist/plugins/bootstrap/datatables.bootstrap.min.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/moment/multi-date-picker.css"  type="text/css" crossorigin="anonymous">
+	<link rel="stylesheet" href="./app/lib/multiselect/bootstrap-multiselect.css">
+    
+    <link rel="stylesheet" href="./app/css/common.css" >
+    <link rel="stylesheet" href="./app/css/media.css" >
+ 	<link rel="stylesheet" href="./app/css/login.css" >
+ 	<link rel="stylesheet" href="./app/css/dashboard.css" >
+
+     <style>
+
+
+@media print {
+    body {
+    color: black;
+    background : white;
+ 	font-size: 14pt; 
+    }
+
+	#viewPopupTable tr, #viewPopupTable th, #viewPopupTable td {
+	
+    font-size: 17px !important;
+}
+.col-sm-3, .col-sm-2, .col-sm-4 {
+	font-size : 18px !important;
+}
+}
+ body {
+    color: black;
+    background : white;
+ 	font-size: 14pt; 
+    }
+
+	#viewPopupTable tr, #viewPopupTable th, #viewPopupTable td {
+	
+    font-size: 17px !important;
+}
+.col-sm-3, .col-sm-2, .col-sm-4 {
+	font-size : 18px !important;
+}
+      
+       </style>
+  
+	
+   </head>
+   <body onload="window.print()">
+  
+</script>
+<script id="print-footer" type="text/x-jquery-tmpl">
+    </body>
+    </html>
+</script>
+
+<script id="iframe-header" type="text/x-jquery-tmpl">
+   <!DOCTYPE html>
+   <head>
+
+       <title>     Law Matters Management System</title>
+        <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+   </head>
+   <body>
+  
+</script>
+<script id="iframe-footer" type="text/x-jquery-tmpl">
+    </body>
+    </html>
+</script>
+<script type="text/ng-template" id="lock.html">
+    	<div class="modal-header row text-center" style = "border-bottom :2px dashed #ddd;margin: 0 5px;"  >
+			
+			<div class = "col-sm-9 blueColor">
+				<h5 class="blueColor modal-title" style = "font-weight:600;">Confidential Document </h5>
+			</div>			
+			<div class = "col-sm-3" style = "text-align:right;">
+				<button  class="btn btn-primary" ng-click="$dismiss('cancel')" type="button">Close</button>
+       		</div>
+        </div>
+		
+        <div class="modal-body" >
+			<p>You do not have the access to view this document currently. </p>
+
+<div id = "lockInfo" ng-bind-html = "vm.lockInfo"></div> 
+
+				
+			</div>
+		</div>
+</script>
+
+
+
+

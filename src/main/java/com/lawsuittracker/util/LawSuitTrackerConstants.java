@@ -2,7 +2,7 @@ package com.lawsuittracker.util;
 
 public class LawSuitTrackerConstants {
 	public static String authHeader 			= "Basic UlBvd2VyRGFzaGJvYXJkOlJQb3dlckAyMDE4JA==";
-	public static String ldapPrimURL 			= "LDAP://10.211.253.142:389"; 
+	public static String ldapPrimURL 			= "LDAP://10.8.51.51:389"; 
 	//public static String ldapSecURL 			= "LDAP://10.8.51.136:389"; 
 	public static String ldapSecURL 			= "LDAP://10.211.253.11:389"; 
 	public static String status			    	= "status";
@@ -59,6 +59,7 @@ public class LawSuitTrackerConstants {
 	//public static String fromMail 				= "LMMS.Admin@relianceada.com";
 	//public static String fromUpdateMail			= "LMMS.Update@relianceada.com";
 	public static String fromMail 				= "LMMS.Admin@reliancegroupindia.com";
+	public static String fromMailAI 				= "Reliance.AIadvocate@reliancegroupindia.com";
 	public static String fromUpdateMail			= "LMMS.Alerts@reliancegroupindia.com";
 	//public static String mailHost 				= "10.8.53.82";
 	public static String mailHost 				= "10.8.61.84";
@@ -70,15 +71,13 @@ public class LawSuitTrackerConstants {
 	//Group Mail IDs
 	
 	public static String adminMail 				= "Joji.Joseph@reliancegroupindia.com";
-	//public static String adminMail 			= "Dhivya.Delphina@relianceada.com";
-	//public static String devMail 				= "Dhivya.Delphina@relianceada.com";
 	public static String devMail 				= "Joji.Joseph@reliancegroupindia.com";
 	
 	//Proxy Servers
 	
 //	public static String proxyHost 				= "10.8.49.233";
 //	public static int proxyPort 				= 1352;
-public static String proxyHost 				= "10.125.170.80";
+    public static String proxyHost 				= "10.125.170.80";
 	public static int proxyPort 				= 8080;
 
 

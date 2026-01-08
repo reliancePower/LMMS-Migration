@@ -11,221 +11,206 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<!-- compiler settings -->
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-
+		<!-- Updated to Java 17 for Tomcat 11 (minimum Java 11) -->
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		
+		<!-- Jakarta EE 10 versions -->
+		<jakarta.servlet.version>6.0.0</jakarta.servlet.version>
+		<jersey.version>3.1.5</jersey.version>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>maven2-repository.java.net</id>
-			<name>Java.net Repository for Maven</name>
-			<url>http://download.java.net/maven/2/</url>
-			<layout>default</layout>
-		</repository>
-	</repositories>
-
 	<dependencies>
-
 
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
+		<!-- Updated commons-lang -->
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.14.0</version>
 		</dependency>
 
-
+		<!-- CHANGED: jakarta.servlet-api -> jakarta.servlet-api -->
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>${jakarta.servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/asm/asm -->
+		<!-- ASM updated -->
 		<dependency>
-			<groupId>asm</groupId>
+			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm</artifactId>
-			<version>3.3.1</version>
+			<version>9.6</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+		<!-- CHANGED: jakarta.mail -> jakarta.mail -->
 		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4.7</version>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>jakarta.mail</artifactId>
+			<version>2.0.1</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-core -->
+		<!-- CHANGED: Jersey 1.x -> Jersey 3.x (Jakarta EE 10) -->
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-core</artifactId>
-			<version>1.17.1</version>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>${jersey.version}</version>
 		</dependency>
-		<!--new added dependency-->
-		<!--<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.15.2</version>
-		</dependency>-->
 
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.inject</groupId>
+			<artifactId>jersey-hk2</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+
+		<!-- Jersey JSON support -->
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+
+		<!-- Jersey Multipart -->
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-multipart</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.10</version>
+			<version>1.16.0</version>
+		</dependency>
+
+		<!-- Updated Log4j (IMPORTANT: log4j 1.x is EOL and has vulnerabilities) -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.22.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.jersey.contribs</groupId>
-			<artifactId>jersey-multipart</artifactId>
-			<version>1.17.1</version>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.22.1</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle -->
+		<!-- Bridge for old log4j 1.x code -->
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-bundle</artifactId>
-			<version>1.17.1</version>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-1.2-api</artifactId>
+			<version>2.22.1</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-client -->
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-client</artifactId>
-			<version>1.17.1</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-		</dependency>
-
-
-		<!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-server -->
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>1.17.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-json</artifactId>
-			<version>1.17.1</version>
-		</dependency>
-
-
-		<!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-servlet -->
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-servlet</artifactId>
-			<version>1.17.1</version>
-		</dependency>
-
 
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20170516</version>
+			<version>20231013</version>
 		</dependency>
 
-
+		<!-- Updated commons-io -->
 		<dependency>
-			<groupId>org.apache.commons</groupId>
+			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>1.3.2</version>
+			<version>2.15.1</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.jvnet/mimepull -->
+		<!-- mimepull -->
 		<dependency>
-			<groupId>org.jvnet</groupId>
+			<groupId>org.jvnet.mimepull</groupId>
 			<artifactId>mimepull</artifactId>
-			<version>1.6</version>
+			<version>1.9.15</version>
 		</dependency>
 
+		<!-- Quartz Scheduler -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>2.1.5</version>
+			<version>2.3.2</version>
 		</dependency>
 
-		<!--
-		https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<!-- HTTP Client -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.5.7</version>
+			<version>4.5.14</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
+		<!-- MongoDB -->
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
-			<version>3.10.1</version>
+			<version>3.12.14</version>
 		</dependency>
 
-
-		<!--
-		https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
+		<!-- HTTP Core -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore</artifactId>
-			<version>4.4.11</version>
+			<version>4.4.16</version>
 		</dependency>
 
+		<!-- SQL Server JDBC Driver -->
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>12.6.0.jre11</version>
+		</dependency>
+		
+		<dependency>
+    <groupId>jakarta.platform</groupId>
+    <artifactId>jakarta.jakartaee-api</artifactId>
+    <version>10.0.0</version>
+    <scope>provided</scope>
+</dependency>
+
 	</dependencies>
+	
 	<build>
 		<finalName>LMMS</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
 			<plugin>
-				<!-- <groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version> -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>3.3.1</version>
+				<version>3.4.0</version>
 				<configuration>
 					<warName>LMMS</warName>
-					<outputDirectory>D:\Source_Code_BackUp_Dhivya\Source_Code\Source_Code\Java\10.8.62.79\Tomcat 9\LMMS\target</outputDirectory>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.7</version>
+				<version>3.3.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.12.1</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>17</source>
+					<target>17</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat8-maven-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<url>http://localhost:8080/manager/text</url>
-					<server>TomcatServer</server>
-					<path>/LMMS</path>
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
 </project>

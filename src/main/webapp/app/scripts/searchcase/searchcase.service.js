@@ -15,6 +15,7 @@
 			viewAllCases : viewAllCases,
 			disableCase : disableCase,
 			viewCase : viewCase,
+			viewAiSuggestions : viewAiSuggestions,
 			getViewCaseDetails : getViewCaseDetails,
 			setViewCaseDetails : setViewCaseDetails,
 			fetchMaster : fetchMaster
@@ -88,6 +89,20 @@
 	            data:data
 	        });
 		}
+		
+		function viewAiSuggestions(item){
+					var data = {"caseID" : parseInt(item), "sessID" : localStorageService.get('sessionID'), "userID" : localStorageService.get('payrollNo')};
+					return $http({
+			            method: 'POST',
+			            url: viewAiURL,
+			            headers: {
+			            	'Authorization' : authHeader,
+			            	//'Authorization' : localStorageService.get('authHeader'),
+			            	'Content-Type': 'application/xml; charset=utf-8'
+			            },
+			            data:data
+			        });
+				}
 		
 		
 	}

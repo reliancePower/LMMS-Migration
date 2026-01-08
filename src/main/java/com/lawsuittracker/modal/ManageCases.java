@@ -508,6 +508,8 @@ public class ManageCases {
 		String caseStatus = (obj.has("caseStatus")) ? obj.getString("caseStatus") : "";
 		String caseID = (obj.has("caseID")) ? obj.getString("caseID") : "";
 		String caseNo = (obj.has("caseNo")) ? obj.getString("caseNo") : "";
+		String partyName = (obj.has("partyName")) ? obj.getString("partyName") : "";
+		String aiFilter = (obj.has("aiFilter")) ? obj.getString("aiFilter") : "";
 		String startDateLast = (obj.has("startDateLast")) ? obj.getString("startDateLast") : "";
 		String endDateLast = (obj.has("endDateLast")) ? obj.getString("endDateLast") : "";
 		String nextDateNA = (obj.has("nextDateNA")) ? obj.getString("nextDateNA") : "";
@@ -581,7 +583,7 @@ public class ManageCases {
 						+ " ,a.aor_of_company,a.aor_of_respondent ,a.further_dates,a.business_rep,a.legal_team_rep, a.brief_facts,a.interim_prayer,a.final_prayer   "
 						+ " ,a.finanicial_impact,a.category_name, a.entry_date,a.entered_by,a.user_id, a.ref_no, a.case_type_id, a.assessment_year, a.financial_year, a.amount_disallowence, a.petitioner,a.respondent,a.petitioners,a.respondents, a.forum_category "
 						+ " ,a.forum_id, a.case_type_num, a.case_id, a.case_year, a.pv_id, a.state_id, a.case_type_name, a.asset_account_id "
-						+ " ,a.substitution_filed,a.substitution_allowed,a.interim_stay, a.stay_order_info , a.asset_segment, a.trust_name, a.account_name, a.vertical_alias , a.company_id, a.financial_impact_recurring, a.financial_impact_recurring_deuration, a.additional_comments, (select count(*) as count from document_details where case_id = a.id and status = 1)  "
+						+ " ,a.substitution_filed,a.substitution_allowed,a.interim_stay, a.stay_order_info , a.asset_segment, a.trust_name, a.account_name, a.vertical_alias , a.company_id, a.financial_impact_recurring, a.financial_impact_recurring_deuration, a.additional_comments, (select count(*) as count from document_details where case_id = a.id and status = 1), (select count(*) as count from ai_advisory where case_id = a.id )  "
 						+ " FROM  (Select t1.id, t0.access_type from (Select * from dbo.access_level  where User_id = ?) t0 INNER JOIN"
 						+ " (SELECT * FROM  dbo.case_master WHERE  (flag = 1)) AS t1 ON (t0.case_id = t1.id OR"
 						+ " t0.case_id = 0) AND (t0.company = t1.company OR"
@@ -614,6 +616,10 @@ public class ManageCases {
 					query += " and a.id = " + String.valueOf(caseID);
 				if (!("".equals(caseNo)))
 					query += " and a.case_no like '%" + caseNo + "%'";
+				if (!("".equals(partyName)))
+				    query += " and (a.petitioner like '%" + partyName + "%' or a.respondent like '%" + partyName + "%')";
+				if ("Y".equals(aiFilter))
+				    query += " AND a.id IN (SELECT DISTINCT case_id FROM ai_advisory) ";
 				if (!("".equals(startDateLast)) && !("".equals(endDateLast)))
 					query += " and CAST(a.last_hearing_date as date) between '" + sqlDate3 + "' and '" + sqlDate4 + "'";
 				else if (!("".equals(startDateLast)) && ("".equals(endDateLast)))
@@ -715,6 +721,7 @@ public class ManageCases {
 					ob.put("finImaRecurringDuration", rs.getString(68));
 					ob.put("additionalComments", rs.getString(69));
 					ob.put("docCount", rs.getInt(70));
+					ob.put("aiCount", rs.getInt(71));
 
 					String cNo = (rs.getString(56) == null) ? ""
 							: ("Others".equalsIgnoreCase(rs.getString(56)) ? "NA" : rs.getString(56));
@@ -778,6 +785,336 @@ public class ManageCases {
 		response = outJson.toString(4);
 		return response;
 	}
+	
+	public String fetchAiDetails(String input, String sessionID, String sessUser) {
+		String response = "";
+		Connection con = null;
+		ResultSet rs = null;
+		PreparedStatement stmt = null;
+		ResultSet rs1 = null;
+		PreparedStatement stmt1 = null;
+		ResultSet rs2 = null;
+		PreparedStatement stmt2 = null;
+		ResultSet rs4 = null;
+		PreparedStatement stmt4 = null;
+		JSONObject obj = new JSONObject(input);
+		JSONObject outJson = new JSONObject();
+		JSONArray finArray = new JSONArray();
+		JSONArray aiHistoryArray = new JSONArray();
+		int caseID = (obj.has("caseID")) ? obj.getInt("caseID") : 0;
+		String userID = (obj.has("userID")) ? obj.getString("userID") : "";
+		String checkUserID = "";
+		String sessID = (obj.has("sessID")) ? obj.getString("sessID") : "";
+		if (sessionID == null) {
+			outJson.put(LawSuitTrackerConstants.status, "F");
+			outJson.put("msg", "Your session has expired. Please logout and login again...");
+		} else if ("".equals(sessID) || (!sessionID.equals(sessID))) {
+			outJson.put(LawSuitTrackerConstants.status, "F");
+			outJson.put("msg", "Your session is invalid. Please try again later!");
+		} else if (!(sessUser.equals(userID)) && (!sessionID.equals(sessID))) {
+			outJson.put(LawSuitTrackerConstants.status, "F");
+			outJson.put("msg", "Your are not authorized to perform this action.");
+		} else {
+
+			try {
+				con = SQLDBConnection.getDBConnection();
+				String query = "SELECT id,company_name,business_name,vertical_name,case_no "
+						+ ",petitioner,respondent,forum,bench,aor_of_company,aor_of_respondent"
+						+ ",counsel_of_company,counsel_of_respondent,CONVERT(varchar, last_hearing_date, 103)"
+						+ ",CONVERT(varchar,next_hearing_date, 103),further_dates,business_rep"
+						+ ",legal_team_rep,sub_matter,brief_facts,interim_prayer,final_prayer"
+						+ ",outcome_last_hearing,likeli_outcome_next_hearing,finanicial_impact"
+						+ ",category_name, entry_date,entered_by, user_id, ref_no, company_id, company_alias, business_id "
+						+ ",category_id, status_id, vertical_id, status_name, case_type, case_type_id, assessment_year"
+						+ ",financial_year, amount_disallowence, state, vertical_alias, next_hearing_date, forum_category"
+						+ ",forum_id, case_type_num, case_id, case_year, pv_id, state_id, case_type_name "
+						+ ",case when next_hearing_date <= CAST(getdate() as date) then 'T' else 'F' end , asset_account_id "
+						+ ",substitution_filed,substitution_allowed,interim_stay, stay_order_info, asset_segment, trust_name, account_name, vertical_alias, petitioners, respondents "
+						+ ",financial_impact_recurring, financial_impact_recurring_deuration, additional_comments FROM vw_case_view_master where id = ? and id in (select id from vw_case_user_master where user_id = ? and id = ?)";
+				stmt = con.prepareStatement(query);
+				stmt.setInt(1, caseID);
+				stmt.setString(2, userID);
+				stmt.setInt(3, caseID);
+				rs = stmt.executeQuery();
+				if (rs.next()) {
+					outJson.put(LawSuitTrackerConstants.status, "T");
+					outJson.put("msg", "Success");
+					outJson.put("caseID", String.valueOf(rs.getInt(1)));
+					outJson.put("company", rs.getString(2));
+					outJson.put("business", rs.getString(3));
+					outJson.put("vertical", rs.getString(4));
+					outJson.put("caseNo", rs.getString(5));
+					outJson.put("petitioner", rs.getString(6));
+					outJson.put("respondent", rs.getString(7));
+					outJson.put("forum", rs.getString(8));
+					outJson.put("bench", rs.getString(9));
+					outJson.put("aorOfCompany", rs.getString(10));
+					outJson.put("aorOfRespondent", rs.getString(11));
+					outJson.put("counselOfCompany", rs.getString(12));
+					outJson.put("counselOfRespondent", rs.getString(13));
+					outJson.put("lastHearingDate", rs.getString(14));
+					outJson.put("nextHearingDate", rs.getString(15));
+					outJson.put("furtherDates", rs.getString(16));
+					outJson.put("businessRep", rs.getString(17));
+					outJson.put("legalRep", rs.getString(18));
+					outJson.put("subMatter", rs.getString(19));
+					outJson.put("briefFacts", rs.getString(20));
+					outJson.put("interimPrayer", rs.getString(21));
+					outJson.put("finalPrayer", rs.getString(22));
+					outJson.put("outcomeLast", rs.getString(23));
+					outJson.put("outcomeNext", rs.getString(24));
+					outJson.put("finImpact", rs.getString(25));
+					outJson.put("caseCategoryName", rs.getString(26));
+					outJson.put("updatedOn", rs.getTimestamp(27));
+					outJson.put("enteredBy", rs.getString(28));
+					outJson.put("userID", rs.getString(29));
+					checkUserID = rs.getString(29);
+					outJson.put("refNo", rs.getString(30));
+					outJson.put("companyID", rs.getInt(31));
+					outJson.put("companyAlias", rs.getString(32));
+					outJson.put("businessID", rs.getInt(33));
+					outJson.put("categoryID", rs.getInt(34));
+					outJson.put("statusID", rs.getInt(35));
+					outJson.put("verticalID", rs.getInt(36));
+					outJson.put("statusName", rs.getString(37));
+					outJson.put("caseType", rs.getString(38));
+					outJson.put("caseTypeID", rs.getInt(39));
+					outJson.put("assessYear", rs.getString(40));
+					outJson.put("finYear", rs.getString(41));
+					outJson.put("amtOfDisallow", rs.getLong(42));
+					outJson.put("state", rs.getString(43));
+					outJson.put("verticalAlias", rs.getString(44));
+					outJson.put("nextHearing", rs.getDate(45));
+					outJson.put("forumCategory", rs.getString(46));
+					outJson.put("forumID", rs.getInt(47));
+					outJson.put("caseTypeNum", rs.getInt(48));
+					outJson.put("courtCaseID", rs.getString(49));
+					outJson.put("caseYear", rs.getInt(50));
+					outJson.put("pvID", rs.getString(51));
+					outJson.put("stateID", rs.getInt(52));
+					outJson.put("caseTypeName", rs.getString(53));
+					outJson.put("showStatus", rs.getString(54));
+					outJson.put("accountID", rs.getInt(55));
+					outJson.put("substitutionFiled", rs.getString(56));
+					outJson.put("substitutionAllowed", rs.getString(57));
+					outJson.put("interimStay", rs.getString(58));
+					outJson.put("stayOrder", rs.getString(59));
+					outJson.put("assetSegment", rs.getString(60));
+					outJson.put("trustName", rs.getString(61));
+					outJson.put("accountName", rs.getString(62));
+					outJson.put("verticalAlias", rs.getString(63));
+					outJson.put("petitioners", rs.getString(64));
+					outJson.put("respondents", rs.getString(65));
+					outJson.put("finImpRecurring", rs.getString(66));
+					outJson.put("finImaRecurringDuration", rs.getString(67));
+					outJson.put("additionalComments", rs.getString(68));
+
+					String cNo = (rs.getString(53) == null) ? ""
+							: ("Others".equalsIgnoreCase(rs.getString(53)) ? "NA" : rs.getString(53));
+
+					if (!("".equalsIgnoreCase((rs.getString(5)))) && (rs.getString(5) != null)
+							&& (!("".equalsIgnoreCase((cNo)))))
+						cNo = cNo + "/" + rs.getString(5);
+					else if ((rs.getString(5) == "") && (!("".equalsIgnoreCase((cNo)))))
+						cNo = cNo;
+					else if ((rs.getString(5) != "") && ("".equalsIgnoreCase((cNo))))
+						cNo = rs.getString(5);
+
+					if ((rs.getInt(50) != 0) && (!("".equalsIgnoreCase((cNo)))))
+						cNo = cNo + "/" + rs.getInt(50);
+					else if ((rs.getInt(50) == 0) && (!("".equalsIgnoreCase((cNo)))))
+						cNo = cNo;
+					else if ((rs.getInt(50) != 0) && ("".equalsIgnoreCase((cNo))))
+						cNo = rs.getString(50);
+
+					outJson.put("cNo", cNo);
+
+					String sql = "SELECT * from financial_impact where case_id = ?";
+					stmt1 = con.prepareStatement(sql);
+					stmt1.setInt(1, caseID);
+					rs1 = stmt1.executeQuery();
+					while (rs1.next()) {
+						JSONObject jobj = new JSONObject();
+						jobj.put("id", rs1.getInt(1));
+						jobj.put("particular", rs1.getString(3));
+						jobj.put("principal", rs1.getInt(4));
+						jobj.put("penalty", rs1.getInt(5));
+						jobj.put("interest", rs1.getInt(6));
+						jobj.put("total", rs1.getInt(7));
+						jobj.put("currency", rs1.getString(9));
+						jobj.put("userID", rs1.getString(10));
+						finArray.put(jobj);
+					}
+					outJson.put("finImpArray", finArray);
+					
+					String sq3 = "SELECT case_id ,subject ,description,FORMAT(hearing_date, 'MMM dd, yyyy') AS formatted_hearing_date from ai_advisory WHERE case_id = ? order by hearing_date desc";
+
+					stmt4 = con.prepareStatement(sq3);
+					stmt4.setInt(1, caseID);
+					rs4 = stmt4.executeQuery();
+					while (rs4.next()) {
+						JSONObject jobj = new JSONObject();
+//						jobj.put("id", rs4.getInt(1));
+						jobj.put("subject", rs4.getString(2));
+						jobj.put("description", rs4.getString(3));
+						jobj.put("date", rs4.getString(4));
+						aiHistoryArray.put(jobj);
+					}
+					outJson.put("aiHistoryArray", aiHistoryArray);
+					
+					//new changes
+					String fbSql = "SELECT feedback_text, updated_by FROM ai_advisory_feedback WHERE case_id = ?";
+					PreparedStatement fbStmt = con.prepareStatement(fbSql);
+					fbStmt.setInt(1, caseID);
+					ResultSet fbRs = fbStmt.executeQuery();
+
+					String feedback = "";
+					String feedbackBy = "";
+
+					if (fbRs.next()) {
+					    feedback = fbRs.getString("feedback_text");
+					    feedbackBy = fbRs.getString("updated_by");
+					}
+
+					outJson.put("feedbackText", feedback);
+					outJson.put("feedbackBy", feedbackBy);
+
+					boolean canEdit = (userID.equals(checkUserID));
+					outJson.put("canEditFeedback", canEdit);
+					
+
+				} else {
+					outJson.put(LawSuitTrackerConstants.status, "F");
+					outJson.put("msg", "No details availabe for the case id :" + caseID);
+				}
+
+			} catch (SQLException e) {
+				logg.error("Login Error in SQL Exception ==>" + e.getMessage());
+				outJson.put(LawSuitTrackerConstants.status, "F");
+				outJson.put("msg", e);
+			}
+
+			finally {
+				if (rs != null)
+					try {
+						rs.close();
+						rs = null;
+					} catch (Exception e) {
+						logg.error("Login Error in Finally - rs ==>" + e.getMessage());
+					}
+				if (stmt != null)
+					try {
+						stmt.close();
+						stmt = null;
+					} catch (Exception e) {
+						logg.error("Login Error in Finally - stmt ==>" + e.getMessage());
+					}
+				if (rs1 != null)
+					try {
+						rs1.close();
+						rs1 = null;
+					} catch (Exception e) {
+						logg.error("Login Error in Finally - rs1 ==>" + e.getMessage());
+					}
+				if (stmt1 != null)
+					try {
+						stmt1.close();
+						stmt1 = null;
+					} catch (Exception e) {
+						logg.error("Login Error in Finally - stmt1 ==>" + e.getMessage());
+					}
+				
+				
+				if (rs2 != null)
+					try {
+						rs2.close();
+						rs2 = null;
+					} catch (Exception e) {
+						logg.error("Login Error in Finally - rs2 ==>" + e.getMessage());
+					}
+				if (stmt2 != null)
+					try {
+						stmt2.close();
+						stmt2 = null;
+					} catch (Exception e) {
+						logg.error("Login Error in Finally - stmt2 ==>" + e.getMessage());
+					}
+				
+				if (rs4 != null)
+					try {
+						rs4.close();
+						rs4 = null;
+					} catch (Exception e) {
+						logg.error("Login Error in Finally - rs4 ==>" + e.getMessage());
+					}
+				if (stmt4 != null)
+					try {
+						stmt4.close();
+						stmt4 = null;
+					} catch (Exception e) {
+						logg.error("Login Error in Finally - stmt4 ==>" + e.getMessage());
+					}
+				
+				if (con != null)
+					try {
+						con.close();
+						con = null;
+					} catch (Exception e) {
+						logg.error("Login Error in Finally - con ==>" + e.getMessage());
+					}
+			}
+		}
+		response = outJson.toString(4);
+		return response;
+	}
+	
+	public String saveAiFeedback(String input, String sessionID, String sessionUser) {
+
+	    JSONObject in = new JSONObject(input);
+	    JSONObject out = new JSONObject();
+
+	    int caseID = in.getInt("caseID");
+	    String userID = in.getString("userID");
+	    String sessID = in.getString("sessID");
+	    String feedbackText = in.getString("feedbackText");
+
+	    if (!sessionID.equals(sessID) || !sessionUser.equals(userID)) {
+	        out.put("status", "F");
+	        out.put("msg", "Unauthorized");
+	        return out.toString();
+	    }
+
+	    Connection con = null;
+	    try {
+	        con = SQLDBConnection.getDBConnection();
+	        String sql = "IF EXISTS (SELECT 1 FROM ai_advisory_feedback WHERE case_id = ?) " +
+	                     "UPDATE ai_advisory_feedback SET feedback_text = ?, updated_by = ?, updated_on = GETDATE() WHERE case_id = ? " +
+	                     "ELSE INSERT INTO ai_advisory_feedback(case_id, feedback_text, updated_by) VALUES (?, ?, ?)";
+
+	        PreparedStatement stmt = con.prepareStatement(sql);
+	        stmt.setInt(1, caseID);
+	        stmt.setString(2, feedbackText);
+	        stmt.setString(3, userID);
+	        stmt.setInt(4, caseID);
+	        stmt.setInt(5, caseID);
+	        stmt.setString(6, feedbackText);
+	        stmt.setString(7, userID);
+
+	        stmt.executeUpdate();
+
+	        out.put("status", "T");
+	        out.put("msg", "Feedback saved successfully");
+
+	    } catch (Exception e) {
+	        out.put("status", "F");
+	        out.put("msg", e.getMessage());
+	    } finally {
+	        try { if (con != null) con.close(); } catch (Exception ex) {}
+	    }
+
+	    return out.toString();
+	}
+
 
 	public String fetchCaseDetails(String input, String sessionID, String sessUser) {
 		String response = "";
@@ -1047,6 +1384,37 @@ public class ManageCases {
 					} catch (Exception e) {
 						logg.error("Login Error in Finally - stmt1 ==>" + e.getMessage());
 					}
+				
+				if (rs2 != null)
+					try {
+						rs2.close();
+						rs2 = null;
+					} catch (Exception e) {
+						logg.error("Login Error in Finally - rs2 ==>" + e.getMessage());
+					}
+				if (stmt2 != null)
+					try {
+						stmt2.close();
+						stmt2 = null;
+					} catch (Exception e) {
+						logg.error("Login Error in Finally - stmt2 ==>" + e.getMessage());
+					}
+				
+				if (rs3 != null)
+					try {
+						rs3.close();
+						rs3 = null;
+					} catch (Exception e) {
+						logg.error("Login Error in Finally - rs3 ==>" + e.getMessage());
+					}
+				if (stmt3 != null)
+					try {
+						stmt3.close();
+						stmt3 = null;
+					} catch (Exception e) {
+						logg.error("Login Error in Finally - stmt3 ==>" + e.getMessage());
+					}
+				
 				if (con != null)
 					try {
 						con.close();

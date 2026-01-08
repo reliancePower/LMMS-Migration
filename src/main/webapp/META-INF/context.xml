@@ -31,12 +31,12 @@
     -->
 
 <!-- Prod connection -->
-<!--   <Resource type="javax.sql.DataSource"
+  <Resource type="javax.sql.DataSource"
           name="jdbc/RELCALDB"
           auth="Container" 
           factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
           driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-          url="jdbc:sqlserver://10.211.253.18:1433;DatabaseName=LAW_REG_SYS_DEV;user=sa;Password=N0p@$$W0rdg!ven"
+          url="jdbc:sqlserver://10.211.253.18:1433;DatabaseName=LAW_REG_SYS;user=sa;Password=N0p@$$W0rdg!ven;encrypt=true;trustServerCertificate=true"
           validationQuery="SELECT 1"
           validationQueryTimeout="1000"
            maxActive="10000"
@@ -44,16 +44,16 @@
           maxWait="10000"
           testOnBorrow="true"
           logAbandoned="true"
-/> -->
+/>
 
 <!-- local connection -->
 
- <Resource name="jdbc/RCBRPL-95002539\SQLEXPRESS"
+<!--  <Resource name="jdbc/RCBRPL-95002539\SQLEXPRESS"
           auth="Container"
           type="javax.sql.DataSource"
           factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
           driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-          url="jdbc:sqlserver://localhost:1433;databaseName=LAW_REG_SYS_TEST;encrypt=true;trustServerCertificate=true;integratedSecurity=true;"
+          url="jdbc:sqlserver://10.211.253.18:1433;DatabaseName=LAW_REG_SYS_DEV;user=sa;Password=N0p@$$W0rdg!ven;encrypt=false"
           validationQuery="SELECT 1"
           validationQueryTimeout="1000"
           maxActive="100"
@@ -62,7 +62,7 @@
           testOnBorrow="true"
           logAbandoned="true"
           removeAbandoned="true"
-          removeAbandonedTimeout="60" /> 
+          removeAbandonedTimeout="60" />  -->
           
           
           
@@ -72,7 +72,7 @@
           type="javax.sql.DataSource"
           factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
           driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-          url="jdbc:sqlserver://localhost:1433;databaseName=TEST_DB;encrypt=true;trustServerCertificate=true;integratedSecurity=true;"
+          url="jdbc:sqlserver://10.211.253.18:1433;DatabaseName=MICROVISTA_MIG;user=sa;Password=N0p@$$W0rdg!ven;encrypt=false"
           validationQuery="SELECT 1"
           validationQueryTimeout="1000"
           maxActive="100"

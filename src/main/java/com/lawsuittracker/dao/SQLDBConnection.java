@@ -24,8 +24,8 @@ public class SQLDBConnection {
 		try {
 			ctx = new InitialContext();
 			Context initCtx = (Context) ctx.lookup("java:/comp/env");
-			//ds = (DataSource) initCtx.lookup("jdbc/RELCALDB");
-			ds = (DataSource) initCtx.lookup("jdbc/RCBRPL-95002539\\SQLEXPRESS");
+			ds = (DataSource) initCtx.lookup("jdbc/RELCALDB");
+//			ds = (DataSource) initCtx.lookup("jdbc/RCBRPL-95002539\\SQLEXPRESS");
 			conn = ds.getConnection();
 
 		} catch (NamingException e) {

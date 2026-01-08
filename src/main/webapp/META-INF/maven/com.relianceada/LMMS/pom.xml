@@ -45,8 +45,8 @@
 
 
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
 			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
@@ -58,9 +58,9 @@
 			<version>3.3.1</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+		<!-- https://mvnrepository.com/artifact/jakarta.mail/mail -->
 		<dependency>
-			<groupId>javax.mail</groupId>
+			<groupId>jakarta.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
 		</dependency>

@@ -1,0 +1,527 @@
+<div id="viewContainer" class="container" style="background: white;">
+	<br>
+
+	<div class="row text-center">
+		<div class="col-sm-8 blueColor">
+			<h5 class="blueColor modal-title" style="font-weight: 600;">Case
+				Details for case ID : {{vm.caseID}} and Ref.no : {{vm.refNo}}</h5>
+			<span style="display: none;" id="textTitle">Case Details for
+				case ID {{vm.caseID}} with Ref.no {{vm.refNo}}</span>
+		</div>
+
+		<div class="col-sm-4" style="text-align: center;">
+			<button class="btn btn-primary" type="button"
+				ng-click="vm.printCaseDetails()">Print</button>
+			<button class="btn btn-primary" ng-click="vm.goBack()" type="button">Close</button>
+		</div>
+	</div>
+
+
+
+	<p style="border-bottom: 2px dashed #ddd; margin: 5px;"></p>
+	<br>
+
+	<div style="margin: 10px 5px;" id="viewAllMatter">
+
+		<div class="row">
+
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Company :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{vm.company}}</div>
+			<div class="col-sm-3 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Case Category :</strong>
+			</div>
+			<div class="col-sm-3" style="font-size: 16px;">{{ vm.caseType
+				}}</div>
+
+		</div>
+		<div class="row">
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Business :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{vm.business}}</div>
+			<div class="col-sm-6"
+				ng-if="vm.assessYear == '' || vm.assessYear == undefined"></div>
+			<div class="col-sm-3 blueColor"
+				ng-if="vm.assessYear != '' && vm.assessYear != undefined"
+				style="text-align: right; font-size: 16px;">
+				<strong>AY :</strong>
+			</div>
+			<div class="col-sm-3"
+				ng-if="vm.assessYear != '' && vm.assessYear != undefined"
+				style="font-size: 16px;">
+				{{vm.assessYear}} <strong class="blueColor"
+					style="margin-left: 10px; font-size: 16px;">FY :</strong> <span
+					style="font-size: 16px;">{{vm.finYear}}</span>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Vertical :</strong>
+			</div>
+			<div class="col-sm-4" style="font-size: 16px;">{{vm.vertical}}</div>
+			<div class="col-sm-3 blueColor"
+				style="text-align: right; font-size: 16px;">
+				<strong>Report as on :</strong>
+			</div>
+			<div class="col-sm-3" style="font-size: 16px;">{{ vm.today |
+				date }}</div>
+		</div>
+
+
+		<br>
+		<div class="row">
+			<div class="col-sm-12">
+				<table class="table" id="viewPopupTable">
+					<tbody>
+						<tr>
+
+							<td class="blueColor" style="font-weight: 600;">Court Case
+								No</td>
+							<td>{{vm.caseNo}}</td>
+
+							<td class="blueColor" style="font-weight: 600;">Case Year</td>
+							<td>{{vm.caseYear != 0 ? vm.caseYear : ''}}</td>
+
+						</tr>
+
+						<tr>
+
+
+
+							<td class="blueColor" style="font-weight: 600;">Forum</td>
+							<td>{{vm.forum}}</td>
+							<td class="blueColor" style="font-weight: 600;">Case Type</td>
+							<td>{{vm.caseTypeName}}</td>
+
+						</tr>
+
+						<tr>
+
+							<td class="blueColor" style="font-weight: 600;">Petitioner</td>
+							<td ng-bind-html="vm.petitioner" class="bindHTML"></td>
+
+							<td class="blueColor" style="font-weight: 600;">Respondent</td>
+							<td ng-bind-html="vm.respondent" class="bindHTML"></td>
+
+
+						</tr>
+
+						<tr>
+
+							<td class="blueColor" style="font-weight: 600;">AOR for
+								Petitioner</td>
+							<td>{{vm.aorOfCompany}}</td>
+
+							<td class="blueColor" style="font-weight: 600;">AOR for
+								Respondent</td>
+							<td>{{vm.aorOfRespondent}}</td>
+						</tr>
+
+						<tr>
+
+							<td class="blueColor" style="font-weight: 600;">Counsel for
+								Petitioner</td>
+							<td>{{vm.counselOfCompany}}</td>
+
+							<td class="blueColor" style="font-weight: 600;">Counsel for
+								Respondent</td>
+							<td>{{vm.counselOfRespondent}}</td>
+						</tr>
+
+						<tr
+							ng-if="(vm.caseDetails.companyID == 3 && vm.caseDetails.businessID == 18 && vm.caseDetails.verticalID == 99)">
+
+							<td class="blueColor" style="font-weight: 600;">Asset
+								Segment</td>
+							<td>{{vm.caseDetails.assetSegment}}</td>
+
+							<td class="blueColor" style="font-weight: 600;">Trust Name</td>
+							<td>{{vm.caseDetails.trustName}}</td>
+						</tr>
+
+						<tr
+							ng-if="(vm.caseDetails.companyID == 3 && vm.caseDetails.businessID == 18 && vm.caseDetails.verticalID == 99)">
+
+							<td class="blueColor" style="font-weight: 600;">Account Name
+							</td>
+							<td>{{vm.caseDetails.accountName}}</td>
+
+							<td class="blueColor" style="font-weight: 600;">Substitution
+								Filed</td>
+							<td>{{vm.caseDetails.substitutionFiled}}</td>
+						</tr>
+
+						<tr
+							ng-if="(vm.caseDetails.companyID == 3 && vm.caseDetails.businessID == 18 && vm.caseDetails.verticalID == 99)">
+
+							<td class="blueColor" style="font-weight: 600;">Substitution
+								Allowed</td>
+							<td>{{vm.caseDetails.substitutionAllowed}}</td>
+
+							<td class="blueColor" style="font-weight: 600;">Interim Stay
+							</td>
+							<td>{{vm.caseDetails.interimStay}} -
+								{{vm.caseDetails.stayOrder}}</td>
+
+
+
+						</tr>
+
+
+						<tr>
+
+							<td class="blueColor" style="font-weight: 600;">Bench</td>
+							<td colspan="4">{{vm.bench}}</td>
+						</tr>
+
+						<tr>
+
+							<td class="blueColor" style="font-weight: 600;">Subject
+								Matter</td>
+							<td colspan="4">{{vm.subMatter | removeHTMLTags}}</td>
+						</tr>
+
+						<tr>
+
+							<td class="blueColor" style="font-weight: 600;">Brief Facts</td>
+							<td colspan="4">{{vm.briefFacts | removeHTMLTags}}</td>
+						</tr>
+
+						<tr>
+
+							<td class="blueColor" style="font-weight: 600;">Interim
+								Prayer</td>
+							<td colspan="4">{{vm.interimPrayer | removeHTMLTags}}</td>
+						</tr>
+
+						<tr>
+
+							<td class="blueColor" style="font-weight: 600;">Final Prayer</td>
+							<td colspan="4">{{vm.finalPrayer | removeHTMLTags}}</td>
+						</tr>
+
+						<tr>
+
+							<td class="blueColor" style="font-weight: 600;">Last Hearing</td>
+							<td style="font-weight: 600;">{{vm.lastHearingDate}}</td>
+
+							<td class="blueColor" style="font-weight: 600;">Outcome Of
+								Last Hearing</td>
+							<td style="font-weight: 600;">{{vm.outcomeLast |
+								removeHTMLTags}}</td>
+						</tr>
+
+						<tr>
+							<td class="blueColor" style="font-weight: 600;">Next Hearing</td>
+							<td style="font-weight: 600;">{{vm.nextHearingDate}}</td>
+							<td class="blueColor" style="font-weight: 600;">Likely
+								Outcome Of Next Hearing</td>
+							<td style="font-weight: 600;">{{vm.outcomeNext |
+								removeHTMLTags}}</td>
+						</tr>
+						<tr>
+							<td ng-if="vm.caseTypeID != 1" class="blueColor"
+								style="font-weight: 600;">Financial Impact</td>
+							<td ng-if="vm.caseTypeID != 1" colspan="3"><b>One time :</b>{{vm.finImpact
+								== '' ? 'Nil' : vm.finImpact}}, <b>Recurring : </b>{{vm.caseDetails.finImpRecurring
+								== undefined ? 'Nil' : vm.caseDetails.finImpRecurring}}, <b>Duration
+									:</b>{{vm.caseDetails.finImaRecurringDuration == undefined ? 'NA' :
+								vm.caseDetails.finImaRecurringDuration}}</td>
+							<td ng-if="vm.caseTypeID == 1" class="blueColor"
+								style="font-weight: 600;">Financial Impact</td>
+							<td ng-if="vm.caseTypeID == 1"><b>One time :</b>{{vm.finImpact
+								== '' ? 'Nil' : vm.finImpact }}, <b>Recurring : </b>{{vm.caseDetails.finImpRecurring
+								== undefined ? 'Nil' : vm.caseDetails.finImpRecurring}}, <b>Duration
+									:</b>{{vm.caseDetails.finImaRecurringDuration == undefined ? 'NA' :
+								vm.caseDetails.finImaRecurringDuration}}</td>
+							<td ng-if="vm.caseTypeID == 1" class="blueColor"
+								style="font-weight: 600;">Amount of Disallowance:</td>
+							<td ng-if="vm.caseTypeID == 1">{{(vm.amtOfDisallow ==
+								undefined || vm.amtOfDisallow == '') ? 0 : vm.amtOfDisallow}}</td>
+						</tr>
+
+						<tr>
+							<td class="blueColor" style="font-weight: 600;">Business
+								Team</td>
+							<td>{{vm.businessRep}}</td>
+							<td class="blueColor" style="font-weight: 600;">Legal Team</td>
+							<td>{{vm.legalRep}}</td>
+						</tr>
+						<tr>
+							<td class="blueColor" style="font-weight: 600;">Case Status</td>
+							<td>{{vm.caseStatus}}</td>
+							<td class="blueColor" style="font-weight: 600;">Case
+								Priority</td>
+							<td>{{vm.caseCategory}}</td>
+						</tr>
+
+						<tr>
+							<td class="blueColor" style="font-weight: 600;">
+								State/Location</td>
+							<td>{{vm.state}}</td>
+							<td class="blueColor" style="font-weight: 600;">Updated By</td>
+							<td>{{vm.enteredBy}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="container-accord">
+			<div id="accordion">
+				<div class="card" style="border: none !important;">
+					<div class="card-header" style="background: lightSlateGrey;">
+						<a class="card-link" style="background: lightSlateGrey;"
+							data-toggle="collapse" data-target="#financialArrayColl"
+							aria-expanded="false" aria-controls="financialArrayColl">
+							Financial Impact Details <span class="collapsed"><p>
+									<b>+</b>
+								</p></span> <span class="expanded"><p>
+									<b>-</b>
+								</p></span>
+						</a>
+					</div>
+					<div id="financialArrayColl" class="collapse">
+						<div class="card-body">
+							<div class="tableContainer">
+								<div class="text-center noInfo"
+									ng-if="vm.finImpArray.length == 0">No financial details
+									found</div>
+								<table class="table cardTable" width="100%"
+									ng-if="vm.finImpArray.length > 0">
+									<thead>
+										<tr>
+									<thead>
+										<tr>
+											<th>Particular</th>
+											<th>Principal {{(vm.currency)}}</th>
+											<th>Penalty {{(vm.currency)}}</th>
+											<th>Interest {{(vm.currency)}}</th>
+											<th>Total {{(vm.currency)}}</th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="item in vm.finImpArray">
+
+											<td>{{item.particular}}</td>
+											<td>{{item.principal | abs}}</td>
+											<td>{{item.penalty | abs}}</td>
+											<td>{{item.interest | abs}}</td>
+											<td>{{item.total | abs}}</td>
+
+										</tr>
+										<tr>
+											<td colspan="4" class="blueColor">Grand Total</td>
+											<td><strong>{{vm.grandTotal | abs}}</strong></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="card" style="border: none !important;">
+					<div class="card-header" style="background: lightSlateGrey;">
+						<a class="card-link" style="background: lightSlateGrey;"
+							data-toggle="collapse" data-target="#aiArrayColl"
+							aria-expanded="false" aria-controls="aiArrayColl"> AI
+							Advisories <span class="collapsed"><p>
+									<b>+</b>
+								</p></span> <span class="expanded"><p>
+									<b>-</b>
+								</p></span>
+						</a>
+					</div>
+					<div id="aiArrayColl" class="collapse">
+						<div class="card-body">
+							<div class="tableContainer">
+								<div ng-repeat="group in vm.aiGrouped">
+									<div class="mb-2 p-2" style="background: #fff; color: #005199;">
+										<strong>AI Advisories as per hearing dated :</strong> {{
+										group.date }}
+									</div>
+
+									<table class="table cardTable">
+										<thead>
+											<tr>
+												<th>Sr.No</th>
+												<th>Arguments</th>
+												<th>Supporting Information</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="item in group.items">
+												<td>{{$index+1}}</td>
+												<td>{{item.subject}}</td>
+												<td>{{item.description}}</td>
+											</tr>
+										</tbody>
+									</table>
+
+									<hr />
+								</div>
+
+								<div class="mt-3 p-2"
+									style="background: #f5f5f5; border-radius: 5px;">
+
+									<!-- IF USER CAN EDIT -->
+									<div ng-if="vm.caseDetails.canEditFeedback && !vm.feedbackText">
+										<h5>
+											<b
+												style="background-color: #fff; border-color: #fff; color: #005199 !important;">Legal
+												Representative feedback on above advisories</b>
+										</h5>
+										<textarea class="form-control" rows="4"
+											placeholder="Enter your feedback..."
+											ng-disabled="vm.feedbackSaved" ng-model="vm.feedbackText">
+        								</textarea>
+
+										<button class="btn btn-primary mt-2"
+											ng-disabled="vm.feedbackSaved" ng-click="vm.saveFeedBack()">Save
+											Feedback</button>
+									</div>
+
+									<!-- READ ONLY VIEW -->
+									<div ng-if="vm.feedbackText">
+										<h5>
+											<b
+												style="background-color: #fff; border-color: #fff; color: #005199 !important;">Legal
+												Representative feedback on above advisories</b>
+										</h5>
+										<textarea class="form-control" rows="4"
+											ng-model="vm.feedbackText" disabled></textarea>
+
+										<!-- <p ng-if="vm.caseDetails.feedbackBy" class="text-muted mt-1">(Feedback added by:
+											{{vm.caseDetails.feedbackBy}})</p> -->
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<br>
+			</div>
+		</div>
+	</div>
+
+</div>
+<script id="print-header" type="text/x-jquery-tmpl">
+   <!DOCTYPE html>
+   <head>
+
+       <title>     Law Matters Management System</title>
+        <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <link rel="stylesheet" href="./app/lib/bootstrap/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="./app/lib/multiselect/bootstrap-select.css">
+    
+
+    <link rel="stylesheet" href="./app/lib/fontawesome/all.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/datatables/jquery.dataTables.min.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/angular-datatables-0.6.2/dist/plugins/bootstrap/datatables.bootstrap.min.css"  type="text/css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app/lib/moment/multi-date-picker.css"  type="text/css" crossorigin="anonymous">
+	<link rel="stylesheet" href="./app/lib/multiselect/bootstrap-multiselect.css">
+    
+    <link rel="stylesheet" href="./app/css/common.css" >
+    <link rel="stylesheet" href="./app/css/media.css" >
+ 	<link rel="stylesheet" href="./app/css/login.css" >
+ 	<link rel="stylesheet" href="./app/css/dashboard.css" >
+
+     <style>
+
+
+@media print {
+    body {
+    color: black;
+    background : white;
+ 	font-size: 14pt; 
+    }
+
+	#viewPopupTable tr, #viewPopupTable th, #viewPopupTable td {
+	
+    font-size: 17px !important;
+}
+.col-sm-3, .col-sm-2, .col-sm-4 {
+	font-size : 18px !important;
+}
+}
+ body {
+    color: black;
+    background : white;
+ 	font-size: 14pt; 
+    }
+
+	#viewPopupTable tr, #viewPopupTable th, #viewPopupTable td {
+	
+    font-size: 17px !important;
+}
+.col-sm-3, .col-sm-2, .col-sm-4 {
+	font-size : 18px !important;
+}
+      
+       </style>
+  
+	
+   </head>
+   <body onload="window.print()">
+  
+</script>
+<script id="print-footer" type="text/x-jquery-tmpl">
+    </body>
+    </html>
+</script>
+
+<script id="iframe-header" type="text/x-jquery-tmpl">
+   <!DOCTYPE html>
+   <head>
+
+       <title>     Law Matters Management System</title>
+        <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+   </head>
+   <body>
+  
+</script>
+<script id="iframe-footer" type="text/x-jquery-tmpl">
+    </body>
+    </html>
+</script>
+<script type="text/ng-template" id="lock.html">
+    	<div class="modal-header row text-center" style = "border-bottom :2px dashed #ddd;margin: 0 5px;"  >
+			
+			<div class = "col-sm-9 blueColor">
+				<h5 class="blueColor modal-title" style = "font-weight:600;">Confidential Document </h5>
+			</div>			
+			<div class = "col-sm-3" style = "text-align:right;">
+				<button  class="btn btn-primary" ng-click="$dismiss('cancel')" type="button">Close</button>
+       		</div>
+        </div>
+		
+        <div class="modal-body" >
+			<p>You do not have the access to view this document currently. </p>
+
+<div id = "lockInfo" ng-bind-html = "vm.lockInfo"></div> 
+
+				
+			</div>
+		</div>
+</script>
+
+
+
+

@@ -20,7 +20,7 @@
 				userName : '',
 				webMail : '',
 				mobileNo : '',
-				emailID : '@relianceada.com',
+				emailID : '@reliancegroupindia.com',
 				userType : '',
 				userPlant : '',
 				accessType : '',
@@ -531,7 +531,7 @@
 
 		function getEmail() {
 			vm.form.emailID = vm.form.webMail.replace(/\s+/g, '.')
-					+ '@relianceada.com';
+					+ '@reliancegroupindia.com';
 		}
 
 		function submit(form) {
